@@ -9,5 +9,9 @@ public class Coordinate {
 		this.X = x;
 		this.Y = y;
 	}
+
+	public String toString(){
+		return "x: " + X + " y: " + Y;
+	}
 	
 }

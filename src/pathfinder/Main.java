@@ -12,7 +12,7 @@ public class Main {
 		Behavior drive = new Drive(robot);
 		Behavior avoidObstacle = new AvoidObstacle(robot);
 		
-		Behavior[] behaviors = new Behavior[2];
+		Behavior[] behaviors = new Behavior[1];
 		behaviors[0] = drive;
 //		behaviors[1] = avoidObstacle;
 		
