@@ -59,10 +59,9 @@ public class Drive implements Behavior{
 			
 		}
 		
+		return new Coordinate(0, (int) distance);
 		
-		
-		return null;
-	}
+}
 
 
 	
