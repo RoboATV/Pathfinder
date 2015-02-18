@@ -31,15 +31,18 @@ public class LocatorTest {
 	public void correctMapCalculations() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		
 		Class[] cArg = new Class[2];
-        cArg[0] = Integer.class;
-        cArg[1] = Float.class;
+        cArg[0] = Integer.TYPE;
+        cArg[1] = Float.TYPE;
         	
 		Method calculateMapPosition = locator.getClass().getDeclaredMethod("calculateMapPosition", cArg);
 		calculateMapPosition.setAccessible(true);
 		
 		
 		Coordinate expectedCor = new Coordinate(10, 10);
-		assertEquals(expectedCor, calculateMapPosition.invoke(locator, 45, 14));
+		
+		Coordinate calculatedCor = (Coordinate) calculateMapPosition.invoke(locator, 45, 14);
+		assertEquals(expectedCor.X, calculatedCor.X);
+		assertEquals(expectedCor.Y, calculatedCor.Y);
 	}
 	
 	

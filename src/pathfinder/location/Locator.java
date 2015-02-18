@@ -118,21 +118,19 @@ public class Locator {
 		
 		int angleB = 90 - angleA;
 		
-		System.out.println("distance: " + distance);
-		System.out.println("angle " + angleB);
-		
-		if(angleB != 90){
-			double gradient = Math.tan(Math.toRadians(angleB));
 				
-			System.out.println("gradient " + gradient);
+		if(angleB != 90){
+			double gradient = Math.tan(Math.toRadians(angleB));			
 			
-			double divisor = Math.sqrt(Math.pow(gradient + 1, 2));		
+			double divisor = Math.sqrt(Math.pow(gradient, 2) + 1);		
 			
-			int coorX = (int) (distance / divisor);
+			double x = distance / divisor;
+			int rndX = (int) Math.round(x);
 			
-			int coorY = (int) (coorX * gradient);
+			double y = rndX * gradient;			
+			int rndY = (int) Math.round(y);
 			
-			return new Coordinate(coorX, coorY);
+			return new Coordinate(rndX, rndY);
 			
 		}
 		
