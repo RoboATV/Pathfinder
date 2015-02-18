@@ -1,6 +1,6 @@
-package pathfinder;
+package pathfinder.robot;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -12,6 +12,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.DifferentialPilot;
+import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
 
 
@@ -35,7 +36,8 @@ public class Robot {
 	
 	public final double obstacleDistance = 0.25;
 	
-	public Map<Coordinate, Integer> map = new HashMap<Coordinate, Integer>();
+	
+	
 	
 	public Robot(){
 		
@@ -61,7 +63,7 @@ public class Robot {
 		
 				
 	}
-	
+
 	
 	
 	public boolean checkLeft(){

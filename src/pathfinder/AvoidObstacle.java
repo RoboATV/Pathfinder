@@ -1,5 +1,6 @@
 package pathfinder;
 
+import pathfinder.robot.Robot;
 import lejos.robotics.subsumption.Behavior;
 
 public class AvoidObstacle implements Behavior{
