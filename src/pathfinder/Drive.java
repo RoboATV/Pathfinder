@@ -3,7 +3,6 @@ package pathfinder;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
-import pathfinder.robot.Direction;
 import pathfinder.robot.Robot;
 
 public class Drive implements Behavior{

@@ -15,7 +15,7 @@ import pathfinder.map.Coordinate;
 
 
 
-public class Robot {
+public class Robot implements IRobot{
 	
 	public RegulatedMotor leftDrive;
 	public RegulatedMotor rightDrive;
@@ -38,6 +38,7 @@ public class Robot {
 		
 //		initialize Motors
 		leftDrive = new EV3LargeRegulatedMotor(MotorPort.A);
+		
 		rightDrive = new EV3LargeRegulatedMotor(MotorPort.B);
 		turnArm = new EV3LargeRegulatedMotor(MotorPort.C);
 		
@@ -124,6 +125,19 @@ public class Robot {
 			}
 			System.out.println();			
 		}
+	}
+
+
+	@Override
+	public void rotateTurnArm(int degrees) {
+		this.turnArm.rotate(degrees);
+		
+	}
+
+
+	@Override
+	public SampleProvider getDistanceProvider() {
+		return this.distance;
 	}
 	
 	

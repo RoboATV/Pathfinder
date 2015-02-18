@@ -6,9 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import lejos.robotics.SampleProvider;
 import pathfinder.map.Coordinate;
 import pathfinder.robot.Direction;
-import pathfinder.robot.Robot;
+import pathfinder.robot.IRobot;
 
 public class Locator {
 
@@ -17,12 +18,12 @@ public class Locator {
 	public Coordinate currentPos;
 	
 	public Map<Coordinate, Integer> map = new HashMap<Coordinate, Integer>();
-	private Robot robot;
+	private IRobot robot;
 	
 	private Coordinate nextCoordinate;
 	
 	
-	public Locator(Robot robot){
+	public Locator(IRobot robot){
 		this.robot = robot;
 		robotTrack = new ArrayList<Coordinate>();
 	}
@@ -73,7 +74,7 @@ public class Locator {
 		
 		Coordinate farestPos = null;
 		
-		robot.turnArm.rotate(i);
+		robot.rotateTurnArm(i);
 		
 		while(i >= 0){		
 			float sample = this.getDistance();
@@ -83,7 +84,7 @@ public class Locator {
 				enterNewPosition(position, 1);
 				farestPos = new Coordinate(currentPos.X, position.Y);
 			}	
-			robot.turnArm.rotate(step);
+			robot.rotateTurnArm(step);
 			i += step;
 		}
 		return farestPos;
@@ -92,15 +93,15 @@ public class Locator {
 	
 	
 	private float getDistance(){
+		SampleProvider distance = robot.getDistanceProvider();
+		float[] sample = new float[distance.sampleSize()];
 		
-		float[] sample = new float[this.robot.distance.sampleSize()];
-		
-		this.robot.distance.fetchSample(sample, 0);
+		distance.fetchSample(sample, 0);
 		float oldSample = sample[0];
 		
 		
 		for(int i = 0; i < 5; i++){
-			this.robot.distance.fetchSample(sample, 0);
+			distance.fetchSample(sample, 0);
 			if(sample[0] < oldSample){
 				oldSample = sample[0];
 			}
