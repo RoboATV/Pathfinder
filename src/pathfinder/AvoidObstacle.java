@@ -25,13 +25,7 @@ public class AvoidObstacle implements Behavior{
 	@Override
 	public void action() {
 		this.robot.pilot.stop();
-		if(!suppressed){			
-			if(this.robot.checkLeft()){
-				this.robot.pilot.rotate(90);
-			} else if(this.robot.checkRight()){
-				this.robot.pilot.rotate(-90);
-			}			
-		}		
+		
 		
 	}
 
