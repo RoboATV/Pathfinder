@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -30,6 +32,13 @@ public class LocatorTest {
 	@Test
 	public void correctMapCalculations() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		
+		
+		List<MapCalculationTestValue> testValues = new LinkedList<MapCalculationTestValue>();
+		
+		testValues.add(new MapCalculationTestValue(10, 10, 45, 14));
+		testValues.add(new MapCalculationTestValue(15, 15, 45, 21));
+		
+		
 		Class[] cArg = new Class[2];
         cArg[0] = Integer.TYPE;
         cArg[1] = Float.TYPE;
@@ -37,12 +46,11 @@ public class LocatorTest {
 		Method calculateMapPosition = locator.getClass().getDeclaredMethod("calculateMapPosition", cArg);
 		calculateMapPosition.setAccessible(true);
 		
-		
-		Coordinate expectedCor = new Coordinate(10, 10);
-		
-		Coordinate calculatedCor = (Coordinate) calculateMapPosition.invoke(locator, 45, 14);
-		assertEquals(expectedCor.X, calculatedCor.X);
-		assertEquals(expectedCor.Y, calculatedCor.Y);
+		for(MapCalculationTestValue testValue : testValues){		
+			Coordinate calculatedCor = (Coordinate) calculateMapPosition.invoke(locator, testValue.angle, testValue.distance);
+			assertEquals(testValue.expectedCoordinate.X, calculatedCor.X);
+			assertEquals(testValue.expectedCoordinate.Y, calculatedCor.Y);
+		}	
 	}
 	
 	
