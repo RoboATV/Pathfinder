@@ -26,10 +26,10 @@ public class Drive implements Behavior{
 	public void action() {
 		while(!suppressed){
 			locator.measureEnvironment();		
+			this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
 			Coordinate newPos = locator.getNextCoordinate();
 			this.relocateRobot(newPos);
-			this.robot.printArray(this.robot.mapToArray(this.locator.map));
-		}
+			}
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class Drive implements Behavior{
 	private void relocateRobot(Coordinate position){
 		if(locator.currentPos.X == position.X){
 			int travelY = position.Y - locator.currentPos.Y;
-			this.robot.pilot.travel(travelY);
+			this.robot.pilot.travel(travelY * 10);
 			this.locator.relocate(position);
 		}
 	}

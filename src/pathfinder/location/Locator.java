@@ -26,6 +26,7 @@ public class Locator {
 	
 	public Locator(IRobot robot){
 		this.robot = robot;
+		this.currentPos = new Coordinate(0, 0);
 		robotTrack = new ArrayList<Coordinate>();
 	}
 	
@@ -39,7 +40,7 @@ public class Locator {
 		
 		position.X += this.currentPos.X;
 		position.Y += this.currentPos.Y;
-		map.put(position, obstacle);		
+		this.map.put(position, obstacle);		
 		
 	}
 	
@@ -70,6 +71,7 @@ public class Locator {
 	
 	
 	private Coordinate measureSide(Direction direction){
+		
 		int i = 90 * direction.getNumerical();
 		int step = -5 * direction.getNumerical();
 		
@@ -77,7 +79,7 @@ public class Locator {
 		
 		robot.rotateTurnArm(i);
 		
-		while(i >= 0){		
+		while(i != 0){		
 			float sample = this.getDistance();
 			if(!Float.isInfinite(sample)){
 				Coordinate position = this.calculateMapPosition(i, sample);

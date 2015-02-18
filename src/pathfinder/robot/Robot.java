@@ -66,7 +66,7 @@ public class Robot implements IRobot{
 		this.ultraSonic1.close();
 	}
 
-	public Integer[][] mapToArray(Map<Coordinate, Obstacle> map){
+	public Integer[][] mapToArray(Map<Coordinate, Obstacle> map, Coordinate currentPosition){
 		
 		Integer largestX = 0;
 		Integer smallestX = 0;
@@ -99,20 +99,21 @@ public class Robot implements IRobot{
 		Integer sizeY = Math.abs(smallestY) + largestY;
 		robotY = Math.abs(smallestY);
 		
-		Integer[][] newMap = new Integer[sizeX + 1][sizeY + 1];
+		Integer[][] newMap = new Integer[sizeY + 1][sizeX + 1];
 		
 		
 		for(Entry<Coordinate, Obstacle> value : map.entrySet()){
 			Coordinate key = value.getKey();
+			Obstacle obstacle = value.getValue();
 			
 			Integer newX = key.X + Math.abs(smallestX);
 			Integer newY = key.Y + Math.abs(smallestY);
 			
-			newMap[newX][newY] = 1;
+			newMap[newY][newX] = obstacle.numericalValue();
 			
 		}	
 		
-		newMap[robotX][robotY] = 2;
+		newMap[robotY][robotX] = 2;
 		
 		
 		return newMap;
@@ -120,11 +121,11 @@ public class Robot implements IRobot{
 	
 	
 	public void printArray(Integer[][] array){
-		for(int i = 0; i < array.length; i++){
-			for(int j = 0; j < array[i].length; j++){
-				System.out.print("	" + array[i][j]);
+		for(int y = 0; y < array.length; y++){
+			for(int x = 0; x < array[y].length; x++){
+				System.out.print("	" + array[y][x]);
 			}
-			System.out.println();			
+		System.out.println();
 		}
 	}
 
