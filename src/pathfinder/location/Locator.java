@@ -117,7 +117,6 @@ public class Locator {
 	private Coordinate calculateMapPosition(int angleA, float distance){
 		
 		int angleB = 90 - angleA;
-		
 				
 		if(angleB != 90){
 			double gradient = Math.tan(Math.toRadians(angleB));			
@@ -125,6 +124,11 @@ public class Locator {
 			double divisor = Math.sqrt(Math.pow(gradient, 2) + 1);		
 			
 			double x = distance / divisor;
+			
+			if(angleA < 0){
+				x = -x;
+			}
+			
 			int rndX = (int) Math.round(x);
 			
 			double y = rndX * gradient;			

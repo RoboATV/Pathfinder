@@ -37,7 +37,8 @@ public class LocatorTest {
 		
 		testValues.add(new MapCalculationTestValue(10, 10, 45, 14));
 		testValues.add(new MapCalculationTestValue(15, 15, 45, 21));
-		
+		testValues.add(new MapCalculationTestValue(-10, 10, -45, 14));
+		testValues.add(new MapCalculationTestValue(-15, 15, -45, 21));
 		
 		Class[] cArg = new Class[2];
         cArg[0] = Integer.TYPE;
