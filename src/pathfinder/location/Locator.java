@@ -2,10 +2,12 @@ package pathfinder.location;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import pathfinder.map.Coordinate;
+import pathfinder.robot.Direction;
 import pathfinder.robot.Robot;
 
 public class Locator {
@@ -16,7 +18,8 @@ public class Locator {
 	
 	public Map<Coordinate, Integer> map = new HashMap<Coordinate, Integer>();
 	private Robot robot;
-	private Coordinate nextPos;
+	
+	private Coordinate nextCoordinate;
 	
 	
 	public Locator(Robot robot){
@@ -40,9 +43,37 @@ public class Locator {
 	
 	
 	public void measureEnvironment(){
-		int i = 90;
-			
-		robot.turnArm.rotate(90);
+		List<Coordinate> coordinates = new LinkedList<Coordinate>();
+		
+		coordinates.add(this.measureSide(Direction.RIGHT));
+		coordinates.add(this.measureSide(Direction.LEFT));
+		
+		this.nextCoordinate = this.getFarestCoordinate(coordinates);		
+	}
+	
+	
+	
+	private Coordinate getFarestCoordinate(List<Coordinate> coordinates){
+		
+		Coordinate farestCoordinate = coordinates.get(0);
+		coordinates.remove(0);
+		
+		for(Coordinate coordinate : coordinates){
+			if(coordinate.Y > farestCoordinate.Y){
+				farestCoordinate = coordinate;
+			}
+		}
+		return farestCoordinate;
+	}
+	
+	
+	private Coordinate measureSide(Direction direction){
+		int i = 90 * direction.getNumerical();
+		int step = -5 * direction.getNumerical();
+		
+		Coordinate farestPos = null;
+		
+		robot.turnArm.rotate(i);
 		
 		while(i >= 0){		
 			float sample = this.getDistance();
@@ -50,14 +81,13 @@ public class Locator {
 				Coordinate position = this.calculateMapPosition(i, sample);
 				System.out.println(position.toString());
 				enterNewPosition(position, 1);
-				nextPos = new Coordinate(currentPos.X, position.Y);
+				farestPos = new Coordinate(currentPos.X, position.Y);
 			}	
-			robot.turnArm.rotate(-5);
-			i -= 5;
-		}	
-		
+			robot.turnArm.rotate(step);
+			i += step;
+		}
+		return farestPos;
 	}
-	
 	
 	
 	
@@ -110,8 +140,9 @@ public class Locator {
 	}
 	
 	
-	
-	public Coordinate getNextPos(){
-		return this.nextPos;
+	public Coordinate getNextCoordinate(){
+		return this.nextCoordinate;
 	}
+	
+	
 }

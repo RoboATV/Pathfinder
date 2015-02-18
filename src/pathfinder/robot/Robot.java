@@ -1,6 +1,5 @@
 package pathfinder.robot;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -12,7 +11,6 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.DifferentialPilot;
-import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
 
 
@@ -23,16 +21,13 @@ public class Robot {
 	public RegulatedMotor rightDrive;
 	public RegulatedMotor turnArm;
 	
+	private EV3UltrasonicSensor ultraSonic1;
 	public SampleProvider distance;
 	
 	public DifferentialPilot pilot;
 	
 	private final double wheelDiameter = 56;
 	private final double trackWidth = 135;
-	
-	private final int leftSide = -90;
-	private final int rightSide = 90;
-	private final int backSide = 180;
 	
 	public final double obstacleDistance = 0.25;
 	
@@ -51,7 +46,7 @@ public class Robot {
 		
 //		initialize Sensors
 		Port port1 = LocalEV3.get().getPort("S1");
-		EV3UltrasonicSensor ultraSonic1 = new EV3UltrasonicSensor(port1);
+		this.ultraSonic1 = new EV3UltrasonicSensor(port1);
 		distance = ultraSonic1.getDistanceMode();
 		
 		
@@ -63,35 +58,10 @@ public class Robot {
 		
 				
 	}
-
 	
 	
-	public boolean checkLeft(){
-		turnArm.rotate(leftSide);
-		float[] sample = new float[distance.sampleSize()];
-		distance.fetchSample(sample, 0);
-		
-		turnArm.rotate(-leftSide);
-		return sample[0] > obstacleDistance;
-	}
-	
-	public boolean checkRight(){
-		turnArm.rotate(rightSide);
-		float[] sample = new float[distance.sampleSize()];
-		distance.fetchSample(sample, 0);
-		
-		turnArm.rotate(-rightSide);
-		return sample[0] > obstacleDistance;
-	}
-	
-	
-	public boolean checkBack(){
-		turnArm.rotate(backSide);
-		float[] sample = new float[distance.sampleSize()];
-		distance.fetchSample(sample, 0);
-		
-		turnArm.rotate(-backSide);
-		return sample[0] > obstacleDistance;
+	public void shutdown(){
+		this.ultraSonic1.close();
 	}
 
 	public Integer[][] mapToArray(Map<Coordinate, Integer> map){

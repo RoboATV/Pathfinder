@@ -3,6 +3,7 @@ package pathfinder;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
+import pathfinder.robot.Direction;
 import pathfinder.robot.Robot;
 
 public class Drive implements Behavior{
@@ -26,7 +27,7 @@ public class Drive implements Behavior{
 	public void action() {
 		while(!suppressed){
 			locator.measureEnvironment();		
-			Coordinate newPos = locator.getNextPos();
+			Coordinate newPos = locator.getNextCoordinate();
 			this.relocateRobot(newPos);
 			this.robot.printArray(this.robot.mapToArray(this.locator.map));
 		}
