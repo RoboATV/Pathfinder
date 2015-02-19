@@ -41,7 +41,7 @@ public class Drive implements Behavior{
 	private void relocateRobot(Coordinate position){
 		if(locator.currentPos.X == position.X){
 			int travelY = position.Y - locator.currentPos.Y;
-			this.robot.pilot.travel(travelY * 10);
+			this.robot.pilot.travel(travelY * 100);
 			this.locator.relocate(position);
 		}
 	}

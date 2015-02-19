@@ -74,8 +74,8 @@ public class Robot implements IRobot{
 		Integer largestY = 0;
 		Integer smallestY = 0;
 		
-		Integer robotX = 0;
-		Integer robotY = 0;
+		Integer robotX = currentPosition.X;
+		Integer robotY = currentPosition.Y;
 		
 		for(Entry<Coordinate, Obstacle> value : map.entrySet()){
 			Coordinate key = value.getKey();
@@ -94,10 +94,10 @@ public class Robot implements IRobot{
 		}
 		
 		Integer sizeX = Math.abs(smallestX) + largestX;
-		robotX = Math.abs(smallestX);
+		robotX += Math.abs(smallestX);
 		
 		Integer sizeY = Math.abs(smallestY) + largestY;
-		robotY = Math.abs(smallestY);
+//		robotY += Math.abs(smallestY);
 		
 		Integer[][] newMap = new Integer[sizeY + 1][sizeX + 1];
 		
@@ -123,7 +123,8 @@ public class Robot implements IRobot{
 	public void printArray(Integer[][] array){
 		for(int y = 0; y < array.length; y++){
 			for(int x = 0; x < array[y].length; x++){
-				System.out.print("	" + array[y][x]);
+				if(array[y][x] == null) System.out.print(" 0 ");
+				else System.out.print(" " + array[y][x] + " ");
 			}
 		System.out.println();
 		}

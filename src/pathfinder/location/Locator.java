@@ -32,6 +32,8 @@ public class Locator {
 	
 	
 	public void relocate(Coordinate destination){
+		System.out.println("relocate to " + destination);
+		robotTrack.add(this.currentPos);
 		this.currentPos = destination;
 	}
 	
@@ -61,11 +63,13 @@ public class Locator {
 		Coordinate farestCoordinate = coordinates.get(0);
 		coordinates.remove(0);
 		
-		for(Coordinate coordinate : coordinates){
-			if(coordinate.Y > farestCoordinate.Y){
-				farestCoordinate = coordinate;
+		if(!coordinates.isEmpty()){
+			for(Coordinate coordinate : coordinates){
+				if(coordinate.Y > farestCoordinate.Y){
+					farestCoordinate = coordinate;
+				}
 			}
-		}
+		}	
 		return farestCoordinate;
 	}
 	
@@ -75,7 +79,7 @@ public class Locator {
 		int i = 90 * direction.getNumerical();
 		int step = -5 * direction.getNumerical();
 		
-		Coordinate farestPos = null;
+		Coordinate farestPos = new Coordinate(0, 0);
 		
 		robot.rotateTurnArm(i);
 		
@@ -110,7 +114,7 @@ public class Locator {
 			}
 		}
 		
-		oldSample = oldSample * 100;
+		oldSample = oldSample * 10;
 		
 		return oldSample;
 	}
