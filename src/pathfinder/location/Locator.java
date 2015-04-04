@@ -8,7 +8,8 @@ import java.util.Map;
 
 import lejos.robotics.SampleProvider;
 import pathfinder.map.Coordinate;
-import pathfinder.obstacle.Obstacle;
+import pathfinder.map.MapObject;
+import pathfinder.map.obstacle.LargeObstacle;
 import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
 
@@ -18,7 +19,7 @@ public class Locator {
 	public List<Coordinate> robotTrack;
 	public Coordinate currentPos;
 	
-	public Map<Coordinate, Obstacle> map = new HashMap<Coordinate, Obstacle>();
+	public Map<Coordinate, MapObject> map = new HashMap<Coordinate, MapObject>();
 	private IRobot robot;
 	
 	private Coordinate nextCoordinate;
@@ -38,11 +39,11 @@ public class Locator {
 	}
 	
 	
-	public void enterNewPosition(Coordinate position, Obstacle obstacle){
+	public void enterNewPosition(Coordinate position, MapObject object){
 		
 		position.X += this.currentPos.X;
 		position.Y += this.currentPos.Y;
-		this.map.put(position, obstacle);		
+		this.map.put(position, object);		
 		
 	}
 	
@@ -88,7 +89,7 @@ public class Locator {
 			if(!Float.isInfinite(sample)){
 				Coordinate position = this.calculateMapPosition(i, sample);
 				System.out.println(position.toString());
-				enterNewPosition(position, Obstacle.HIGH);
+				enterNewPosition(position, new LargeObstacle());
 				farestPos = new Coordinate(currentPos.X, position.Y);
 			}	
 			robot.rotateTurnArm(step);

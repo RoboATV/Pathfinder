@@ -12,7 +12,7 @@ import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import pathfinder.map.Coordinate;
-import pathfinder.obstacle.Obstacle;
+import pathfinder.map.MapObject;
 
 
 
@@ -66,7 +66,7 @@ public class Robot implements IRobot{
 		this.ultraSonic1.close();
 	}
 
-	public Integer[][] mapToArray(Map<Coordinate, Obstacle> map, Coordinate currentPosition){
+	public Integer[][] mapToArray(Map<Coordinate, MapObject> map, Coordinate currentPosition){
 		
 		Integer largestX = 0;
 		Integer smallestX = 0;
@@ -77,7 +77,7 @@ public class Robot implements IRobot{
 		Integer robotX = currentPosition.X;
 		Integer robotY = currentPosition.Y;
 		
-		for(Entry<Coordinate, Obstacle> value : map.entrySet()){
+		for(Entry<Coordinate, MapObject> value : map.entrySet()){
 			Coordinate key = value.getKey();
 			if(key.X > largestX){
 				largestX = key.X;
@@ -102,14 +102,14 @@ public class Robot implements IRobot{
 		Integer[][] newMap = new Integer[sizeY + 1][sizeX + 1];
 		
 		
-		for(Entry<Coordinate, Obstacle> value : map.entrySet()){
+		for(Entry<Coordinate, MapObject> value : map.entrySet()){
 			Coordinate key = value.getKey();
-			Obstacle obstacle = value.getValue();
+			MapObject object = value.getValue();
 			
 			Integer newX = key.X + Math.abs(smallestX);
 			Integer newY = key.Y + Math.abs(smallestY);
 			
-			newMap[newY][newX] = obstacle.numericalValue();
+			newMap[newY][newX] = object.numericalValue();
 			
 		}	
 		
