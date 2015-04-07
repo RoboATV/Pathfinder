@@ -129,7 +129,7 @@ public class Locator {
 		}
 		if(this.robot.getOrientation() == Orientation.SOUTH){
 			coordinate.Y = (coordinate.Y + currentPos.Y) * -1;
-			coordinate.X += this.currentPos.X;
+			coordinate.X -= this.currentPos.X;
 			return coordinate;
 		}
 		if(this.robot.getOrientation() == Orientation.EAST){
