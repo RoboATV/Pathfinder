@@ -32,6 +32,7 @@ public class Robot implements IRobot{
 	
 	public final double obstacleDistance = 0.25;
 	
+	private Orientation orientation;	
 	
 	
 	
@@ -141,6 +142,13 @@ public class Robot implements IRobot{
 	@Override
 	public SampleProvider getDistanceProvider() {
 		return this.distance;
+	}
+
+
+	@Override
+	public void rotate(int degrees) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

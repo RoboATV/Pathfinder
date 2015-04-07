@@ -18,6 +18,12 @@ public class TestRobot implements IRobot{
 	public SampleProvider getDistanceProvider() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void rotate(int degrees) {
+		// TODO Auto-generated method stub
+		
 	}	
 	
 	
