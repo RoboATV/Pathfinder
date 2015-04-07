@@ -18,19 +18,18 @@ import pathfinder.map.MapObject;
 
 public class Robot implements IRobot{
 	
-	public RegulatedMotor leftDrive;
-	public RegulatedMotor rightDrive;
-	public RegulatedMotor turnArm;
+	private RegulatedMotor leftDrive;
+	private RegulatedMotor rightDrive;
+	private RegulatedMotor turnArm;
 	
 	private EV3UltrasonicSensor ultraSonic1;
-	public SampleProvider distance;
+	private SampleProvider distance;
 	
-	public DifferentialPilot pilot;
+	private DifferentialPilot pilot;
 	
 	private final double wheelDiameter = 56;
 	private final double trackWidth = 135;
-	
-	public final double obstacleDistance = 0.25;
+	private final double travelRatio = 100;
 	
 	private Orientation orientation;	
 	
@@ -158,6 +157,13 @@ public class Robot implements IRobot{
 	@Override
 	public Orientation getOrientation() {
 		return this.orientation;
+	}
+
+
+	@Override
+	public void travel(double distance) {
+		this.pilot.travel(distance * this.travelRatio);
+		
 	}
 	
 	

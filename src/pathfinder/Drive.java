@@ -3,6 +3,7 @@ package pathfinder;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
+import pathfinder.robot.Orientation;
 import pathfinder.robot.Robot;
 
 public class Drive implements Behavior{
@@ -26,7 +27,7 @@ public class Drive implements Behavior{
 	public void action() {
 		while(!suppressed){
 			locator.measureEnvironment();		
-			this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
+			//this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
 			Coordinate newPos = locator.getNextCoordinate();
 			this.relocateRobot(newPos);
 			}
@@ -38,12 +39,33 @@ public class Drive implements Behavior{
 	}
 
 	
+	
+	
 	private void relocateRobot(Coordinate position){
-		if(locator.currentPos.X == position.X){
-			int travelY = position.Y - locator.currentPos.Y;
-			this.robot.pilot.travel(travelY * 100);
-			this.locator.relocate(position);
+		int distanceX = position.X - locator.currentPos.X;
+		int distanceY = position.Y - locator.currentPos.Y;
+		
+		if(this.robot.getOrientation() == Orientation.NORTH){
+			if(distanceY != 0){
+				robot.travel(distanceY);
+			} 
+			if(distanceX > 0){
+				robot.rotate(90);
+				robot.travel(distanceX);
+				robot.rotate(-90);
+			} else if(distanceX < 0){
+				robot.rotate(-90);
+				robot.travel(distanceX);
+				robot.rotate(90);
+			}			
+		} else if(this.robot.getOrientation() == Orientation.EAST){
+			
+		} else if(this.robot.getOrientation() == Orientation.SOUTH){
+			
+		} else if(this.robot.getOrientation() == Orientation.WEST){
+			
 		}
-	}
+		
+	}	
 		
 }	
