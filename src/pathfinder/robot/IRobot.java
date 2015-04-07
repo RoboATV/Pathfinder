@@ -9,5 +9,7 @@ public interface IRobot {
 	
 	public void rotate(int degrees);
 	
+	public Orientation getOrientation();
+	
 	
 }

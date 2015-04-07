@@ -59,6 +59,9 @@ public class Robot implements IRobot{
 		pilot.setTravelSpeed(120);
 		pilot.setRotateSpeed(60);
 		
+		
+		this.orientation = Orientation.NORTH;
+		
 				
 	}
 	
@@ -149,6 +152,12 @@ public class Robot implements IRobot{
 	public void rotate(int degrees) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public Orientation getOrientation() {
+		return this.orientation;
 	}
 	
 	

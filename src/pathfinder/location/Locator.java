@@ -12,6 +12,7 @@ import pathfinder.map.MapObject;
 import pathfinder.map.obstacle.LargeObstacle;
 import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
+import pathfinder.robot.Orientation;
 
 public class Locator {
 
@@ -41,8 +42,6 @@ public class Locator {
 	
 	public void enterNewPosition(Coordinate position, MapObject object){
 		
-		position.X += this.currentPos.X;
-		position.Y += this.currentPos.Y;
 		this.map.put(position, object);		
 		
 	}
@@ -121,6 +120,32 @@ public class Locator {
 	}
 	
 	
+	private Coordinate invokePosition(Coordinate coordinate){
+		
+		if(this.robot.getOrientation() == Orientation.NORTH){
+			coordinate.X += this.currentPos.X;
+			coordinate.Y += this.currentPos.Y;
+			return coordinate;
+		}
+		if(this.robot.getOrientation() == Orientation.SOUTH){
+			coordinate.Y = (coordinate.Y + currentPos.Y) * -1;
+			coordinate.X += this.currentPos.X;
+			return coordinate;
+		}
+		if(this.robot.getOrientation() == Orientation.EAST){
+			coordinate.X = currentPos.X + coordinate.Y;
+			coordinate.Y = currentPos.Y - coordinate.X;
+			return coordinate;
+		}
+		
+		coordinate.X = currentPos.X - coordinate.Y;
+		coordinate.Y = currentPos.Y + coordinate.X;
+		
+		
+		return coordinate;
+	}
+	
+	
 	
 	private Coordinate calculateMapPosition(int angleA, float distance){
 		
@@ -142,12 +167,14 @@ public class Locator {
 			double y = rndX * gradient;			
 			int rndY = (int) Math.round(y);
 			
-			return new Coordinate(rndX, rndY);
-			
+			Coordinate coordinate = new Coordinate(rndX, rndY);
+			 		
+			return invokePosition(coordinate); 
 		}
 		
-		return new Coordinate(0, (int) distance);
+		Coordinate coordinate = new Coordinate(0, (int) distance);
 		
+		return invokePosition(coordinate);
 	}
 	
 	
