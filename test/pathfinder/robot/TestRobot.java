@@ -3,10 +3,11 @@ package pathfinder.robot;
 import java.util.Queue;
 
 
-public class TestRobot implements IRobot, ITestRobot{
+public class TestRobot implements ITestRobot{
 	
 	private Orientation orientation;
 	private Queue<Float> distances;
+	private Queue<Float> headings;
 
 	public TestRobot(){
 		orientation = Orientation.NORTH;
@@ -56,6 +57,22 @@ public class TestRobot implements IRobot, ITestRobot{
 	@Override
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
+	}
+
+	@Override
+	public void setHeadings(Queue<Float> headings) {
+		this.headings = headings;
+		
+	}
+
+	@Override
+	public float getHeading() {
+		if(headings.isEmpty()){
+			return -1;
+		}
+		float heading = headings.remove();
+		
+		return heading;
 	}	
 	
 	

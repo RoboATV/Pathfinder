@@ -12,14 +12,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pathfinder.map.Coordinate;
-import pathfinder.robot.IRobot;
+import pathfinder.robot.ITestRobot;
+import pathfinder.robot.Orientation;
 import pathfinder.robot.TestRobot;
 
 public class LocatorTest {
 
 
 	private Locator locator;
-	private IRobot robot;
+	private ITestRobot robot;
 
 
 	@Before
@@ -30,8 +31,9 @@ public class LocatorTest {
 	
 	
 	@Test
-	public void correctMapCalculations() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void correctMapCalculationsNorth() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		
+		this.robot.setOrientation(Orientation.NORTH);
 		
 		List<MapCalculationTestValue> testValues = new LinkedList<MapCalculationTestValue>();
 		
@@ -39,6 +41,87 @@ public class LocatorTest {
 		testValues.add(new MapCalculationTestValue(15, 15, 45, 21));
 		testValues.add(new MapCalculationTestValue(-10, 10, -45, 14));
 		testValues.add(new MapCalculationTestValue(-15, 15, -45, 21));
+		
+		Class[] cArg = new Class[2];
+        cArg[0] = Integer.TYPE;
+        cArg[1] = Float.TYPE;
+        	
+		Method calculateMapPosition = locator.getClass().getDeclaredMethod("calculateMapPosition", cArg);
+		calculateMapPosition.setAccessible(true);
+		
+		for(MapCalculationTestValue testValue : testValues){		
+			Coordinate calculatedCor = (Coordinate) calculateMapPosition.invoke(locator, testValue.angle, testValue.distance);
+			assertEquals(testValue.expectedCoordinate.X, calculatedCor.X);
+			assertEquals(testValue.expectedCoordinate.Y, calculatedCor.Y);
+		}	
+	}
+	
+	
+	@Test
+	public void correctMapCalculationsSouth() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		
+		this.robot.setOrientation(Orientation.SOUTH);
+		
+		List<MapCalculationTestValue> testValues = new LinkedList<MapCalculationTestValue>();
+		
+		testValues.add(new MapCalculationTestValue(-10, -10, 45, 14));
+		testValues.add(new MapCalculationTestValue(-15, -15, 45, 21));
+		testValues.add(new MapCalculationTestValue(10, -10, -45, 14));
+		testValues.add(new MapCalculationTestValue(15, -15, -45, 21));
+		
+		Class[] cArg = new Class[2];
+        cArg[0] = Integer.TYPE;
+        cArg[1] = Float.TYPE;
+        	
+		Method calculateMapPosition = locator.getClass().getDeclaredMethod("calculateMapPosition", cArg);
+		calculateMapPosition.setAccessible(true);
+		
+		for(MapCalculationTestValue testValue : testValues){		
+			Coordinate calculatedCor = (Coordinate) calculateMapPosition.invoke(locator, testValue.angle, testValue.distance);
+			assertEquals(testValue.expectedCoordinate.X, calculatedCor.X);
+			assertEquals(testValue.expectedCoordinate.Y, calculatedCor.Y);
+		}	
+	}
+	
+	
+	@Test
+	public void correctMapCalculationsEast() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		
+		this.robot.setOrientation(Orientation.EAST);
+		
+		List<MapCalculationTestValue> testValues = new LinkedList<MapCalculationTestValue>();
+//		
+		testValues.add(new MapCalculationTestValue(10, -10, 45, 14));
+		testValues.add(new MapCalculationTestValue(15, -15, 45, 21));
+		testValues.add(new MapCalculationTestValue(10, 10, -45, 14));
+		testValues.add(new MapCalculationTestValue(15, 15, -45, 21));
+		
+		Class[] cArg = new Class[2];
+        cArg[0] = Integer.TYPE;
+        cArg[1] = Float.TYPE;
+        	
+		Method calculateMapPosition = locator.getClass().getDeclaredMethod("calculateMapPosition", cArg);
+		calculateMapPosition.setAccessible(true);
+		
+		for(MapCalculationTestValue testValue : testValues){		
+			Coordinate calculatedCor = (Coordinate) calculateMapPosition.invoke(locator, testValue.angle, testValue.distance);
+			assertEquals(testValue.expectedCoordinate.X, calculatedCor.X);
+			assertEquals(testValue.expectedCoordinate.Y, calculatedCor.Y);
+		}	
+	}
+	
+	
+	@Test
+	public void correctMapCalculationsWest() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		
+		this.robot.setOrientation(Orientation.WEST);
+		
+		List<MapCalculationTestValue> testValues = new LinkedList<MapCalculationTestValue>();
+		
+		testValues.add(new MapCalculationTestValue(-10, 10, 45, 14));
+		testValues.add(new MapCalculationTestValue(-15, 15, 45, 21));
+		testValues.add(new MapCalculationTestValue(-10, -10, -45, 14));
+		testValues.add(new MapCalculationTestValue(-15, -15, -45, 21));
 		
 		Class[] cArg = new Class[2];
         cArg[0] = Integer.TYPE;

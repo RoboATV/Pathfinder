@@ -129,17 +129,20 @@ public class Locator {
 			coordinate.X = this.currentPos.X - coordinate.X;
 			return coordinate;
 		}
-		if(this.robot.getOrientation() == Orientation.EAST){
-			coordinate.X = currentPos.X + coordinate.Y;
-			coordinate.Y = currentPos.Y - coordinate.X;
-			return coordinate;
+		if(this.robot.getOrientation() == Orientation.EAST){		
+			Coordinate newCoordinate = new Coordinate();			
+			newCoordinate.X = currentPos.X + coordinate.Y;
+			newCoordinate.Y = currentPos.Y - coordinate.X;			
+			
+			return newCoordinate;
 		}
 		
-		coordinate.X = currentPos.X - coordinate.Y;
-		coordinate.Y = currentPos.Y + coordinate.X;
+		Coordinate newCoordinate = new Coordinate();		
+		newCoordinate.X = currentPos.X - coordinate.Y;
+		newCoordinate.Y = currentPos.Y + coordinate.X;
 		
 		
-		return coordinate;
+		return newCoordinate;
 	}
 	
 	

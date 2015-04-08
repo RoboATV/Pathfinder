@@ -17,6 +17,7 @@ public interface IRobot {
 	//sensors
 	public float getDistance(); 
 	
+	public float getHeading();
 	
 	
 }

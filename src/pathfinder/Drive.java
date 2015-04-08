@@ -5,6 +5,7 @@ import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
 import pathfinder.robot.Orientation;
 import pathfinder.robot.Robot;
+import pathfinder.robot.TurnNotPossible;
 
 public class Drive implements Behavior{
 	
@@ -29,7 +30,11 @@ public class Drive implements Behavior{
 			locator.measureEnvironment();		
 			//this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
 			Coordinate newPos = locator.getNextCoordinate();
-			this.relocateRobot(newPos);
+			try {
+				this.relocateRobot(newPos);
+			} catch (TurnNotPossible e) {				
+				e.printStackTrace();
+			}
 			}
 	}
 
@@ -41,7 +46,7 @@ public class Drive implements Behavior{
 	
 	
 	
-	private void relocateRobot(Coordinate position){
+	private void relocateRobot(Coordinate position) throws TurnNotPossible{
 		int distanceX = position.X - locator.currentPos.X;
 		int distanceY = position.Y - locator.currentPos.Y;
 		

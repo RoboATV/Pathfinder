@@ -8,13 +8,12 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.MindsensorsCompass;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import pathfinder.map.Coordinate;
 import pathfinder.map.MapObject;
-
-
 
 public class Robot implements IRobot{
 	
@@ -24,6 +23,9 @@ public class Robot implements IRobot{
 	
 	private EV3UltrasonicSensor ultraSonic1;
 	private SampleProvider distance;
+	
+	private MindsensorsCompass compassSensor;
+	private SampleProvider compass;
 	
 	private DifferentialPilot pilot;
 	
@@ -51,6 +53,9 @@ public class Robot implements IRobot{
 		this.ultraSonic1 = new EV3UltrasonicSensor(port1);
 		distance = ultraSonic1.getDistanceMode();
 		
+		Port port2 = LocalEV3.get().getPort("S2");
+		this.compassSensor = new MindsensorsCompass(port2);
+		compass = compassSensor.getCompassMode();		
 		
 		
 //		initialize pilot
@@ -150,6 +155,8 @@ public class Robot implements IRobot{
 			throw new TurnNotPossible(degrees);
 		}		
 		
+		
+		pilot.rotate(degrees);
 	}
 
 
@@ -178,6 +185,15 @@ public class Robot implements IRobot{
 	@Override
 	public void stop() {
 		pilot.stop();
+	}
+
+
+	@Override
+	public float getHeading() {
+		float[] sample = new float[compass.sampleSize()];
+		compass.fetchSample(sample, 0);
+	
+		return sample[0];
 	}
 	
 	
