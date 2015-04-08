@@ -16,7 +16,7 @@ public class NoOrientationToAngle extends Exception {
 	
 	
 	public String toString(){
-		return "no orientation found for such angle" + angle;
+		return "no orientation found for such angle " + angle;
 	}
 	
 	

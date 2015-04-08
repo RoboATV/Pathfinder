@@ -33,13 +33,13 @@ public enum Orientation implements IOrientation{
 		
 	};
 
-	public Orientation getOrientation(int angle) throws NoOrientationToAngle{
+	public static Orientation getOrientation(int angle) throws NoOrientationToAngle{
 		for(Orientation orientation : Orientation.values()){
 			if(orientation.getAngle() == angle){
 				return orientation;
 			}
 		}
-		throw new NoOrientationToAngle();
+		throw new NoOrientationToAngle(angle);
 	}
 	
 }
