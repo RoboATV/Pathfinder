@@ -2,7 +2,7 @@ package pathfinder.robot;
 
 public interface IOrientation {
 
-	int getAngle();
-	
+	public int getAngle();
+	public Orientation getOrientation(int angle) throws NoOrientationToAngle;
 	
 }
