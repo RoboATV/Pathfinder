@@ -142,8 +142,13 @@ public class Robot implements IRobot{
 
 
 	@Override
-	public void rotate(int degrees) {
-		// TODO Auto-generated method stub
+	public void rotate(int degrees) throws TurnNotPossible{
+		int newAngle = orientation.getAngle() + degrees;
+		try {
+			this.orientation = Orientation.getOrientation(newAngle);
+		} catch (NoOrientationToAngle e) {
+			throw new TurnNotPossible(degrees);
+		}		
 		
 	}
 
