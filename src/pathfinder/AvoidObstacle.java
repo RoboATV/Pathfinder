@@ -1,7 +1,8 @@
 package pathfinder;
 
-import pathfinder.robot.Robot;
 import lejos.robotics.subsumption.Behavior;
+import pathfinder.configuration.Configuration;
+import pathfinder.robot.Robot;
 
 public class AvoidObstacle implements Behavior{
 
@@ -14,19 +15,15 @@ public class AvoidObstacle implements Behavior{
 	
 	
 	@Override
-	public boolean takeControl() {
-		
-		float[] sample = new float[this.robot.distance.sampleSize()];
-		this.robot.distance.fetchSample(sample, 0);
-		
-		return sample[0] < this.robot.obstacleDistance;
+	public boolean takeControl() {		
+		return robot.getDistance() < Configuration.WALLDISTANCE;
 	}
 
 	@Override
 	public void action() {
-		this.robot.pilot.stop();
-		
-		
+		if(!suppressed){
+			this.robot.stop();		
+		}	
 	}
 
 	@Override

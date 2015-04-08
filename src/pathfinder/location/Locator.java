@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import lejos.robotics.SampleProvider;
 import pathfinder.map.Coordinate;
 import pathfinder.map.MapObject;
 import pathfinder.map.obstacle.LargeObstacle;
@@ -100,17 +99,15 @@ public class Locator {
 	
 	
 	private float getDistance(){
-		SampleProvider distance = robot.getDistanceProvider();
-		float[] sample = new float[distance.sampleSize()];
 		
-		distance.fetchSample(sample, 0);
-		float oldSample = sample[0];
+		float sample = robot.getDistance();
 		
+		float oldSample = sample;		
 		
 		for(int i = 0; i < 5; i++){
-			distance.fetchSample(sample, 0);
-			if(sample[0] < oldSample){
-				oldSample = sample[0];
+			sample = robot.getDistance();
+			if(sample < oldSample){
+				oldSample = sample;
 			}
 		}
 		

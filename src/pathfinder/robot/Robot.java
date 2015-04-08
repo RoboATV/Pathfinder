@@ -142,12 +142,6 @@ public class Robot implements IRobot{
 
 
 	@Override
-	public SampleProvider getDistanceProvider() {
-		return this.distance;
-	}
-
-
-	@Override
 	public void rotate(int degrees) {
 		// TODO Auto-generated method stub
 		
@@ -164,6 +158,21 @@ public class Robot implements IRobot{
 	public void travel(double distance) {
 		this.pilot.travel(distance * this.travelRatio);
 		
+	}
+
+
+	@Override
+	public float getDistance() {
+		float[] sample = new float[distance.sampleSize()];
+		distance.fetchSample(sample, 0);
+		
+		return sample[0];
+	}
+
+
+	@Override
+	public void stop() {
+		pilot.stop();
 	}
 	
 	

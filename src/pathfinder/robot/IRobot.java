@@ -1,6 +1,5 @@
 package pathfinder.robot;
 
-import lejos.robotics.SampleProvider;
 
 public interface IRobot {
 
@@ -8,11 +7,15 @@ public interface IRobot {
 	public void rotateTurnArm(int degrees);
 	public void rotate(int degrees);
 	public void travel(double distance);
+	public void stop();
+	
+	
+	//position
 	public Orientation getOrientation();
 	
 	
 	//sensors
-	public SampleProvider getDistanceProvider();
+	public float getDistance(); 
 	
 	
 	
