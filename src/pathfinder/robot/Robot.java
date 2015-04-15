@@ -33,7 +33,8 @@ public class Robot implements IRobot{
 	private final double trackWidth = 135;
 	private final double travelRatio = 100;
 	
-	private Orientation orientation;	
+	private Orientation orientation;
+	private Direction turnDirection;	
 	
 	
 	
@@ -195,7 +196,17 @@ public class Robot implements IRobot{
 	
 		return sample[0];
 	}
+
+
+	@Override
+	public Direction getTurnDirection() {
+		return this.turnDirection;
+	}
 	
 	
+	@Override
+	public void setTurnDirection(Direction turnDirection){
+		this.turnDirection = turnDirection;
+	}
 	
 }

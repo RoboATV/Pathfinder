@@ -8,6 +8,7 @@ public class TestRobot implements ITestRobot{
 	private Orientation orientation;
 	private Queue<Float> distances;
 	private Queue<Float> headings;
+	private Direction turnDirection;
 
 	public TestRobot(){
 		orientation = Orientation.NORTH;
@@ -73,8 +74,17 @@ public class TestRobot implements ITestRobot{
 		float heading = headings.remove();
 		
 		return heading;
+	}
+
+	@Override
+	public Direction getTurnDirection() {
+		return this.turnDirection;
 	}	
 	
+	@Override
+	public void setTurnDirection(Direction turnDirection){
+		this.turnDirection = turnDirection;
+	}
 	
 	
 	
