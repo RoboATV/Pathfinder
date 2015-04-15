@@ -49,6 +49,23 @@ public class AvoidObstacleTest {
 	}
 	
 	
+	@Test
+	public void correctExpectationCalculation() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+		 assertEquals(Configuration.WALLDISTANCE, 20, 0);
+		 assertEquals(Configuration.OBSTACLE_SIZE, 40, 0);
+		 assertEquals(Configuration.OBSTACLE_OFFSET, 5, 0);		 
+		 
+		 Method calculateExpectation = avoidObstacle.getClass().getDeclaredMethod("calculateExpectation");
+		 calculateExpectation.setAccessible(true);
+		    
+		 double angle = (double) calculateExpectation.invoke(avoidObstacle);
+		   
+		 
+		 assertEquals(angle, 32, 0.05);
+		 
+		 
+	}
+	
 	
 	
 }
