@@ -13,7 +13,7 @@ public class Main {
 		Locator locator = new Locator(robot);
 		
 		Behavior drive = new Drive(robot, locator);
-		Behavior avoidObstacle = new AvoidObstacle(robot);
+		Behavior avoidObstacle = new AvoidObstacle(robot, locator);
 		
 		Behavior[] behaviors = new Behavior[1];
 		behaviors[0] = drive;
