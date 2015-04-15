@@ -7,17 +7,18 @@ import lejos.robotics.subsumption.Behavior;
 import pathfinder.configuration.Configuration;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
+import pathfinder.robot.IRobot;
 import pathfinder.robot.Robot;
 
 import com.google.common.collect.Range;
 
 public class AvoidObstacle implements Behavior{
 
-	private Robot robot;
+	private IRobot robot;
 	private boolean suppressed = false;
 	private Locator locator;
 	
-	public AvoidObstacle(Robot robot, Locator locator){
+	public AvoidObstacle(IRobot robot, Locator locator){
 		this.robot = robot;
 		this.locator = locator;
 	}
@@ -32,6 +33,11 @@ public class AvoidObstacle implements Behavior{
 	public void action() {
 		if(!suppressed){
 			this.robot.stop();		
+			if(this.detectWall(this.measureObstacle())){
+				this.turnRobot();
+			} else {
+				this.avoidObstacle();
+			}
 		}	
 	}
 
@@ -45,9 +51,10 @@ public class AvoidObstacle implements Behavior{
 		float g = (Configuration.OBSTACLE_SIZE / 2) + Configuration.OBSTACLE_OFFSET;
 		float a = Configuration.WALLDISTANCE;
 		
-		float divAG = a /g;
+		float divAG = g / a ;		
 		
-		int sensorAngle =  (int) Math.round(Math.atan(divAG));
+		int sensorAngle = (int) Math.toDegrees(Math.atan(divAG));
+		
 		
 		return sensorAngle;
 	}
