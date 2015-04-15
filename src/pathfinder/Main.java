@@ -24,7 +24,7 @@ public class Main {
 		
 		
 		try {
-			initialOrientation.alignRobot();
+			robot.setTurnDirection(initialOrientation.alignRobot());
 		} catch (TurnNotPossible e) {
 			System.out.println(e.toString());
 		}
