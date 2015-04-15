@@ -1,4 +1,4 @@
-package pathfinder.robot;
+package pathfinder.orientation;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -6,6 +6,9 @@ import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import pathfinder.orientation.NoOrientationToAngle;
+import pathfinder.orientation.Orientation;
 
 public class OrientationTest {
 

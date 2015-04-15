@@ -5,13 +5,15 @@ import org.junit.runners.Suite;
 
 import pathfinder.AvoidObstacleTest;
 import pathfinder.location.LocatorTest;
-import pathfinder.robot.OrientationTest;
+import pathfinder.orientation.InitialOrientationTest;
+import pathfinder.orientation.OrientationTest;
 
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	LocatorTest.class,
 	OrientationTest.class,
+	InitialOrientationTest.class,
 	AvoidObstacleTest.class
 })
 

@@ -9,9 +9,9 @@ import java.util.Map;
 import pathfinder.map.Coordinate;
 import pathfinder.map.MapObject;
 import pathfinder.map.obstacle.LargeObstacle;
+import pathfinder.orientation.Orientation;
 import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
-import pathfinder.robot.Orientation;
 
 public class Locator {
 

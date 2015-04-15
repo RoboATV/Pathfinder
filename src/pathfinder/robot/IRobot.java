@@ -1,5 +1,8 @@
 package pathfinder.robot;
 
+import pathfinder.orientation.Orientation;
+import pathfinder.orientation.TurnNotPossible;
+
 
 public interface IRobot {
 

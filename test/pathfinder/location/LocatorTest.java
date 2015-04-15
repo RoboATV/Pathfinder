@@ -12,8 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import pathfinder.map.Coordinate;
+import pathfinder.orientation.Orientation;
 import pathfinder.robot.ITestRobot;
-import pathfinder.robot.Orientation;
 import pathfinder.robot.TestRobot;
 
 public class LocatorTest {

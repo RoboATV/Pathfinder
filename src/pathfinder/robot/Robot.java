@@ -14,6 +14,9 @@ import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import pathfinder.map.Coordinate;
 import pathfinder.map.MapObject;
+import pathfinder.orientation.NoOrientationToAngle;
+import pathfinder.orientation.Orientation;
+import pathfinder.orientation.TurnNotPossible;
 
 public class Robot implements IRobot{
 	

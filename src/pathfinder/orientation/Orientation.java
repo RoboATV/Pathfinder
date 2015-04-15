@@ -1,4 +1,4 @@
-package pathfinder.robot;
+package pathfinder.orientation;
 
 public enum Orientation implements IOrientation{
 

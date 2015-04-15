@@ -1,4 +1,4 @@
-package pathfinder.robot;
+package pathfinder.orientation;
 
 public class NoOrientationToAngle extends Exception {
 

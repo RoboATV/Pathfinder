@@ -3,9 +3,9 @@ package pathfinder;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
-import pathfinder.robot.Orientation;
+import pathfinder.orientation.Orientation;
+import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Robot;
-import pathfinder.robot.TurnNotPossible;
 
 public class Drive implements Behavior{
 	
