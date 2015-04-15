@@ -13,5 +13,7 @@ public class Configuration {
 	
 	public final static Direction INITIAL_DIRECTION = Direction.RIGHT;
 	
+	public final static int GRID_SIZE = 40;
+	
 	
 }
