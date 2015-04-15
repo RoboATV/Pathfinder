@@ -147,7 +147,7 @@ public class Locator {
 	
 	
 	
-	private Coordinate calculateMapPosition(int angleA, float distance){
+	public Coordinate calculateMapPosition(int angleA, float distance){
 		
 		int angleB = 90 - angleA;
 				
