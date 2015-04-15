@@ -7,8 +7,8 @@ import lejos.robotics.subsumption.Behavior;
 import pathfinder.configuration.Configuration;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
+import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.IRobot;
-import pathfinder.robot.Robot;
 
 import com.google.common.collect.Range;
 
@@ -34,7 +34,11 @@ public class AvoidObstacle implements Behavior{
 		if(!suppressed){
 			this.robot.stop();		
 			if(this.detectWall(this.measureObstacle())){
-				this.turnRobot();
+				try {
+					this.turnRobot();
+				} catch (TurnNotPossible e) {
+					System.out.println(e.toString());
+				}
 			} else {
 				this.avoidObstacle();
 			}
@@ -98,8 +102,10 @@ public class AvoidObstacle implements Behavior{
 	}
 	
 	
-	private void turnRobot(){
-		//TODO
+	private void turnRobot() throws TurnNotPossible{
+		robot.rotate(robot.getTurnDirection().getTurnAngle());
+		robot.travel(Configuration.GRID_SIZE);
+		robot.rotate(robot.getTurnDirection().getTurnAngle());
 	}
 	
 	
