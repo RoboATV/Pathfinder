@@ -2,10 +2,12 @@ package pathfinder;
 
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -63,7 +65,33 @@ public class AvoidObstacleTest {
 		 
 		 assertEquals(angle, 32, 0.05);
 		 
+	}
+	
+	
+	@Test
+	public void correctWallDetection() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+		 assertEquals(Configuration.WALLDISTANCE, 20, 0);
+		 assertEquals(Configuration.OBSTACLE_SIZE, 40, 0);
+		 assertEquals(Configuration.OBSTACLE_OFFSET, 5, 0);	
+		 		 
+		 List<Double> distances = new ArrayList<Double>();
+		 distances.add(32.0);
+		 distances.add(31.0);
 		 
+		 Class[] cArg = new Class[1];
+	     cArg[0] = List.class;   
+	        	
+	     Method detectWall = avoidObstacle.getClass().getDeclaredMethod("detectWall", cArg);    	     
+	     detectWall.setAccessible(true);
+			
+	     Boolean wall =  (Boolean) detectWall.invoke(avoidObstacle, distances);		 	     
+	     assertTrue(wall);
+	     
+	     
+	     distances.set(0, 37.0);
+	   
+	     wall =  (Boolean) detectWall.invoke(avoidObstacle, distances);
+	     assertFalse(wall);
 	}
 	
 	
