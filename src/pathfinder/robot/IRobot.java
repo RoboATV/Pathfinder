@@ -13,6 +13,8 @@ public interface IRobot {
 	public void rotate(int degrees) throws TurnNotPossible;
 	public void travel(double distance);
 	public void stop();
+	public void setTravelSpeed(int speed);
+	public void setRotateSpeed(double speed);
 	
 	
 	//position

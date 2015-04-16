@@ -38,7 +38,10 @@ public class Robot implements IRobot{
 	private final double wheelDiameter = 56;
 	private final double trackWidth = 135;
 	private final double travelRatio = 100;
-	private final double turnArmRatio = 1;
+	private final double turnArmRatio = 21;
+	
+	private final int grapplerSpeed = 20;
+	private final int grapSpeed = 20;
 	
 	private Orientation orientation;
 	private Direction turnDirection;	
@@ -57,6 +60,9 @@ public class Robot implements IRobot{
 		
 		grapplerMove = new EV3LargeRegulatedMotor(MotorPort.D);
 		grapplerGrap = new EV3LargeRegulatedMotor(MotorPort.A);
+		
+		grapplerMove.setSpeed(grapplerSpeed);
+		grapplerGrap.setSpeed(grapSpeed);
 		
 		turnArm = remote.createRegulatedMotor("D", 'L');
 		
@@ -160,6 +166,18 @@ public class Robot implements IRobot{
 	public void grapObject() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void setTravelSpeed(int speed) {
+		pilot.setTravelSpeed(speed);		
+	}
+	
+	
+	@Override
+	public void setRotateSpeed(double speed){
+		pilot.setRotateSpeed(speed);
 	}
 	
 }

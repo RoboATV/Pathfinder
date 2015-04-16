@@ -11,6 +11,8 @@ public class TestRobot implements ITestRobot{
 	private Queue<Float> distances;
 	private Queue<Float> headings;
 	private Direction turnDirection;
+	private int travelSpeed;
+	private double rotateSpeed;
 
 	public TestRobot(){
 		orientation = Orientation.NORTH;
@@ -91,6 +93,18 @@ public class TestRobot implements ITestRobot{
 	@Override
 	public void grapObject() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setTravelSpeed(int speed) {
+		this.travelSpeed = speed;
+		
+	}
+
+	@Override
+	public void setRotateSpeed(double speed) {
+		this.rotateSpeed = speed;
 		
 	}
 	
