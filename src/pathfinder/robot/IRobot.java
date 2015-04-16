@@ -16,16 +16,17 @@ public interface IRobot {
 	
 	
 	//position
-	public Orientation getOrientation();
-	
+	public Orientation getOrientation();	
 	public Direction getTurnDirection();
 	public void setTurnDirection(Direction turnDirection);
 	
 	
 	//sensors
-	public float getDistance() throws RemoteException; 
-	
+	public float getDistance() throws RemoteException; 	
 	public float getHeading() throws RemoteException;
 	
+	
+	//grappler
+	public void grapObject();
 	
 }

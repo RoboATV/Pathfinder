@@ -87,6 +87,12 @@ public class TestRobot implements ITestRobot{
 	public void setTurnDirection(Direction turnDirection){
 		this.turnDirection = turnDirection;
 	}
+
+	@Override
+	public void grapObject() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

@@ -154,5 +154,12 @@ public class Robot implements IRobot{
 	public void setTurnDirection(Direction turnDirection){
 		this.turnDirection = turnDirection;
 	}
+
+
+	@Override
+	public void grapObject() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
