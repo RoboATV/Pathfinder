@@ -8,6 +8,8 @@ import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.MindsensorsCompass;
 import lejos.remote.ev3.RMIRegulatedMotor;
@@ -32,6 +34,10 @@ public class Robot implements IRobot{
 	
 	private RMISampleProvider distance;	
 	private RMISampleProvider compass;
+	
+	private EV3ColorSensor colorSensor;
+	private SampleProvider color;
+	private SampleProvider light;
 	
 	private DifferentialPilot pilot;
 	
@@ -74,9 +80,12 @@ public class Robot implements IRobot{
 		
 		compass = remote.createSampleProvider("S3", "lejos.hardware.sensor.MindsensorCompass", "Compass");	
 		
+		colorSensor = new EV3ColorSensor(SensorPort.S2);
+		color = colorSensor.getColorIDMode();
+		light = colorSensor.getAmbientMode();
 		
 //		initialize pilot
-		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftDrive, rightDrive);
+		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftDrive, rightDrive, true);
 		pilot.setTravelSpeed(120);
 		pilot.setRotateSpeed(60);
 		
@@ -178,6 +187,22 @@ public class Robot implements IRobot{
 	@Override
 	public void setRotateSpeed(double speed){
 		pilot.setRotateSpeed(speed);
+	}
+
+
+	@Override
+	public float getLightIntensity() {
+		float[] sample = new float[light.sampleSize()];
+		light.fetchSample(sample, 0);
+		return sample[0];
+	}
+
+
+	@Override
+	public float getLightColor() {
+		float[] sample = new float[color.sampleSize()];
+		color.fetchSample(sample, 0);
+		return sample[0];
 	}
 	
 }

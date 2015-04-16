@@ -26,6 +26,8 @@ public interface IRobot {
 	//sensors
 	public float getDistance() throws RemoteException; 	
 	public float getHeading() throws RemoteException;
+	public float getLightIntensity();
+	public float getLightColor();
 	
 	
 	//grappler

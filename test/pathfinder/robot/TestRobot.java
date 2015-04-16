@@ -10,6 +10,8 @@ public class TestRobot implements ITestRobot{
 	private Orientation orientation;
 	private Queue<Float> distances;
 	private Queue<Float> headings;
+	private Queue<Float> colors;
+	private Queue<Float> light;
 	private Direction turnDirection;
 	private int travelSpeed;
 	private double rotateSpeed;
@@ -105,6 +107,36 @@ public class TestRobot implements ITestRobot{
 	@Override
 	public void setRotateSpeed(double speed) {
 		this.rotateSpeed = speed;
+		
+	}
+
+	@Override
+	public float getLightIntensity() {
+		if(light.isEmpty()){
+			return -1;
+		}
+		float lightSample = light.remove();
+		return lightSample;
+	}
+
+	@Override
+	public float getLightColor() {
+		if(colors.isEmpty()){
+			return -1;
+		}
+		float color = colors.remove();
+		return color;
+	}
+
+	@Override
+	public void setColors(Queue<Float> colors) {
+		this.colors = colors;
+		
+	}
+
+	@Override
+	public void setLight(Queue<Float> light) {
+		this.light = light;
 		
 	}
 	
