@@ -3,6 +3,7 @@ package pathfinder.orientation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -28,7 +29,7 @@ public class InitialOrientationTest {
 	
 	
 	@Test
-	public void correctInitialOrientation() {
+	public void correctInitialOrientation() throws RemoteException {
 		Queue<Float> distances = new LinkedList<Float>();
 		distances.add(30.0f);
 		

@@ -1,5 +1,7 @@
 package pathfinder.robot;
 
+import java.rmi.RemoteException;
+
 import pathfinder.orientation.Orientation;
 import pathfinder.orientation.TurnNotPossible;
 
@@ -7,7 +9,7 @@ import pathfinder.orientation.TurnNotPossible;
 public interface IRobot {
 
 	//movement
-	public void rotateTurnArm(int degrees);
+	public void rotateTurnArm(int degrees) throws RemoteException;
 	public void rotate(int degrees) throws TurnNotPossible;
 	public void travel(double distance);
 	public void stop();
@@ -21,9 +23,9 @@ public interface IRobot {
 	
 	
 	//sensors
-	public float getDistance(); 
+	public float getDistance() throws RemoteException; 
 	
-	public float getHeading();
+	public float getHeading() throws RemoteException;
 	
 	
 }

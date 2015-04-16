@@ -1,5 +1,7 @@
 package pathfinder.orientation;
 
+import java.rmi.RemoteException;
+
 import pathfinder.configuration.Configuration;
 import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
@@ -14,7 +16,7 @@ public class InitialOrientation {
 	}
 	
 	
-	public Direction alignRobot() throws TurnNotPossible{
+	public Direction alignRobot() throws TurnNotPossible, RemoteException{
 		
 		//check right wall
 		robot.rotateTurnArm(90);
@@ -31,7 +33,7 @@ public class InitialOrientation {
 		System.out.println("l" + leftDistance);
 		if(leftDistance < Configuration.INITIAL_WALLDISTANCE){
 			robot.rotateTurnArm(90);
-			return Direction.LEFT;
+			return Direction.RIGHT;
 		}
 		
 		robot.rotate(Configuration.INITIAL_DIRECTION.getTurnAngle());

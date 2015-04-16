@@ -3,8 +3,6 @@ package pathfinder.robot;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -12,13 +10,13 @@ import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.MindsensorsCompass;
+import lejos.remote.ev3.RMIRegulatedMotor;
+import lejos.remote.ev3.RMISampleProvider;
 import lejos.remote.ev3.RemoteEV3;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import pathfinder.configuration.Configuration;
-import pathfinder.map.Coordinate;
-import pathfinder.map.MapObject;
 import pathfinder.orientation.NoOrientationToAngle;
 import pathfinder.orientation.Orientation;
 import pathfinder.orientation.TurnNotPossible;
@@ -27,19 +25,20 @@ public class Robot implements IRobot{
 	
 	private RegulatedMotor leftDrive;
 	private RegulatedMotor rightDrive;
-	private RegulatedMotor turnArm;
+	private RegulatedMotor grapplerMove;
+	private RegulatedMotor grapplerGrap;
 	
-	private EV3UltrasonicSensor ultraSonic1;
-	private SampleProvider distance;
+	private RMIRegulatedMotor turnArm;
 	
-	private MindsensorsCompass compassSensor;
-	private SampleProvider compass;
+	private RMISampleProvider distance;	
+	private RMISampleProvider compass;
 	
 	private DifferentialPilot pilot;
 	
 	private final double wheelDiameter = 56;
 	private final double trackWidth = 135;
 	private final double travelRatio = 100;
+	private final double turnArmRatio = 1;
 	
 	private Orientation orientation;
 	private Direction turnDirection;	
@@ -53,22 +52,21 @@ public class Robot implements IRobot{
 		
 		
 //		initialize Motors
-		leftDrive = new EV3LargeRegulatedMotor(MotorPort.A);		
+		leftDrive = new EV3LargeRegulatedMotor(MotorPort.C);		
 		rightDrive = new EV3LargeRegulatedMotor(MotorPort.B);
 		
-		turnArm = new EV3LargeRegulatedMotor(MotorPort.C);
+		grapplerMove = new EV3LargeRegulatedMotor(MotorPort.D);
+		grapplerGrap = new EV3LargeRegulatedMotor(MotorPort.A);
+		
+		turnArm = remote.createRegulatedMotor("D", 'L');
 		
 		turnArm.setSpeed(20);
 		
 		
-//		initialize Sensors
-		Port port1 = LocalEV3.get().getPort("S1");
-		this.ultraSonic1 = new EV3UltrasonicSensor(port1);
-		distance = ultraSonic1.getDistanceMode();
+//		initialize Sensors				
+		distance = remote.createSampleProvider("S4", "lejos.hardware.sensor.EV3UltrasonicSensor", "Distance");		
 		
-		Port port2 = LocalEV3.get().getPort("S2");
-		this.compassSensor = new MindsensorsCompass(port2);
-		compass = compassSensor.getCompassMode();		
+		compass = remote.createSampleProvider("S3", "lejos.hardware.sensor.MindsensorCompass", "Compass");	
 		
 		
 //		initialize pilot
@@ -83,15 +81,17 @@ public class Robot implements IRobot{
 	}
 	
 	
-	public void shutdown(){
-		this.ultraSonic1.close();
+	public void shutdown() throws RemoteException{
+		this.distance.close();
+		this.compass.close();
 	}
 
 	
 
 	@Override
-	public void rotateTurnArm(int degrees) {
-		this.turnArm.rotate(degrees);
+	public void rotateTurnArm(int degrees) throws RemoteException {
+		int degreesRatio = (int) Math.round(degrees * turnArmRatio);
+		turnArm.rotate(degreesRatio);
 		
 	}
 
@@ -124,9 +124,8 @@ public class Robot implements IRobot{
 
 
 	@Override
-	public float getDistance() {
-		float[] sample = new float[distance.sampleSize()];
-		distance.fetchSample(sample, 0);
+	public float getDistance() throws RemoteException {
+		float[] sample = distance.fetchSample();
 		
 		return sample[0];
 	}
@@ -139,10 +138,8 @@ public class Robot implements IRobot{
 
 
 	@Override
-	public float getHeading() {
-		float[] sample = new float[compass.sampleSize()];
-		compass.fetchSample(sample, 0);
-	
+	public float getHeading() throws RemoteException {
+		float[] sample = compass.fetchSample();	
 		return sample[0];
 	}
 

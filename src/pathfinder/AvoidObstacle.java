@@ -1,5 +1,6 @@
 package pathfinder;
 
+import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,21 +27,30 @@ public class AvoidObstacle implements Behavior{
 	
 	@Override
 	public boolean takeControl() {		
-		return robot.getDistance() < Configuration.WALLDISTANCE;
+		try {
+			return robot.getDistance() < Configuration.WALLDISTANCE;
+		} catch (RemoteException e) {			
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
 	public void action() {
 		if(!suppressed){
-			this.robot.stop();		
-			if(this.detectWall(this.measureObstacle())){
-				try {
-					this.turnRobot();
-				} catch (TurnNotPossible e) {
-					System.out.println(e.toString());
+			this.robot.stop();	
+			try{
+				if(this.detectWall(this.measureObstacle())){
+					try {
+						this.turnRobot();
+					} catch (TurnNotPossible e) {
+						System.out.println(e.toString());
+					}
+				} else {
+					this.avoidObstacle();
 				}
-			} else {
-				this.avoidObstacle();
+			} catch (RemoteException e){
+				e.printStackTrace();
 			}
 		}	
 	}
@@ -74,7 +84,7 @@ public class AvoidObstacle implements Behavior{
 	}
 	
 	
-	private List<Double> measureObstacle(){
+	private List<Double> measureObstacle() throws RemoteException{
 		List<Double> distances = new LinkedList<Double>();		
 		int sensorAngle = calculateSensorAngle();		
 		

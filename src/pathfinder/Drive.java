@@ -1,5 +1,7 @@
 package pathfinder;
 
+import java.rmi.RemoteException;
+
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
@@ -27,15 +29,19 @@ public class Drive implements Behavior{
 	@Override
 	public void action() {
 		while(!suppressed){
-			locator.measureEnvironment();		
-			//this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
-			Coordinate newPos = locator.getNextCoordinate();
-			try {
-				this.relocateRobot(newPos);
-			} catch (TurnNotPossible e) {				
+			try{
+				locator.measureEnvironment();		
+				//this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
+				Coordinate newPos = locator.getNextCoordinate();
+				try {
+					this.relocateRobot(newPos);
+				} catch (TurnNotPossible e) {				
+					e.printStackTrace();
+				}
+			} catch(RemoteException e){
 				e.printStackTrace();
 			}
-			}
+		}
 	}
 
 	@Override

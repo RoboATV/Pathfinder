@@ -35,7 +35,7 @@ public class Main {
 		
 		try {
 			robot.setTurnDirection(initialOrientation.alignRobot());
-		} catch (TurnNotPossible e) {
+		} catch (TurnNotPossible | RemoteException e) {
 			System.out.println(e.toString());
 		}
 		

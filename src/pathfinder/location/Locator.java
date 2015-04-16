@@ -1,5 +1,6 @@
 package pathfinder.location;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -46,7 +47,7 @@ public class Locator {
 	}
 	
 	
-	public void measureEnvironment(){
+	public void measureEnvironment() throws RemoteException{
 		List<Coordinate> coordinates = new LinkedList<Coordinate>();
 		
 		coordinates.add(this.measureSide(Direction.RIGHT));
@@ -73,7 +74,7 @@ public class Locator {
 	}
 	
 	
-	private Coordinate measureSide(Direction direction){
+	private Coordinate measureSide(Direction direction) throws RemoteException{
 		
 		int i = 90 * direction.getNumerical();
 		int step = -5 * direction.getNumerical();
@@ -98,7 +99,7 @@ public class Locator {
 	
 	
 	
-	private float getDistance(){
+	private float getDistance() throws RemoteException{
 		
 		float sample = robot.getDistance();
 		
