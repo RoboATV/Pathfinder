@@ -44,7 +44,7 @@ public class Robot implements IRobot{
 	private final double wheelDiameter = 56;
 	private final double trackWidth = 135;
 	private final double travelRatio = 100;
-	private final double turnArmRatio = 21;
+	private final double turnArmRatio = 35/9;
 	
 	private final int grapplerSpeed = 20;
 	private final int grapSpeed = 20;
