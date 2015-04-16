@@ -21,7 +21,7 @@ public class InitialOrientation {
 		//check right wall
 		robot.rotateTurnArm(90);
 		float rightDistance = robot.getDistance();
-		System.out.println("r" + rightDistance);
+		
 		if(rightDistance < Configuration.INITIAL_WALLDISTANCE){
 			robot.rotateTurnArm(-90);
 			return Direction.LEFT;
@@ -30,7 +30,7 @@ public class InitialOrientation {
 		//check left wall
 		robot.rotateTurnArm(-90);
 		float leftDistance = robot.getDistance();
-		System.out.println("l" + leftDistance);
+		
 		if(leftDistance < Configuration.INITIAL_WALLDISTANCE){
 			robot.rotateTurnArm(90);
 			return Direction.RIGHT;
