@@ -15,5 +15,8 @@ public class Configuration {
 	
 	public final static int GRID_SIZE = 40;
 	
+	public final static String IP_EV3_1 = "192.168.178.20";
+	public final static String IP_EV3_2 = "192.168.178.21";
+	
 	
 }

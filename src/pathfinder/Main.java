@@ -1,5 +1,9 @@
 package pathfinder;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.location.Locator;
@@ -11,7 +15,13 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		Robot robot = new Robot();
+		Robot robot = null;
+		try {
+			robot = new Robot();
+		} catch (RemoteException | MalformedURLException | NotBoundException e) {
+			e.printStackTrace();
+		}
+		
 		Locator locator = new Locator(robot);
 		InitialOrientation initialOrientation = new InitialOrientation(robot);
 		

@@ -1,5 +1,8 @@
 package pathfinder.robot;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -9,9 +12,11 @@ import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.MindsensorsCompass;
+import lejos.remote.ev3.RemoteEV3;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.DifferentialPilot;
+import pathfinder.configuration.Configuration;
 import pathfinder.map.Coordinate;
 import pathfinder.map.MapObject;
 import pathfinder.orientation.NoOrientationToAngle;
@@ -41,12 +46,16 @@ public class Robot implements IRobot{
 	
 	
 	
-	public Robot(){
+	public Robot() throws RemoteException, MalformedURLException, NotBoundException{
+		
+//		initialize remote ev3
+		RemoteEV3 remote = new RemoteEV3(Configuration.IP_EV3_2);
+		
 		
 //		initialize Motors
-		leftDrive = new EV3LargeRegulatedMotor(MotorPort.A);
-		
+		leftDrive = new EV3LargeRegulatedMotor(MotorPort.A);		
 		rightDrive = new EV3LargeRegulatedMotor(MotorPort.B);
+		
 		turnArm = new EV3LargeRegulatedMotor(MotorPort.C);
 		
 		turnArm.setSpeed(20);
