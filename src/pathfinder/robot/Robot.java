@@ -87,70 +87,7 @@ public class Robot implements IRobot{
 		this.ultraSonic1.close();
 	}
 
-	public Integer[][] mapToArray(Map<Coordinate, MapObject> map, Coordinate currentPosition){
-		
-		Integer largestX = 0;
-		Integer smallestX = 0;
-		
-		Integer largestY = 0;
-		Integer smallestY = 0;
-		
-		Integer robotX = currentPosition.X;
-		Integer robotY = currentPosition.Y;
-		
-		for(Entry<Coordinate, MapObject> value : map.entrySet()){
-			Coordinate key = value.getKey();
-			if(key.X > largestX){
-				largestX = key.X;
-			}
-			if(key.X < smallestX){
-				smallestX = key.X;
-			}
-			if(key.Y > largestY){
-				largestY = key.Y;
-			}
-			if(key.Y < smallestY){
-				smallestY = key.Y;
-			}
-		}
-		
-		Integer sizeX = Math.abs(smallestX) + largestX;
-		robotX += Math.abs(smallestX);
-		
-		Integer sizeY = Math.abs(smallestY) + largestY;
-//		robotY += Math.abs(smallestY);
-		
-		Integer[][] newMap = new Integer[sizeY + 1][sizeX + 1];
-		
-		
-		for(Entry<Coordinate, MapObject> value : map.entrySet()){
-			Coordinate key = value.getKey();
-			MapObject object = value.getValue();
-			
-			Integer newX = key.X + Math.abs(smallestX);
-			Integer newY = key.Y + Math.abs(smallestY);
-			
-			newMap[newY][newX] = object.numericalValue();
-			
-		}	
-		
-		newMap[robotY][robotX] = 2;
-		
-		
-		return newMap;
-	}
 	
-	
-	public void printArray(Integer[][] array){
-		for(int y = 0; y < array.length; y++){
-			for(int x = 0; x < array[y].length; x++){
-				if(array[y][x] == null) System.out.print(" 0 ");
-				else System.out.print(" " + array[y][x] + " ");
-			}
-		System.out.println();
-		}
-	}
-
 
 	@Override
 	public void rotateTurnArm(int degrees) {
