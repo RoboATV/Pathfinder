@@ -32,8 +32,14 @@ public class Robot implements IRobot{
 	
 	private RMIRegulatedMotor turnArm;
 	
-	private RMISampleProvider distance;	
-	private RMISampleProvider compass;
+//	private RMISampleProvider distance;	
+//	private RMISampleProvider compass;
+	
+	private SampleProvider distance;	
+	private SampleProvider compass;
+	private EV3UltrasonicSensor distanceSensor;
+	private MindsensorsCompass compassSensor;
+	
 	
 	private EV3ColorSensor colorSensor;
 	private SampleProvider color;
@@ -70,15 +76,24 @@ public class Robot implements IRobot{
 		grapplerMove.setSpeed(grapplerSpeed);
 		grapplerGrap.setSpeed(grapSpeed);
 		
-		turnArm = remote.createRegulatedMotor("D", 'L');
+		turnArm = remote.createRegulatedMotor("D", 'M');
 		
 		turnArm.setSpeed(20);
 		
 		
 //		initialize Sensors				
-		distance = remote.createSampleProvider("S4", "lejos.hardware.sensor.EV3UltrasonicSensor", "Distance");		
+//		distance = remote.createSampleProvider("S4", "lejos.hardware.sensor.EV3UltrasonicSensor", "Distance");		
 		
-		compass = remote.createSampleProvider("S3", "lejos.hardware.sensor.MindsensorCompass", "Compass");	
+		//compass = remote.createSampleProvider("S3", "lejos.hardware.sensor.MindsensorCompass", "Compass");	
+		
+		Port distancePort = remote.getPort("S4");
+		Port compassPort = remote.getPort("S3");
+		
+		EV3UltrasonicSensor distanceSensor = new EV3UltrasonicSensor(distancePort);
+		MindsensorsCompass compassSensor = new MindsensorsCompass(compassPort);
+		
+		distance = distanceSensor.getDistanceMode();
+		compass = compassSensor.getCompassMode();
 		
 		colorSensor = new EV3ColorSensor(SensorPort.S2);
 		color = colorSensor.getColorIDMode();
@@ -97,8 +112,10 @@ public class Robot implements IRobot{
 	
 	
 	public void shutdown() throws RemoteException{
-		this.distance.close();
-		this.compass.close();
+//		this.distance.close();
+//		this.compass.close();
+		this.compassSensor.close();
+		this.distanceSensor.close();
 	}
 
 	
@@ -140,7 +157,9 @@ public class Robot implements IRobot{
 
 	@Override
 	public float getDistance() throws RemoteException {
-		float[] sample = distance.fetchSample();
+//		float[] sample = distance.fetchSample();
+		float[] sample = new float[distance.sampleSize()];
+		distance.fetchSample(sample, 0);
 		
 		return sample[0];
 	}
@@ -154,7 +173,10 @@ public class Robot implements IRobot{
 
 	@Override
 	public float getHeading() throws RemoteException {
-		float[] sample = compass.fetchSample();	
+//		float[] sample = compass.fetchSample();	
+		float[] sample = new float[compass.sampleSize()];
+		compass.fetchSample(sample, 0);
+		
 		return sample[0];
 	}
 
