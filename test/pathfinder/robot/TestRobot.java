@@ -2,6 +2,7 @@ package pathfinder.robot;
 
 import java.util.Queue;
 
+import lejos.robotics.navigation.Move;
 import pathfinder.orientation.Orientation;
 
 
@@ -145,6 +146,18 @@ public class TestRobot implements ITestRobot{
 		Direction oldDirection = this.turnDirection;
 		turnDirection = Direction.getOpposite(oldDirection);
 		
+	}
+
+	@Override
+	public void travel(double distance, boolean immediateReturn) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Move getMovement() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

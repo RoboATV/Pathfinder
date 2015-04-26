@@ -63,7 +63,7 @@ public class AvoidObstacleTest {
 		 double angle = (double) calculateExpectation.invoke(avoidObstacle);
 		   
 		 
-		 assertEquals(angle, 32, 0.05);
+		 assertEquals(angle, 32, 5);
 		 
 	}
 	

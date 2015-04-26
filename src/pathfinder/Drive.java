@@ -6,8 +6,6 @@ import lejos.robotics.subsumption.Behavior;
 import pathfinder.configuration.Configuration;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
-import pathfinder.orientation.Orientation;
-import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Robot;
 
 public class Drive implements Behavior{
@@ -34,8 +32,7 @@ public class Drive implements Behavior{
 			try{
 				locator.measureEnvironment();		
 				//this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
-				Coordinate newPos = new Coordinate(0, Configuration.TRAVEL_DISTANCE);
-				robot.travel(Configuration.TRAVEL_DISTANCE);		
+				robot.travel(Configuration.TRAVEL_DISTANCE, true);		
 			} catch(RemoteException e){
 				e.printStackTrace();
 			}

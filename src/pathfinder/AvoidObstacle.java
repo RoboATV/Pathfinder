@@ -12,8 +12,9 @@ import pathfinder.map.Coordinate;
 import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
+import pathfinder.robot.Range;
 
-import com.google.common.collect.Range;
+
 
 public class AvoidObstacle implements Behavior{
 
@@ -41,7 +42,7 @@ public class AvoidObstacle implements Behavior{
 	@Override
 	public void action() {
 		if(!suppressed){
-			Move move = robot.getMovement();
+			enterLastCoordinate(robot.getMovement());
 			this.robot.stop();	
 			try{
 				List<Double> obstacleEdges = this.measureObstacle();
@@ -68,7 +69,13 @@ public class AvoidObstacle implements Behavior{
 	
 	private void enterLastCoordinate(Move move){
 		Coordinate relPos = new Coordinate(0, (int) move.getDistanceTraveled());
-		locator.robotTrack.add();
+		Coordinate absPos = locator.calcNewPos(relPos);
+		
+		System.out.println("last position relative " + relPos);
+		System.out.println("last position absolute " + absPos);
+		
+		locator.robotTrack.add(absPos);
+		locator.currentPos = absPos;
 	}
 	
 	private int calculateSensorAngle(){
@@ -79,7 +86,7 @@ public class AvoidObstacle implements Behavior{
 		
 		int sensorAngle = (int) Math.toDegrees(Math.atan(divAG));
 		
-		
+			
 		return sensorAngle;
 	}
 	
@@ -112,7 +119,8 @@ public class AvoidObstacle implements Behavior{
 	
 	private boolean detectWall(List<Double> distances){
 		double expectationValue = calculateExpectation();		
-		Range<Double> valueRange = Range.closed(expectationValue-2, expectationValue+2);
+			
+		Range valueRange = new Range(expectationValue-2, expectationValue+2);
 		
 		if(valueRange.contains(distances.get(0)) && valueRange.contains(distances.get(1))){
 			return true;
@@ -162,7 +170,7 @@ public class AvoidObstacle implements Behavior{
 		
 		float distance = robot.getDistance();
 		
-		Range<Float> distanceRange = Range.closed(distance-5, distance+5);
+		Range distanceRange = new Range(distance-5, distance+5);
 		
 		while(distanceRange.contains(robot.getDistance())){
 			robot.travel(10);
