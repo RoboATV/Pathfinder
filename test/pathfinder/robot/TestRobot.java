@@ -5,6 +5,7 @@ import java.util.Queue;
 
 import lejos.robotics.navigation.Move;
 import pathfinder.orientation.Orientation;
+import pathfinder.orientation.TurnNotPossible;
 
 
 public class TestRobot implements ITestRobot{
@@ -22,27 +23,6 @@ public class TestRobot implements ITestRobot{
 		orientation = Orientation.NORTH;
 	}
 
-	
-
-	@Override
-	public void rotate(int degrees) {
-				
-	}
-
-	@Override
-	public Orientation getOrientation() {
-		return orientation;
-	}
-
-	@Override
-	public void travel(double distance) {
-			
-	}
-
-	@Override
-	public void stop() {
-				
-	}
 
 	@Override
 	public float getDistance() {
@@ -70,15 +50,15 @@ public class TestRobot implements ITestRobot{
 		
 	}
 
-	@Override
-	public float getHeading() {
-		if(headings.isEmpty()){
-			return -1;
-		}
-		float heading = headings.remove();
-		
-		return heading;
-	}
+//	@Override
+//	public float getHeading() {
+//		if(headings.isEmpty()){
+//			return -1;
+//		}
+//		float heading = headings.remove();
+//		
+//		return heading;
+//	}
 
 	@Override
 	public Direction getTurnDirection() {
@@ -90,41 +70,23 @@ public class TestRobot implements ITestRobot{
 		this.turnDirection = turnDirection;
 	}
 
-	@Override
-	public void grapObject() {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public float getLightIntensity() {
+//		if(light.isEmpty()){
+//			return -1;
+//		}
+//		float lightSample = light.remove();
+//		return lightSample;
+//	}
 
-	@Override
-	public void setTravelSpeed(int speed) {
-		this.travelSpeed = speed;
-		
-	}
-
-	@Override
-	public void setRotateSpeed(double speed) {
-		this.rotateSpeed = speed;
-		
-	}
-
-	@Override
-	public float getLightIntensity() {
-		if(light.isEmpty()){
-			return -1;
-		}
-		float lightSample = light.remove();
-		return lightSample;
-	}
-
-	@Override
-	public float getLightColor() {
-		if(colors.isEmpty()){
-			return -1;
-		}
-		float color = colors.remove();
-		return color;
-	}
+//	@Override
+//	public float getLightColor() {
+//		if(colors.isEmpty()){
+//			return -1;
+//		}
+//		float color = colors.remove();
+//		return color;
+//	}
 
 	@Override
 	public void setColors(Queue<Float> colors) {
@@ -143,18 +105,6 @@ public class TestRobot implements ITestRobot{
 		Direction oldDirection = this.turnDirection;
 		turnDirection = Direction.getOpposite(oldDirection);
 		
-	}
-
-	@Override
-	public void travel(double distance, boolean immediateReturn) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Move getMovement() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -191,6 +141,86 @@ public class TestRobot implements ITestRobot{
 	public boolean turnArm_isCentered() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+
+	@Override
+	public void carriage_rotate(int degrees) throws TurnNotPossible {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void carriage_turnLeft() throws TurnNotPossible {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void carriage_turnRight() throws TurnNotPossible {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void carriage_travel(double distance) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void carriage_travel(double distance, boolean immediateReturn) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void carriage_stop() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public Move carriage_getMovement() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public Orientation carriage_getOrientation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public void grappler_grap() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void grappler_release() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
