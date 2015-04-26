@@ -1,5 +1,6 @@
 package pathfinder.robot;
 
+import java.rmi.RemoteException;
 import java.util.Queue;
 
 import lejos.robotics.navigation.Move;
@@ -21,11 +22,7 @@ public class TestRobot implements ITestRobot{
 		orientation = Orientation.NORTH;
 	}
 
-	@Override
-	public void rotateTurnArm(int degrees) {
-				
-	}
-
+	
 
 	@Override
 	public void rotate(int degrees) {
@@ -158,6 +155,42 @@ public class TestRobot implements ITestRobot{
 	public Move getMovement() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void turnArm_rotate(int degrees) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void turnArm_rotateToCenter() throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void turnArm_rotateToLeft() throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void turnArm_rotateToRight() throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int turnArm_getTurnAngle() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean turnArm_isCentered() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	
