@@ -4,11 +4,13 @@ import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 
+import lejos.robotics.navigation.Move;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.configuration.Configuration;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
 import pathfinder.orientation.TurnNotPossible;
+import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
 
 import com.google.common.collect.Range;
@@ -20,6 +22,7 @@ public class AvoidObstacle implements Behavior{
 	private Locator locator;
 	
 	public AvoidObstacle(IRobot robot, Locator locator){
+		System.out.println("loading avoidobstacle");
 		this.robot = robot;
 		this.locator = locator;
 	}
@@ -38,18 +41,20 @@ public class AvoidObstacle implements Behavior{
 	@Override
 	public void action() {
 		if(!suppressed){
+			Move move = robot.getMovement();
 			this.robot.stop();	
 			try{
-				if(this.detectWall(this.measureObstacle())){
+				List<Double> obstacleEdges = this.measureObstacle();
+				if(this.detectWall(obstacleEdges)){
 					try {
 						this.turnRobot();
 					} catch (TurnNotPossible e) {
 						System.out.println(e.toString());
 					}
 				} else {
-					this.avoidObstacle();
+					this.avoidObstacle(obstacleEdges);
 				}
-			} catch (RemoteException e){
+			} catch (RemoteException | TurnNotPossible e){
 				e.printStackTrace();
 			}
 		}	
@@ -60,6 +65,11 @@ public class AvoidObstacle implements Behavior{
 		this.suppressed = true;		
 	}
 
+	
+	private void enterLastCoordinate(Move move){
+		Coordinate relPos = new Coordinate(0, (int) move.getDistanceTraveled());
+		locator.robotTrack.add();
+	}
 	
 	private int calculateSensorAngle(){
 		float g = (Configuration.OBSTACLE_SIZE / 2) + Configuration.OBSTACLE_OFFSET;
@@ -114,30 +124,50 @@ public class AvoidObstacle implements Behavior{
 	
 	private void turnRobot() throws TurnNotPossible{
 		robot.rotate(robot.getTurnDirection().getTurnAngle());
-		robot.travel(Configuration.GRID_SIZE);
+		Coordinate newPos = new Coordinate(0, Configuration.GRID_SIZE);
+		locator.relocateRelative(newPos);
 		robot.rotate(robot.getTurnDirection().getTurnAngle());
 		robot.invertTurnDirection();
 	}
 	
 	
-	private void avoidObstacle(){
-		//TODO
-	}
-	
-	private int turnDirection(Coordinate left, Coordinate right){
-		//TODO
-		int turnAngle = 90;
+	private void avoidObstacle(List<Double> obstacleEdges) throws TurnNotPossible, RemoteException{
 		
-		return turnAngle;
+		Direction turnDirection = turnDirection(obstacleEdges);			
+		robot.rotate(turnDirection.getTurnAngle());
+		robot.travel(Configuration.TOTAL_OBSTACLE_SIZE);		
+		robot.rotate(Direction.getOpposite(turnDirection).getTurnAngle());
+		robot.travel(Configuration.WALLDISTANCE + Configuration.OBSTACLE_OFFSET);
+		
+		travelVertical(Direction.getOpposite(turnDirection));	
+		robot.rotate(Direction.getOpposite(turnDirection).getTurnAngle());
+		
+		robot.travel(Configuration.TOTAL_OBSTACLE_SIZE);
+		
+		robot.rotate(turnDirection.getTurnAngle());
+		
 	}
 	
-	private int horizontalDistance(Coordinate corner){
-		//TODO
-		return 0;
+	private Direction turnDirection(List<Double> distances){
+		if(distances.get(0) > distances.get(1)){
+			return Direction.LEFT;
+		}
+				
+		return Direction.RIGHT;
 	}
 	
-	private int verticalDistance(int obstacleDistance){
-		//TODO
-		return 0;
+	
+	private void travelVertical(Direction obstacleSide) throws RemoteException{
+		robot.rotateTurnArm(obstacleSide.getTurnAngle());
+		
+		float distance = robot.getDistance();
+		
+		Range<Float> distanceRange = Range.closed(distance-5, distance+5);
+		
+		while(distanceRange.contains(robot.getDistance())){
+			robot.travel(10);
+		}
+		
+		
 	}
 }

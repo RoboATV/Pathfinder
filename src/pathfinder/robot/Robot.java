@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
@@ -13,11 +12,11 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.MindsensorsCompass;
 import lejos.remote.ev3.RMIRegulatedMotor;
-import lejos.remote.ev3.RMISampleProvider;
 import lejos.remote.ev3.RemoteEV3;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.DifferentialPilot;
+import lejos.robotics.navigation.Move;
 import pathfinder.configuration.Configuration;
 import pathfinder.orientation.NoOrientationToAngle;
 import pathfinder.orientation.Orientation;
@@ -47,10 +46,11 @@ public class Robot implements IRobot{
 	
 	private DifferentialPilot pilot;
 	
-	private final double wheelDiameter = 56;
-	private final double trackWidth = 135;
-	private final double travelRatio = 100;
-	private final double turnArmRatio = 35/9;
+	private final double wheelDiameter = 41.5f;
+	private final double trackWidth = 120;
+	private final double travelRatio = 10;
+	private final double turnArmRatio = 39/9;
+	private final int turnArmOrientation = -1;
 	
 	private final int grapplerSpeed = 20;
 	private final int grapSpeed = 20;
@@ -63,10 +63,12 @@ public class Robot implements IRobot{
 	public Robot() throws RemoteException, MalformedURLException, NotBoundException{
 		
 //		initialize remote ev3
+		System.out.println("loading remote");
 		RemoteEV3 remote = new RemoteEV3(Configuration.IP_EV3_2);
 		
 		
 //		initialize Motors
+		System.out.println("initializing motors");
 		leftDrive = new EV3LargeRegulatedMotor(MotorPort.C);		
 		rightDrive = new EV3LargeRegulatedMotor(MotorPort.B);
 		
@@ -78,7 +80,7 @@ public class Robot implements IRobot{
 		
 		turnArm = remote.createRegulatedMotor("D", 'M');
 		
-		turnArm.setSpeed(20);
+		turnArm.setSpeed(50);
 		
 		
 //		initialize Sensors				
@@ -86,11 +88,12 @@ public class Robot implements IRobot{
 		
 		//compass = remote.createSampleProvider("S3", "lejos.hardware.sensor.MindsensorCompass", "Compass");	
 		
+		System.out.println("initializing sensors");
 		Port distancePort = remote.getPort("S4");
 		Port compassPort = remote.getPort("S3");
 		
-		EV3UltrasonicSensor distanceSensor = new EV3UltrasonicSensor(distancePort);
-		MindsensorsCompass compassSensor = new MindsensorsCompass(compassPort);
+		distanceSensor = new EV3UltrasonicSensor(distancePort);
+		compassSensor = new MindsensorsCompass(compassPort);
 		
 		distance = distanceSensor.getDistanceMode();
 		compass = compassSensor.getCompassMode();
@@ -100,6 +103,7 @@ public class Robot implements IRobot{
 		light = colorSensor.getAmbientMode();
 		
 //		initialize pilot
+		System.out.println("initializing pilot");
 		pilot = new DifferentialPilot(wheelDiameter, trackWidth, leftDrive, rightDrive, true);
 		pilot.setTravelSpeed(120);
 		pilot.setRotateSpeed(60);
@@ -116,6 +120,7 @@ public class Robot implements IRobot{
 //		this.compass.close();
 		this.compassSensor.close();
 		this.distanceSensor.close();
+		this.turnArm.close();
 	}
 
 	
@@ -123,6 +128,7 @@ public class Robot implements IRobot{
 	@Override
 	public void rotateTurnArm(int degrees) throws RemoteException {
 		int degreesRatio = (int) Math.round(degrees * turnArmRatio);
+		degreesRatio *= turnArmOrientation;
 		turnArm.rotate(degreesRatio);
 		
 	}
@@ -149,9 +155,8 @@ public class Robot implements IRobot{
 
 
 	@Override
-	public void travel(double distance) {
+	public void travel(double distance) {		
 		this.pilot.travel(distance * this.travelRatio);
-		
 	}
 
 
@@ -161,7 +166,7 @@ public class Robot implements IRobot{
 		float[] sample = new float[distance.sampleSize()];
 		distance.fetchSample(sample, 0);
 		
-		return sample[0];
+		return sample[0] * 100;
 	}
 
 
@@ -234,5 +239,20 @@ public class Robot implements IRobot{
 		turnDirection = Direction.getOpposite(oldDirection);
 		
 	}
+
+
+	@Override
+	public void travel(double distance, boolean immediateReturn) {
+		this.pilot.travel(distance * this.travelRatio, immediateReturn);
+	}
+
+
+	@Override
+	public Move getMovement() {
+		return this.pilot.getMovement();
+	}
+	
+	
+
 	
 }

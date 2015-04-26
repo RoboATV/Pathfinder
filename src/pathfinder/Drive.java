@@ -3,6 +3,7 @@ package pathfinder;
 import java.rmi.RemoteException;
 
 import lejos.robotics.subsumption.Behavior;
+import pathfinder.configuration.Configuration;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
 import pathfinder.orientation.Orientation;
@@ -17,6 +18,7 @@ public class Drive implements Behavior{
 	
 	
 	public Drive(Robot robot, Locator locator){
+		System.out.println("loading drive");
 		this.robot = robot;
 		this.locator = locator;
 	}
@@ -32,12 +34,8 @@ public class Drive implements Behavior{
 			try{
 				locator.measureEnvironment();		
 				//this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
-				Coordinate newPos = locator.getNextCoordinate();
-				try {
-					this.relocateRobot(newPos);
-				} catch (TurnNotPossible e) {				
-					e.printStackTrace();
-				}
+				Coordinate newPos = new Coordinate(0, Configuration.TRAVEL_DISTANCE);
+				robot.travel(Configuration.TRAVEL_DISTANCE);		
 			} catch(RemoteException e){
 				e.printStackTrace();
 			}
@@ -48,35 +46,6 @@ public class Drive implements Behavior{
 	public void suppress() {		
 		suppressed = true;
 	}
-
 	
-	
-	
-	private void relocateRobot(Coordinate position) throws TurnNotPossible{
-		int distanceX = position.X - locator.currentPos.X;
-		int distanceY = position.Y - locator.currentPos.Y;
-		
-		if(this.robot.getOrientation() == Orientation.NORTH){
-			if(distanceY != 0){
-				robot.travel(distanceY);
-			} 
-			if(distanceX > 0){
-				robot.rotate(90);
-				robot.travel(distanceX);
-				robot.rotate(-90);
-			} else if(distanceX < 0){
-				robot.rotate(-90);
-				robot.travel(distanceX);
-				robot.rotate(90);
-			}			
-		} else if(this.robot.getOrientation() == Orientation.EAST){
 			
-		} else if(this.robot.getOrientation() == Orientation.SOUTH){
-			
-		} else if(this.robot.getOrientation() == Orientation.WEST){
-			
-		}
-		
-	}	
-		
 }	

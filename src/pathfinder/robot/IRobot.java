@@ -2,6 +2,7 @@ package pathfinder.robot;
 
 import java.rmi.RemoteException;
 
+import lejos.robotics.navigation.Move;
 import pathfinder.orientation.Orientation;
 import pathfinder.orientation.TurnNotPossible;
 
@@ -12,9 +13,11 @@ public interface IRobot {
 	public void rotateTurnArm(int degrees) throws RemoteException;
 	public void rotate(int degrees) throws TurnNotPossible;
 	public void travel(double distance);
+	public void travel(double distance, boolean immediateReturn);
 	public void stop();
 	public void setTravelSpeed(int speed);
 	public void setRotateSpeed(double speed);
+
 	
 	
 	//position
@@ -22,6 +25,9 @@ public interface IRobot {
 	public Direction getTurnDirection();
 	public void setTurnDirection(Direction turnDirection);
 	public void invertTurnDirection();
+	
+	//movement
+	public Move getMovement();
 	
 	
 	//sensors

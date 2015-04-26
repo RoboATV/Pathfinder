@@ -11,6 +11,7 @@ import pathfinder.map.Coordinate;
 import pathfinder.map.MapObject;
 import pathfinder.map.obstacle.LargeObstacle;
 import pathfinder.orientation.Orientation;
+import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
 
@@ -23,63 +24,115 @@ public class Locator {
 	public Map<Coordinate, MapObject> map = new HashMap<Coordinate, MapObject>();
 	private IRobot robot;
 	
-	private Coordinate nextCoordinate;
+	
 	
 	
 	public Locator(IRobot robot){
+		System.out.println("initializing locator");
 		this.robot = robot;
 		this.currentPos = new Coordinate(0, 0);
 		robotTrack = new ArrayList<Coordinate>();
 	}
 	
 	
-	public void relocate(Coordinate destination){
+	
+	private void relocateRobotAbsolute(Coordinate destination) throws TurnNotPossible{
+		int distanceX = destination.X - currentPos.X;
+		int distanceY = destination.Y - currentPos.Y;
+		
+		if(this.robot.getOrientation() == Orientation.NORTH){
+			if(distanceY != 0){
+				robot.travel(distanceY);
+			} 
+			if(distanceX > 0){
+				robot.rotate(90);
+				robot.travel(distanceX);
+				robot.rotate(-90);
+			} else if(distanceX < 0){
+				robot.rotate(-90);
+				robot.travel(distanceX);
+				robot.rotate(90);
+			}			
+		} else if(this.robot.getOrientation() == Orientation.EAST){
+			
+		} else if(this.robot.getOrientation() == Orientation.SOUTH){
+			
+		} else if(this.robot.getOrientation() == Orientation.WEST){
+			
+		}
+		
+	}	
+	
+	
+	private void relocateRobotRelative(Coordinate destination) throws TurnNotPossible{
+		if(destination.X < 0){
+			robot.rotate(Direction.LEFT.getTurnAngle());
+			robot.travel(Math.abs(destination.X));
+			robot.rotate(Direction.getOpposite(Direction.LEFT).getTurnAngle());
+		} else if(destination.X > 0) {
+			robot.rotate(Direction.RIGHT.getTurnAngle());
+			robot.travel(Math.abs(destination.X));
+			robot.rotate(Direction.getOpposite(Direction.RIGHT).getTurnAngle());
+		}
+				
+		robot.travel(destination.Y);
+		
+	}
+	
+	public Coordinate calcNewPos(Coordinate destination){
+		Coordinate newPos = currentPos;
+		
+		if(robot.getOrientation() == Orientation.NORTH){
+			newPos.X += destination.X;
+			newPos.Y += destination.Y;
+			return newPos;
+		} else if(robot.getOrientation() == Orientation.EAST){
+			newPos.X += destination.Y;
+			newPos.Y -= destination.X;
+			return newPos;
+		} else if(robot.getOrientation() == Orientation.SOUTH){
+			newPos.X -= destination.X;
+			newPos.Y -= destination.Y;
+			return newPos;
+		} 
+		newPos.X -= destination.Y;
+		newPos.Y -= destination.X;
+		return newPos;
+		
+	}
+	
+	
+	public void relocateRelative(Coordinate destination) throws TurnNotPossible{
+		System.out.println("relocate to " + destination);
+		robotTrack.add(currentPos);
+		relocateRobotRelative(destination);
+		currentPos = calcNewPos(destination);
+	}
+	
+	public void relocateAbsolute(Coordinate destination) throws TurnNotPossible{
 		System.out.println("relocate to " + destination);
 		robotTrack.add(this.currentPos);
+		relocateRobotAbsolute(destination);
 		this.currentPos = destination;
 	}
 	
 	
-	public void enterNewPosition(Coordinate position, MapObject object){
-		
+	public void enterNewPosition(Coordinate position, MapObject object){		
 		this.map.put(position, object);		
-		
 	}
 	
 	
-	public void measureEnvironment() throws RemoteException{
-		List<Coordinate> coordinates = new LinkedList<Coordinate>();
-		
-		coordinates.add(this.measureSide(Direction.RIGHT));
-		coordinates.add(this.measureSide(Direction.LEFT));
-		
-		this.nextCoordinate = this.getFarestCoordinate(coordinates);		
-	}
+	public void measureEnvironment() throws RemoteException{				
+		this.measureSide(Direction.RIGHT);
+		this.measureSide(Direction.LEFT);	
+	}	
 	
 	
-	
-	private Coordinate getFarestCoordinate(List<Coordinate> coordinates){
+	private void measureSide(Direction direction) throws RemoteException{
 		
-		Coordinate farestCoordinate = coordinates.get(0);
-		coordinates.remove(0);
-		
-		if(!coordinates.isEmpty()){
-			for(Coordinate coordinate : coordinates){
-				if(coordinate.Y > farestCoordinate.Y){
-					farestCoordinate = coordinate;
-				}
-			}
-		}	
-		return farestCoordinate;
-	}
-	
-	
-	private Coordinate measureSide(Direction direction) throws RemoteException{
-		
+		System.out.println("measuring side " + direction.toString());
 		int i = 90 * direction.getNumerical();
-		int step = -5 * direction.getNumerical();
-		
-		Coordinate farestPos = new Coordinate(0, 0);
+		int step = -5 * direction.getNumerical();		
 		
 		robot.rotateTurnArm(i);
 		
@@ -89,12 +142,12 @@ public class Locator {
 				Coordinate position = this.calculateMapPosition(i, sample);
 				System.out.println(position.toString());
 				enterNewPosition(position, new LargeObstacle());
-				farestPos = new Coordinate(currentPos.X, position.Y);
+				
 			}	
 			robot.rotateTurnArm(step);
 			i += step;
 		}
-		return farestPos;
+		
 	}
 	
 	
@@ -112,7 +165,6 @@ public class Locator {
 			}
 		}
 		
-		oldSample = oldSample * 10;
 		
 		return oldSample;
 	}
@@ -179,9 +231,6 @@ public class Locator {
 	}
 	
 	
-	public Coordinate getNextCoordinate(){
-		return this.nextCoordinate;
-	}
 	
 	
 }

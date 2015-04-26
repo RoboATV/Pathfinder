@@ -15,13 +15,16 @@ public class Main {
 
 	public static void main(String[] args) {
 		
+		System.out.println("starting main");
 		 
 		try {
 			Robot robot = new Robot();		
-		
+			System.out.println("new robot initialized");
+			
 			Locator locator = new Locator(robot);
 			InitialOrientation initialOrientation = new InitialOrientation(robot);
 			
+			System.out.println("loading behaviors");
 			Behavior drive = new Drive(robot, locator);
 			Behavior avoidObstacle = new AvoidObstacle(robot, locator);
 			
@@ -31,13 +34,18 @@ public class Main {
 			
 			
 			try {
+				System.out.println("align robot");
 				robot.setTurnDirection(initialOrientation.alignRobot());
 			} catch (TurnNotPossible | RemoteException e) {
 				System.out.println(e.toString());
 			}
-			
+			System.out.println("initializing arbitrator");
 			Arbitrator arbitrator = new Arbitrator(behaviors);
 			arbitrator.start();
+			
+//			locator.relocate(new Coordinate(0, 20));
+			
+			robot.shutdown();
 		} catch(RemoteException | MalformedURLException | NotBoundException e){
 			e.printStackTrace();
 		}
