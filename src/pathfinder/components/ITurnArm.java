@@ -2,6 +2,9 @@ package pathfinder.components;
 
 import java.rmi.RemoteException;
 
+/**
+ * Interface fo a turn arm.
+ */
 public interface ITurnArm {
 	/**
 	 * Turns the arm. Negative value: left, positive value: right.
