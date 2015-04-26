@@ -30,9 +30,12 @@ public class Drive implements Behavior{
 	public void action() {
 		while(!suppressed){
 			try{
-				locator.measureEnvironment();		
+				if(!robot.getMovement().isMoving()){
+					locator.measureEnvironment();	
+					
 				//this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
-				robot.travel(Configuration.TRAVEL_DISTANCE, true);		
+					robot.travel(Configuration.TRAVEL_DISTANCE, true);		
+				}
 			} catch(RemoteException e){
 				e.printStackTrace();
 			}
