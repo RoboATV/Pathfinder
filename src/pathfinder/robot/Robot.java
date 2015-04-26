@@ -17,6 +17,8 @@ import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Move;
+import pathfinder.components.ITurnArm;
+import pathfinder.components.TurnArm;
 import pathfinder.configuration.Configuration;
 import pathfinder.orientation.NoOrientationToAngle;
 import pathfinder.orientation.Orientation;
@@ -29,7 +31,7 @@ public class Robot implements IRobot{
 	private RegulatedMotor grapplerMove;
 	private RegulatedMotor grapplerGrap;
 	
-	private RMIRegulatedMotor turnArm;
+	private	ITurnArm	turnArm;
 	
 //	private RMISampleProvider distance;	
 //	private RMISampleProvider compass;
@@ -49,8 +51,6 @@ public class Robot implements IRobot{
 	private final double wheelDiameter = 41.5f;
 	private final double trackWidth = 120;
 	private final double travelRatio = 10;
-	private final double turnArmRatio = 39/9;
-	private final int turnArmOrientation = -1;
 	
 	private final int grapplerSpeed = 20;
 	private final int grapSpeed = 20;
@@ -78,9 +78,10 @@ public class Robot implements IRobot{
 		grapplerMove.setSpeed(grapplerSpeed);
 		grapplerGrap.setSpeed(grapSpeed);
 		
-		turnArm = remote.createRegulatedMotor("D", 'M');
-		
-		turnArm.setSpeed(50);
+		// Create the turn arm.
+		RMIRegulatedMotor	turnArmMotor = remote.createRegulatedMotor("D", 'M');
+		turnArmMotor.setSpeed(50);
+		this.turnArm = new TurnArm(39/9, true, turnArmMotor);
 		
 		
 //		initialize Sensors				
@@ -120,17 +121,39 @@ public class Robot implements IRobot{
 //		this.compass.close();
 		this.compassSensor.close();
 		this.distanceSensor.close();
-		this.turnArm.close();
+		this.turnArm.shutdown();
 	}
 
 	
 
 	@Override
-	public void rotateTurnArm(int degrees) throws RemoteException {
-		int degreesRatio = (int) Math.round(degrees * turnArmRatio);
-		degreesRatio *= turnArmOrientation;
-		turnArm.rotate(degreesRatio);
-		
+	public void turnArm_rotate(int degrees) throws RemoteException {
+		this.turnArm.rotate(degrees);
+	}
+	
+	@Override
+	public void turnArm_rotateToCenter() throws RemoteException {
+		this.turnArm.rotateToCenter();
+	}
+	
+	@Override
+	public void turnArm_rotateToLeft() throws RemoteException {
+		this.turnArm.rotateToLeft();
+	}
+	
+	@Override
+	public void turnArm_rotateToRight() throws RemoteException {
+		this.turnArm.rotateToRight();
+	}
+	
+	@Override
+	public int turnArm_getTurnAngle() {
+		return this.turnArm.getTurnAngle();
+	}
+	
+	@Override
+	public boolean turnArm_isCentered() {
+		return this.turnArm.isCentered();
 	}
 
 

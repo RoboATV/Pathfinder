@@ -129,23 +129,24 @@ public class Locator {
 	
 	
 	private void measureSide(Direction direction) throws RemoteException{
-		
 		System.out.println("measuring side " + direction.toString());
-		int i = 90 * direction.getNumerical();
 		int step = -5 * direction.getNumerical();		
 		
-		robot.rotateTurnArm(i);
+		if(direction == Direction.LEFT)
+			this.robot.turnArm_rotateToLeft();
+		else
+			this.robot.turnArm_rotateToRight();
 		
-		while(i != 0){		
+		while(this.robot.turnArm_isCentered() != true){		
 			float sample = this.getDistance();
+			
 			if(!Float.isInfinite(sample)){
-				Coordinate position = this.calculateMapPosition(i, sample);
+				Coordinate position = this.calculateMapPosition(this.robot.turnArm_getTurnAngle(), sample);
 				System.out.println(position.toString());
 				enterNewPosition(position, new LargeObstacle());
-				
-			}	
-			robot.rotateTurnArm(step);
-			i += step;
+			}
+			
+			this.robot.turnArm_rotate(step);
 		}
 		
 	}

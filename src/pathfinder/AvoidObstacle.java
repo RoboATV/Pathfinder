@@ -106,11 +106,11 @@ public class AvoidObstacle implements Behavior{
 		int sensorAngle = calculateSensorAngle();		
 		
 		//measure right side
-		robot.rotateTurnArm(sensorAngle);				
+		robot.turnArm_rotate(sensorAngle);				
 		distances.add((double) robot.getDistance());	
 			
 		//measure left side
-		robot.rotateTurnArm(-2 * sensorAngle);		
+		robot.turnArm_rotate(-2 * sensorAngle);		
 		distances.add((double) robot.getDistance());
 		
 		return distances;
@@ -166,7 +166,7 @@ public class AvoidObstacle implements Behavior{
 	
 	
 	private void travelVertical(Direction obstacleSide) throws RemoteException{
-		robot.rotateTurnArm(obstacleSide.getTurnAngle());
+		robot.turnArm_rotate(obstacleSide.getTurnAngle());
 		
 		float distance = robot.getDistance();
 		
