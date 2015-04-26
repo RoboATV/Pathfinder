@@ -1,0 +1,10 @@
+language: java
+
+notifications:
+  email:
+    recipients:
+      - T.O.B.B.E@web.de
+      - andreashaberl@gmx.net
+      - tobiasseber@t-online.de
+    on_success: always
+    on_failure: always
