@@ -78,9 +78,9 @@ public class AvoidObstacle implements Behavior{
 		locator.currentPos = absPos;
 	}
 	
-	private int calculateSensorAngle(){
+	private int calculateSensorAngle() throws RemoteException{
 		float g = (Configuration.OBSTACLE_SIZE / 2) + Configuration.OBSTACLE_OFFSET;
-		float a = Configuration.WALLDISTANCE;
+		float a = robot.getDistance();
 		
 		float divAG = g / a ;		
 		
@@ -91,9 +91,9 @@ public class AvoidObstacle implements Behavior{
 	}
 	
 	
-	private double calculateExpectation(){
+	private double calculateExpectation() throws RemoteException{
 		double g = (Configuration.OBSTACLE_SIZE / 2) + Configuration.OBSTACLE_OFFSET;
-		double a = Configuration.WALLDISTANCE;
+		double a = robot.getDistance();
 		
 		double h = Math.sqrt(Math.pow(a, 2) + Math.pow(g, 2));
 				
@@ -117,7 +117,7 @@ public class AvoidObstacle implements Behavior{
 	}
 	
 	
-	private boolean detectWall(List<Double> distances){
+	private boolean detectWall(List<Double> distances) throws RemoteException{
 		double expectationValue = calculateExpectation();		
 			
 		Range valueRange = new Range(expectationValue-2, expectationValue+2);

@@ -2,12 +2,16 @@ package pathfinder;
 
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +39,9 @@ public class AvoidObstacleTest {
 	@Test
 	public void correctAngleCalculation() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {		    
 	    
-	    assertEquals(Configuration.WALLDISTANCE, 20, 0);
+		Queue distances = new LinkedList<Float>();
+		distances.add(new Float(20));
+		robot.setDistances(distances);
 	    assertEquals(Configuration.OBSTACLE_SIZE, 40, 0);
 	    assertEquals(Configuration.OBSTACLE_OFFSET, 5, 0);
 	    
@@ -53,7 +59,9 @@ public class AvoidObstacleTest {
 	
 	@Test
 	public void correctExpectationCalculation() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		 assertEquals(Configuration.WALLDISTANCE, 20, 0);
+		 Queue distances = new LinkedList<Float>();
+		 distances.add(new Float(20));
+		 robot.setDistances(distances);
 		 assertEquals(Configuration.OBSTACLE_SIZE, 40, 0);
 		 assertEquals(Configuration.OBSTACLE_OFFSET, 5, 0);		 
 		 
@@ -63,14 +71,17 @@ public class AvoidObstacleTest {
 		 double angle = (double) calculateExpectation.invoke(avoidObstacle);
 		   
 		 
-		 assertEquals(angle, 32, 5);
+		 
+		 assertEquals(32, angle, 5);
 		 
 	}
 	
 	
 	@Test
 	public void correctWallDetection() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		 assertEquals(Configuration.WALLDISTANCE, 20, 0);
+		 Queue expDistances = new LinkedList<Float>();
+		 expDistances.add(new Float(20));
+		 robot.setDistances(expDistances);
 		 assertEquals(Configuration.OBSTACLE_SIZE, 40, 0);
 		 assertEquals(Configuration.OBSTACLE_OFFSET, 5, 0);	
 		 		 
