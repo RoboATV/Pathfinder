@@ -1,5 +1,7 @@
 package pathfinder;
 
+import java.rmi.RemoteException;
+
 import lejos.hardware.Button;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.robot.Robot;
@@ -15,10 +17,15 @@ public class Shutdown implements Behavior{
 	
 	
 	@Override
-	public void action() {
-		
+	public void action() {		
 		if(!suppressed){
-			Main.shutdown();
+			try {
+				robot.shutdown();
+				Main.shutdown();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		
 	}
