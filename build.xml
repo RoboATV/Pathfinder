@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<project name="java-junit-template-project" default="test" basedir=".">
+	
+	<property name="dir.src.main"	value="src" />
+	<property name="dir.src.test"	value="test" />
+	<property name="dir.build.base" value="build" />
+	<property name="dir.build.main" value="${dir.build.base}/main" />
+	<property name="dir.build.test" value="${dir.build.base}/test" />
+
+	<path id="classpath.base">
+		<pathelement location="lib/ev3classes.jar" />
+		<pathelement location="lib/guava-18.0.jar" />
+	</path>
+	
+	<path id="classpath.test">
+		<pathelement location="lib/junit-4.12.jar" />
+		<pathelement location="lib/hamcrest-core-1.3.jar" />
+		<pathelement location="${dir.build.main}" />
+		<path refid="classpath.base" />
+	</path>
+	
+	<target name="test" depends="_run" />
+	
+	<target name="_compile">
+		<delete dir="${dir.build.main}" />
+		<mkdir dir="${dir.build.main}" />
+		<javac srcdir="${dir.src.main}" destdir="${dir.build.main}"
+			includeantruntime="false">
+			<classpath refid="classpath.base" />
+		</javac>
+	</target>
+	
+	<target name="_build" depends="_compile">
+		<delete dir="${dir.build.test}" />
+		<mkdir dir="${dir.build.test}" />
+		<javac srcdir="${dir.src.test}" destdir="${dir.build.test}"
+			includeantruntime="false">
+			<classpath refid="classpath.test" />
+		</javac>
+	</target>
+	
+	<target name="_run" depends="_build">
+		<junit haltonfailure="yes">
+			<classpath>
+				<path refid="classpath.test" />
+				<pathelement location="${dir.build.test}" />
+			</classpath>
+			<formatter type="brief" usefile="false" />
+			<batchtest>
+				<fileset dir="${dir.src.test}" includes="**/PathfinderTestSuite.java" />
+			</batchtest>
+		</junit>
+		<delete dir="${dir.build.base}" />
+	</target>
+</project>
