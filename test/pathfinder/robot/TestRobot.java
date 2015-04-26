@@ -139,6 +139,13 @@ public class TestRobot implements ITestRobot{
 		this.light = light;
 		
 	}
+
+	@Override
+	public void invertTurnDirection() {
+		Direction oldDirection = this.turnDirection;
+		turnDirection = Direction.getOpposite(oldDirection);
+		
+	}
 	
 	
 	

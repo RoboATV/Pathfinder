@@ -116,6 +116,7 @@ public class AvoidObstacle implements Behavior{
 		robot.rotate(robot.getTurnDirection().getTurnAngle());
 		robot.travel(Configuration.GRID_SIZE);
 		robot.rotate(robot.getTurnDirection().getTurnAngle());
+		robot.invertTurnDirection();
 	}
 	
 	

@@ -21,6 +21,7 @@ public interface IRobot {
 	public Orientation getOrientation();	
 	public Direction getTurnDirection();
 	public void setTurnDirection(Direction turnDirection);
+	public void invertTurnDirection();
 	
 	
 	//sensors

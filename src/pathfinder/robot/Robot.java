@@ -226,5 +226,13 @@ public class Robot implements IRobot{
 		color.fetchSample(sample, 0);
 		return sample[0];
 	}
+
+
+	@Override
+	public void invertTurnDirection() {
+		Direction oldDirection = this.turnDirection;
+		turnDirection = Direction.getOpposite(oldDirection);
+		
+	}
 	
 }
