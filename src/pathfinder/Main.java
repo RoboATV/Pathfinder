@@ -12,6 +12,15 @@ import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Robot;
 
 public class Main {
+	
+	private static Behavior[] behaviors = new Behavior[3];
+	private static Arbitrator arbitrator = new Arbitrator(behaviors);
+	
+	public static void shutdown(){
+		arbitrator.stop();
+		System.exit(0);
+	}
+	
 
 	public static void main(String[] args) {
 		
@@ -28,10 +37,12 @@ public class Main {
 			Behavior drive = new Drive(robot, locator);
 			Behavior avoidObstacle = new AvoidObstacle(robot, locator);
 			
-			Behavior[] behaviors = new Behavior[2];
+			Behavior shutdown = new Shutdown(robot);
+			
+			
 			behaviors[0] = drive;
 			behaviors[1] = avoidObstacle;
-			
+			behaviors[2] = shutdown;
 			
 			try {
 				System.out.println("align robot");
@@ -40,12 +51,12 @@ public class Main {
 				System.out.println(e.toString());
 			}
 			System.out.println("initializing arbitrator");
-			Arbitrator arbitrator = new Arbitrator(behaviors);
+			
 			arbitrator.start();
 			
 //			locator.relocate(new Coordinate(0, 20));
 			
-			robot.shutdown();
+			
 		} catch(RemoteException | MalformedURLException | NotBoundException e){
 			e.printStackTrace();
 		}
