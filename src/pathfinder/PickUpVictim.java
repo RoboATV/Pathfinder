@@ -10,13 +10,13 @@ import pathfinder.rescueVictim.MoveTravel;
 import pathfinder.rescueVictim.MoveTurn;
 import pathfinder.robot.Robot;
 
-public class RescueVictim implements Behavior {
+public class PickUpVictim implements Behavior {
 	private Robot	robot;
 	private boolean	suppressed = false;
 	
 	private ArrayList<IMove> movePath = new ArrayList<IMove>();
 	
-	public RescueVictim(Robot robot){
+	public PickUpVictim(Robot robot){
 		this.robot = robot;
 	}
 	

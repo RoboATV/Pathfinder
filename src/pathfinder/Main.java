@@ -33,12 +33,12 @@ public class Main {
 			System.out.println("loading behaviors");
 			Behavior drive			= new Drive(robot, locator);
 			Behavior avoidObstacle	= new AvoidObstacle(robot, locator);
-			Behavior rescueVictim	= new RescueVictim(robot);
+			Behavior pickUpVictim	= new PickUpVictim(robot);
 			Behavior shutdown		= new Shutdown(robot);
 			
 			behaviors[0] = drive;
 			behaviors[1] = avoidObstacle;
-			behaviors[2] = rescueVictim;
+			behaviors[2] = pickUpVictim;
 			behaviors[3] = shutdown;
 			
 			try {
