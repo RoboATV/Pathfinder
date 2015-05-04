@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import lejos.robotics.geometry.Rectangle2D;
 import lejos.robotics.subsumption.Behavior;
-import pathfinder.location.Locator;
 import pathfinder.rescueVictim.IMove;
 import pathfinder.rescueVictim.MoveTravel;
 import pathfinder.rescueVictim.MoveTurn;
@@ -14,13 +13,11 @@ import pathfinder.robot.Robot;
 public class RescueVictim implements Behavior {
 	private Robot	robot;
 	private boolean	suppressed = false;
-	private Locator	locator;
 	
 	private ArrayList<IMove> movePath = new ArrayList<IMove>();
 	
-	public RescueVictim(Robot robot, Locator locator){
+	public RescueVictim(Robot robot){
 		this.robot = robot;
-		this.locator = locator;
 	}
 	
 	@Override
