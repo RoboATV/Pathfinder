@@ -42,8 +42,8 @@ public class AvoidObstacle implements Behavior{
 	@Override
 	public void action() {
 		if(!suppressed){
-			enterLastCoordinate(robot.getMovement());
-			this.robot.stop();	
+			enterLastCoordinate(robot.carriage_getMovement());
+			this.robot.carriage_stop();	
 			try{
 				List<Double> obstacleEdges = this.measureObstacle();
 				if(this.detectWall(obstacleEdges)){
@@ -131,10 +131,10 @@ public class AvoidObstacle implements Behavior{
 	
 	
 	private void turnRobot() throws TurnNotPossible{
-		robot.rotate(robot.getTurnDirection().getTurnAngle());
+		robot.carriage_rotate(robot.getTurnDirection().getTurnAngle());
 		Coordinate newPos = new Coordinate(0, Configuration.GRID_SIZE);
 		locator.relocateRelative(newPos);
-		robot.rotate(robot.getTurnDirection().getTurnAngle());
+		robot.carriage_rotate(robot.getTurnDirection().getTurnAngle());
 		robot.invertTurnDirection();
 	}
 	
@@ -142,17 +142,17 @@ public class AvoidObstacle implements Behavior{
 	private void avoidObstacle(List<Double> obstacleEdges) throws TurnNotPossible, RemoteException{
 		
 		Direction turnDirection = turnDirection(obstacleEdges);			
-		robot.rotate(turnDirection.getTurnAngle());
-		robot.travel(Configuration.TOTAL_OBSTACLE_SIZE);		
-		robot.rotate(Direction.getOpposite(turnDirection).getTurnAngle());
-		robot.travel(Configuration.WALLDISTANCE + Configuration.OBSTACLE_OFFSET);
+		robot.carriage_rotate(turnDirection.getTurnAngle());
+		robot.carriage_travel(Configuration.TOTAL_OBSTACLE_SIZE);		
+		robot.carriage_rotate(Direction.getOpposite(turnDirection).getTurnAngle());
+		robot.carriage_travel(Configuration.WALLDISTANCE + Configuration.OBSTACLE_OFFSET);
 		
 		travelVertical(Direction.getOpposite(turnDirection));	
-		robot.rotate(Direction.getOpposite(turnDirection).getTurnAngle());
+		robot.carriage_rotate(Direction.getOpposite(turnDirection).getTurnAngle());
 		
-		robot.travel(Configuration.TOTAL_OBSTACLE_SIZE);
+		robot.carriage_travel(Configuration.TOTAL_OBSTACLE_SIZE);
 		
-		robot.rotate(turnDirection.getTurnAngle());
+		robot.carriage_rotate(turnDirection.getTurnAngle());
 		
 	}
 	
@@ -173,7 +173,7 @@ public class AvoidObstacle implements Behavior{
 		Range distanceRange = new Range(distance-5, distance+5);
 		
 		while(distanceRange.contains(robot.getDistance())){
-			robot.travel(10);
+			robot.carriage_travel(10);
 		}
 		
 		

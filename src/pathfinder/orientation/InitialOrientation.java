@@ -39,7 +39,7 @@ public class InitialOrientation {
 		}
 		
 		System.out.println("no wall");
-		robot.rotate(Configuration.INITIAL_DIRECTION.getTurnAngle());
+		robot.carriage_rotate(Configuration.INITIAL_DIRECTION.getTurnAngle());
 		
 		return Direction.getOpposite(Configuration.INITIAL_DIRECTION);
 		

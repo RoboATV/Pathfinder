@@ -49,10 +49,10 @@ public class TurnArm implements ITurnArm {
 	public void rotate(int degrees) throws RemoteException {
 		int degreesRatio = (int) Math.round(degrees * this.ratio);
 		
-		if(invertDirection == true)
+		if(this.invertDirection == true)
 			degreesRatio *= -1;
 		
-		motor.rotate(degreesRatio);
+		this.motor.rotate(degreesRatio);
 		
 		this.direction += degrees;
 	}

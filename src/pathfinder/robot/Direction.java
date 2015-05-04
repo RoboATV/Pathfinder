@@ -10,7 +10,6 @@ public enum Direction {
 
 		@Override
 		public int getTurnAngle() {
-			// TODO Auto-generated method stub
 			return -90;
 		}
 	},RIGHT {
@@ -21,7 +20,6 @@ public enum Direction {
 
 		@Override
 		public int getTurnAngle() {
-			// TODO Auto-generated method stub
 			return 90;
 		}
 	};
@@ -33,10 +31,6 @@ public enum Direction {
 		return Direction.LEFT;
 	}
 	
-	
 	public abstract int getNumerical();  
 	public abstract int getTurnAngle();
-	
-	
-	
 }

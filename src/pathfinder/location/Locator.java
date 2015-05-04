@@ -40,24 +40,24 @@ public class Locator {
 		int distanceX = destination.X - currentPos.X;
 		int distanceY = destination.Y - currentPos.Y;
 		
-		if(this.robot.getOrientation() == Orientation.NORTH){
+		if(this.robot.carriage_getOrientation() == Orientation.NORTH){
 			if(distanceY != 0){
-				robot.travel(distanceY);
+				robot.carriage_travel(distanceY);
 			} 
 			if(distanceX > 0){
-				robot.rotate(90);
-				robot.travel(distanceX);
-				robot.rotate(-90);
+				robot.carriage_rotate(90);
+				robot.carriage_travel(distanceX);
+				robot.carriage_rotate(-90);
 			} else if(distanceX < 0){
-				robot.rotate(-90);
-				robot.travel(distanceX);
-				robot.rotate(90);
+				robot.carriage_rotate(-90);
+				robot.carriage_travel(distanceX);
+				robot.carriage_rotate(90);
 			}			
-		} else if(this.robot.getOrientation() == Orientation.EAST){
+		} else if(this.robot.carriage_getOrientation() == Orientation.EAST){
 			
-		} else if(this.robot.getOrientation() == Orientation.SOUTH){
+		} else if(this.robot.carriage_getOrientation() == Orientation.SOUTH){
 			
-		} else if(this.robot.getOrientation() == Orientation.WEST){
+		} else if(this.robot.carriage_getOrientation() == Orientation.WEST){
 			
 		}
 		
@@ -66,31 +66,30 @@ public class Locator {
 	
 	private void relocateRobotRelative(Coordinate destination) throws TurnNotPossible{
 		if(destination.X < 0){
-			robot.rotate(Direction.LEFT.getTurnAngle());
-			robot.travel(Math.abs(destination.X));
-			robot.rotate(Direction.getOpposite(Direction.LEFT).getTurnAngle());
+			robot.carriage_rotate(Direction.LEFT.getTurnAngle());
+			robot.carriage_travel(Math.abs(destination.X));
+			robot.carriage_rotate(Direction.getOpposite(Direction.LEFT).getTurnAngle());
 		} else if(destination.X > 0) {
-			robot.rotate(Direction.RIGHT.getTurnAngle());
-			robot.travel(Math.abs(destination.X));
-			robot.rotate(Direction.getOpposite(Direction.RIGHT).getTurnAngle());
+			robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
+			robot.carriage_travel(Math.abs(destination.X));
+			robot.carriage_rotate(Direction.getOpposite(Direction.RIGHT).getTurnAngle());
 		}
 				
-		robot.travel(destination.Y);
-		
+		robot.carriage_travel(destination.Y);
 	}
 	
 	public Coordinate calcNewPos(Coordinate destination){
 		Coordinate newPos = currentPos;
 		
-		if(robot.getOrientation() == Orientation.NORTH){
+		if(robot.carriage_getOrientation() == Orientation.NORTH){
 			newPos.X += destination.X;
 			newPos.Y += destination.Y;
 			return newPos;
-		} else if(robot.getOrientation() == Orientation.EAST){
+		} else if(robot.carriage_getOrientation() == Orientation.EAST){
 			newPos.X += destination.Y;
 			newPos.Y -= destination.X;
 			return newPos;
-		} else if(robot.getOrientation() == Orientation.SOUTH){
+		} else if(robot.carriage_getOrientation() == Orientation.SOUTH){
 			newPos.X -= destination.X;
 			newPos.Y -= destination.Y;
 			return newPos;
@@ -173,17 +172,17 @@ public class Locator {
 	
 	private Coordinate invokePosition(Coordinate coordinate){
 		
-		if(this.robot.getOrientation() == Orientation.NORTH){
+		if(this.robot.carriage_getOrientation() == Orientation.NORTH){
 			coordinate.X += this.currentPos.X;
 			coordinate.Y += this.currentPos.Y;
 			return coordinate;
 		}
-		if(this.robot.getOrientation() == Orientation.SOUTH){
+		if(this.robot.carriage_getOrientation() == Orientation.SOUTH){
 			coordinate.Y = currentPos.Y - coordinate.Y;
 			coordinate.X = this.currentPos.X - coordinate.X;
 			return coordinate;
 		}
-		if(this.robot.getOrientation() == Orientation.EAST){		
+		if(this.robot.carriage_getOrientation() == Orientation.EAST){		
 			Coordinate newCoordinate = new Coordinate();			
 			newCoordinate.X = currentPos.X + coordinate.Y;
 			newCoordinate.Y = currentPos.Y - coordinate.X;			
