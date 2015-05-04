@@ -9,6 +9,7 @@ import lejos.robotics.subsumption.Behavior;
 import pathfinder.behaviors.AvoidObstacle;
 import pathfinder.behaviors.Drive;
 import pathfinder.behaviors.PickUpVictim;
+import pathfinder.behaviors.RescueVictim;
 import pathfinder.behaviors.Shutdown;
 import pathfinder.location.Locator;
 import pathfinder.orientation.InitialOrientation;
@@ -16,7 +17,7 @@ import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Robot;
 
 public class Main {
-	private static Behavior[] behaviors		= new Behavior[4];
+	private static Behavior[] behaviors		= new Behavior[5];
 	private static Arbitrator arbitrator	= new Arbitrator(behaviors);
 	
 	public static void shutdown(){
@@ -38,12 +39,14 @@ public class Main {
 			Behavior drive			= new Drive(robot, locator);
 			Behavior avoidObstacle	= new AvoidObstacle(robot, locator);
 			Behavior pickUpVictim	= new PickUpVictim(robot);
+			Behavior rescueVictim	= new RescueVictim(robot, locator);
 			Behavior shutdown		= new Shutdown(robot);
 			
 			behaviors[0] = drive;
 			behaviors[1] = avoidObstacle;
 			behaviors[2] = pickUpVictim;
-			behaviors[3] = shutdown;
+			behaviors[3] = rescueVictim;
+			behaviors[4] = shutdown;
 			
 			try {
 				System.out.println("align robot");
