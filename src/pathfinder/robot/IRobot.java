@@ -2,6 +2,7 @@ package pathfinder.robot;
 
 import java.rmi.RemoteException;
 
+import lejos.robotics.geometry.Rectangle2D;
 import lejos.robotics.navigation.Move;
 import pathfinder.components.ICarriage;
 import pathfinder.components.ITurnArm;
@@ -65,7 +66,7 @@ public interface IRobot {
 	public boolean turnArm_isCentered();
 	
 	/**
-	 * Rotate the robot a specified amount of degrees,
+	 * Rotate the robot a specified amount of degrees.
 	 * 
 	 * @param	int	degrees
 	 *   the degrees to rotate.
@@ -75,6 +76,16 @@ public interface IRobot {
 	 * @see	ICarriage#rotate()
 	 */
 	public void carriage_rotate(int degrees) throws TurnNotPossible;
+	
+	/**
+	 * Rotate the robot a specified amount of degrees. Do not check if the orientation would be correct afterwards!
+	 * 
+	 * @param	int	degrees
+	 *   the degrees to rotate.
+	 * 
+	 * @see	ICarriage#rotateUnchecked()
+	 */
+	public void carriage_rotateUnchecked(int degrees);
 	
 	/**
 	 * Turn 90 degrees to the left.
@@ -124,6 +135,16 @@ public interface IRobot {
 	public void carriage_stop();
 	
 	/**
+	 * Check if the carriage is moving.
+	 * 
+	 * @return	boolean
+	 *   if the carriage is moving.
+	 * 
+	 * @see	ICarriage#stop()
+	 */
+	public boolean carriage_isMoving();
+	
+	/**
 	 * Get the actual movement while the robot moves.
 	 * 
 	 * @return	Move
@@ -158,6 +179,16 @@ public interface IRobot {
 	public void grappler_release();
 	
 	/**
+	 * Returns if the grappler already has an object loaded.
+	 * 
+	 * @return	boolean
+	 *   if the grappler is loaded
+	 * 
+	 * @see	IGrappler#isLoaded()
+	 */
+	public boolean grappler_isLoaded();
+	
+	/**
 	 * Get the now used turn direction.
 	 * 
 	 * @return	Direction
@@ -187,7 +218,29 @@ public interface IRobot {
 	 */
 	public float getDistance() throws RemoteException;
 	
-//	public float getHeading() throws RemoteException;
-//	public float getLightIntensity();
-//	public float getLightColor();
+	/**
+	 * Checks if there is any victim detected by the color sensor.
+	 * 
+	 * @return	boolean
+	 *   if there is any victim detected by the color sensor.
+	 */
+	public boolean victim_detectedColorSensor();
+	
+	/**
+	 * Checks if there is any victim detected by the camera sensor.
+	 * 
+	 * @return	boolean
+	 *   if there is any victim detected by the camera sensor.
+	 */
+	public boolean victim_detectedCamera();
+	
+	/**
+	 * Returns the location of a rectangle containing the victim in the camera picture.
+	 * 
+	 * @return	Rectangle2D
+	 *   the location of the victim in the camera picture. If there is no victim detected, return null.
+	 */
+	public Rectangle2D victim_getLocation();
+	
+//	public float getHeading();
 }

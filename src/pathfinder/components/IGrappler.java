@@ -13,4 +13,12 @@ public interface IGrappler {
 	 * Release an object.
 	 */
 	public void release();
+	
+	/**
+	 * Returns if there is already an object loaded.
+	 * 
+	 * @return	boolean
+	 *   if an object is loaded
+	 */
+	public boolean isLoaded();
 }

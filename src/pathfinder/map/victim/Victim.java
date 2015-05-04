@@ -2,6 +2,7 @@ package pathfinder.map.victim;
 
 import pathfinder.map.MapObject;
 
+// TODO: Check if needed. If not -> delete.
 public class Victim extends MapObject{
 
 	private boolean rescued = false;

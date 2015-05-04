@@ -1,9 +1,10 @@
 package pathfinder.configuration;
 
-import pathfinder.orientation.Orientation;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
+import lejos.robotics.Color;
+import pathfinder.orientation.Orientation;
 
 public class RobotConfiguration {
 	public final static Port	PORT_LEFT_DRIVE		= MotorPort.C;
@@ -13,6 +14,7 @@ public class RobotConfiguration {
 	public final static String	PORT_TURN_ARM		= "D";
 	public final static String	PORT_DISTANCE		= "S4";
 	public final static String	PORT_COMPASS		= "S3";
+	public final static String	PORT_CAMERA			= "S1";
 	public final static Port	PORT_COLOR			= SensorPort.S2;
 	
 	public final static double	WHEEL_DIAMETER	= 41.5f;
@@ -35,4 +37,6 @@ public class RobotConfiguration {
 	
 	public final static int	ROTATE_GRAPPLER_GRAP	= 180;
 	public final static int	ROTATE_GRAPPLER_MOVE	= 270;
+	
+	public final static int[] VICTIM_COLORS = { Color.RED, Color.BLUE };
 }

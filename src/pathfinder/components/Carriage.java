@@ -56,6 +56,11 @@ public class Carriage implements ICarriage {
 	}
 	
 	@Override
+	public void rotateUnchecked(int degrees) {
+		this.pilot.rotate(degrees);
+	}
+	
+	@Override
 	public void turnLeft() throws TurnNotPossible {
 		this.rotate(-90);
 	}
@@ -73,6 +78,11 @@ public class Carriage implements ICarriage {
 	@Override
 	public void stop() {
 		this.pilot.stop();
+	}
+	
+	@Override
+	public boolean isMoving() {
+		return this.pilot.isMoving();
 	}
 	
 	@Override

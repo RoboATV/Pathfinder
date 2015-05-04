@@ -3,6 +3,7 @@ package pathfinder.robot;
 import java.rmi.RemoteException;
 import java.util.Queue;
 
+import lejos.robotics.geometry.Rectangle2D;
 import lejos.robotics.navigation.Move;
 import pathfinder.orientation.NoOrientationToAngle;
 import pathfinder.orientation.Orientation;
@@ -14,8 +15,6 @@ public class TestRobot implements ITestRobot{
 	private Orientation orientation;
 	private Queue<Float> distances;
 	private Queue<Float> headings;
-	private Queue<Float> colors;
-	private Queue<Float> light;
 	private Direction turnDirection;
 	private int travelSpeed;
 	private double rotateSpeed;
@@ -69,36 +68,6 @@ public class TestRobot implements ITestRobot{
 	@Override
 	public void setTurnDirection(Direction turnDirection){
 		this.turnDirection = turnDirection;
-	}
-
-//	@Override
-//	public float getLightIntensity() {
-//		if(light.isEmpty()){
-//			return -1;
-//		}
-//		float lightSample = light.remove();
-//		return lightSample;
-//	}
-
-//	@Override
-//	public float getLightColor() {
-//		if(colors.isEmpty()){
-//			return -1;
-//		}
-//		float color = colors.remove();
-//		return color;
-//	}
-
-	@Override
-	public void setColors(Queue<Float> colors) {
-		this.colors = colors;
-		
-	}
-
-	@Override
-	public void setLight(Queue<Float> light) {
-		this.light = light;
-		
 	}
 
 	@Override
@@ -229,6 +198,48 @@ public class TestRobot implements ITestRobot{
 	public void grappler_release() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void carriage_rotateUnchecked(int degrees) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public boolean carriage_isMoving() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean grappler_isLoaded() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean victim_detectedColorSensor() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public boolean victim_detectedCamera() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public Rectangle2D victim_getLocation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

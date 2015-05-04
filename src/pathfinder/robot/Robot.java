@@ -4,13 +4,16 @@ import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import lejos.hardware.device.NXTCam;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
+import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.remote.ev3.RMIRegulatedMotor;
 import lejos.remote.ev3.RemoteEV3;
 import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
+import lejos.robotics.geometry.Rectangle2D;
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Move;
 import pathfinder.components.Carriage;
@@ -58,14 +61,31 @@ public class Robot implements IRobot{
 	 * 
 	 * @type	SampleProvider
 	 */
-	private SampleProvider		distance;	
+	private SampleProvider		distance;
+	
+	/**
+	 * The camera sensor.
+	 * 
+	 * @type	NXTCam
+	 */
+	private NXTCam				cameraSensor;
 	
 //	private MindsensorsCompass	compassSensor;
 //	private SampleProvider		compass;
 	
-//	private EV3ColorSensor	colorSensor;
-//	private SampleProvider	color;
-//	private SampleProvider	light;
+	/**
+	 * The color sensor.
+	 * 
+	 * @type	EV3ColorSensor
+	 */
+	private EV3ColorSensor	colorSensor;
+	
+	/**
+	 * The color id sample provider.
+	 * 
+	 * @type	SampleProvider
+	 */
+	private SampleProvider	color;
 	
 	/**
 	 * The turn direction for the robot. If the robot should turn, this direction is used to do the turn.
@@ -112,13 +132,18 @@ public class Robot implements IRobot{
 		this.distanceSensor	= new EV3UltrasonicSensor(distancePort);
 		this.distance		= this.distanceSensor.getDistanceMode();
 		
+		Port cameraPort		= remote.getPort(RobotConfiguration.PORT_CAMERA);
+		this.cameraSensor	= new NXTCam(cameraPort);
+		this.cameraSensor.sortBy(NXTCam.COLOR);
+		this.cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
+		this.cameraSensor.enableTracking(true);
+		
 //		Port compassPort	= remote.getPort(RobotConfiguration.PORT_COMPASS);
 //		this.compassSensor	= new MindsensorsCompass(compassPort);
 //		this.compass		= this.compassSensor.getCompassMode();
 		
-//		this.colorSensor	= new EV3ColorSensor(RobotConfiguration.PORT_COLOR);
-//		this.color			= this.colorSensor.getColorIDMode();
-//		this.light			= this.colorSensor.getAmbientMode();
+		this.colorSensor	= new EV3ColorSensor(RobotConfiguration.PORT_COLOR);
+		this.color			= this.colorSensor.getColorIDMode();
 	}
 	
 	/**
@@ -128,8 +153,9 @@ public class Robot implements IRobot{
 	 */
 	public void shutdown() throws RemoteException{
 		this.distanceSensor.close();
+		this.cameraSensor.close();
 //		this.compassSensor.close();
-//		this.colorSensor.close();
+		this.colorSensor.close();
 		this.turnArm.shutdown();
 	}
 
@@ -169,6 +195,11 @@ public class Robot implements IRobot{
 	}
 	
 	@Override
+	public void carriage_rotateUnchecked(int degrees) {
+		this.carriage.rotateUnchecked(degrees);
+	}
+	
+	@Override
 	public void carriage_turnLeft() throws TurnNotPossible {
 		this.carriage.turnLeft();
 	}
@@ -194,6 +225,11 @@ public class Robot implements IRobot{
 	}
 	
 	@Override
+	public boolean carriage_isMoving() {
+		return this.carriage.isMoving();
+	}
+	
+	@Override
 	public Move carriage_getMovement() {
 		return this.carriage.getMovement();
 	}
@@ -211,6 +247,11 @@ public class Robot implements IRobot{
 	@Override
 	public void grappler_release() {
 		this.grappler.release();
+	}
+	
+	@Override
+	public boolean grappler_isLoaded() {
+		return this.grappler.isLoaded();
 	}
 	
 	@Override
@@ -236,27 +277,40 @@ public class Robot implements IRobot{
 		
 		return sample[0] * 100;
 	}
+	
+	@Override
+	public boolean victim_detectedCamera() {
+		return this.cameraSensor.getNumberOfObjects() > 0;
+	}
+	
+	@Override
+	public Rectangle2D victim_getLocation() {
+		if(this.victim_detectedCamera()) {
+			return this.cameraSensor.getRectangle(0);
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public boolean victim_detectedColorSensor() {
+		float[] sample = new float[this.color.sampleSize()];
+		this.color.fetchSample(sample, 0);
+		int detected = (int) sample[0];
+		
+		for (int i = 0; i < RobotConfiguration.VICTIM_COLORS.length; i++) {
+			if(detected == RobotConfiguration.VICTIM_COLORS[i]) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 //	@Override
-//	public float getHeading() throws RemoteException {
+//	public float getHeading() {
 //		float[] sample = new float[this.compass.sampleSize()];
 //		this.compass.fetchSample(sample, 0);
-//		
-//		return sample[0];
-//	}
-
-//	@Override
-//	public float getLightIntensity() {
-//		float[] sample = new float[this.light.sampleSize()];
-//		this.light.fetchSample(sample, 0);
-//		
-//		return sample[0];
-//	}
-
-//	@Override
-//	public float getLightColor() {
-//		float[] sample = new float[this.color.sampleSize()];
-//		this.color.fetchSample(sample, 0);
 //		
 //		return sample[0];
 //	}
