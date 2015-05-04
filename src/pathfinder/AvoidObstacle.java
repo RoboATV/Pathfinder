@@ -134,31 +134,34 @@ public class AvoidObstacle implements Behavior{
 	
 	private void avoidObstacle(List<Double> obstacleEdges) throws TurnNotPossible, RemoteException{
 		
-		Direction turnDirection = turnDirection(obstacleEdges);			
+		Float obstacleDistance = robot.getDistance();
+		Direction turnDirection = getTurnDirection(obstacleEdges);			
+		
 		robot.carriage_rotate(turnDirection.getTurnAngle());
-		robot.carriage_travel(Configuration.TOTAL_OBSTACLE_SIZE);		
+		locator.travelAhead(Configuration.TOTAL_OBSTACLE_SIZE);
+			
 		robot.carriage_rotate(Direction.getOpposite(turnDirection).getTurnAngle());
-		robot.carriage_travel(Configuration.WALLDISTANCE + Configuration.OBSTACLE_OFFSET);
+		travelVertical(Direction.getOpposite(turnDirection), obstacleDistance);	
 		
-		travelVertical(Direction.getOpposite(turnDirection));	
-		robot.carriage_rotate(Direction.getOpposite(turnDirection).getTurnAngle());
 		
-		robot.carriage_travel(Configuration.TOTAL_OBSTACLE_SIZE);
-		
+		robot.carriage_rotate(Direction.getOpposite(turnDirection).getTurnAngle());		
+		locator.travelAhead(Configuration.TOTAL_OBSTACLE_SIZE);		
 		robot.carriage_rotate(turnDirection.getTurnAngle());
 		
 	}
 	
-	private Direction turnDirection(List<Double> distances){
+	private Direction getTurnDirection(List<Double> distances){
 		if(distances.get(0) > distances.get(1)){
-			return Direction.LEFT;
+			return Direction.RIGHT;
 		}
 				
-		return Direction.RIGHT;
+		return Direction.LEFT;
 	}
 	
 	
-	private void travelVertical(Direction obstacleSide) throws RemoteException{
+	private void travelVertical(Direction obstacleSide, float obstacleDistance) throws RemoteException{
+		locator.travelAhead((int) (Configuration.DISTANCE_OFFSET + obstacleDistance));
+		
 		robot.turnArm_rotate(obstacleSide.getTurnAngle());
 		
 		float distance = robot.getDistance();
@@ -166,9 +169,9 @@ public class AvoidObstacle implements Behavior{
 		Range distanceRange = new Range(distance-5, distance+5);
 		
 		while(distanceRange.contains(robot.getDistance())){
-			robot.carriage_travel(10);
+			locator.travelAhead(10);
 		}
 		
-		
+		locator.travelAhead(10);
 	}
 }

@@ -10,6 +10,8 @@ public class Configuration {
 	public final static int OBSTACLE_OFFSET = 5;
 	public final static int TOTAL_OBSTACLE_SIZE = OBSTACLE_OFFSET + OBSTACLE_SIZE;
 	
+	public final static int DISTANCE_OFFSET = 10;
+	
 	public final static Direction INITIAL_DIRECTION = Direction.RIGHT;
 	
 	public final static int GRID_SIZE = 40;

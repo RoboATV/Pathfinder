@@ -149,7 +149,7 @@ public class TestRobot implements ITestRobot{
 	@Override
 	public void carriage_rotate(int degrees) throws TurnNotPossible {
 		int newAngle = this.orientation.getAngle() + degrees;
-		
+		System.out.println(newAngle);
 		try {
 			this.orientation = Orientation.getOrientation(newAngle);
 		} catch (NoOrientationToAngle e) {

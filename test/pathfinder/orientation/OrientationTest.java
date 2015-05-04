@@ -36,6 +36,7 @@ public class OrientationTest {
 			assertEquals(Orientation.getOrientation(90), Orientation.EAST);
 			assertEquals(Orientation.getOrientation(180), Orientation.SOUTH);
 			assertEquals(Orientation.getOrientation(270), Orientation.WEST);
+			assertEquals(Orientation.getOrientation(-90), Orientation.WEST);
 			
 		} catch (NoOrientationToAngle e){
 			fail(e.getMessage());

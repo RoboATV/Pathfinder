@@ -29,10 +29,19 @@ public class Locator {
 	
 	public Locator(IRobot robot){
 		System.out.println("initializing locator");
-		this.robot = robot;
-		this.currentPos = new Coordinate(0, 0);
+		this.robot = robot;		
 		robotTrack = new ArrayList<Coordinate>();
+		setCurrentPosition(new Coordinate(0, 0));
+		
 	}
+	
+	
+	private void setCurrentPosition(Coordinate position){
+		this.currentPos = position;
+		robotTrack.add(position);
+		System.out.println(robotTrack);
+	}
+	
 	
 	
 	public void enterCoordinateFromMove(Move move){
@@ -42,8 +51,8 @@ public class Locator {
 		System.out.println("last position relative " + relPos);
 		System.out.println("last position absolute " + absPos);
 		
-		robotTrack.add(absPos);
-		currentPos = absPos;
+		
+		setCurrentPosition(absPos);
 	}
 	
 	
@@ -80,20 +89,6 @@ public class Locator {
 	}	
 	
 	
-	@Deprecated
-	private void relocateRobotRelative(Coordinate destination) throws TurnNotPossible{
-		if(destination.X < 0){
-			robot.carriage_rotate(Direction.LEFT.getTurnAngle());
-			robot.carriage_travel(Math.abs(destination.X));
-			robot.carriage_rotate(Direction.getOpposite(Direction.LEFT).getTurnAngle());
-		} else if(destination.X > 0) {
-			robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
-			robot.carriage_travel(Math.abs(destination.X));
-			robot.carriage_rotate(Direction.getOpposite(Direction.RIGHT).getTurnAngle());
-		}
-				
-		robot.carriage_travel(destination.Y);
-	}
 	
 	public Coordinate calcNewPos(Coordinate destination){
 		Coordinate newPos = currentPos;
@@ -117,19 +112,13 @@ public class Locator {
 		
 	}
 	
-	@Deprecated
-	public void relocateRelative(Coordinate destination) throws TurnNotPossible{
-		System.out.println("relocate to " + destination);
-		robotTrack.add(currentPos);
-		relocateRobotRelative(destination);
-		currentPos = calcNewPos(destination);
-	}
+	
 	
 	public void relocateAbsolute(Coordinate destination) throws TurnNotPossible{
 		System.out.println("relocate to " + destination);
-		robotTrack.add(this.currentPos);
+		
 		relocateRobotAbsolute(destination);
-		this.currentPos = destination;
+		setCurrentPosition(destination);
 	}
 	
 	
@@ -251,7 +240,7 @@ public class Locator {
 	
 	public void travelAhead(int distance){
 		Coordinate relNewPos = new Coordinate(0, distance);
-		this.currentPos = calcNewPos(relNewPos);
+		setCurrentPosition(calcNewPos(relNewPos));
 		
 		robot.carriage_travel(distance);
 	}

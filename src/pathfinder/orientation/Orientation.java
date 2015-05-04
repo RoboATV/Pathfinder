@@ -38,6 +38,10 @@ public enum Orientation implements IOrientation{
 			angle = 360 + angle;
 		}
 		
+		if(angle == 360){
+			angle = 0;
+		}
+		
 		for(Orientation orientation : Orientation.values()){
 			if(orientation.getAngle() == angle){
 				return orientation;
