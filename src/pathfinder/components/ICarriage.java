@@ -48,6 +48,14 @@ public interface ICarriage {
 	public void stop();
 	
 	/**
+	 * Check if the robot is moving.
+	 * 
+	 * @return	boolean
+	 *   if the robot is moving.
+	 */
+	public boolean isMoving();
+	
+	/**
 	 * Get the actual movement while the robot moves.
 	 * 
 	 * @return	Move

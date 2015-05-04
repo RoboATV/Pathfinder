@@ -32,6 +32,13 @@ public class Grappler implements IGrappler {
 	private int rotateGrapDegrees;
 	
 	/**
+	 * Stores if the grappler is loaded.
+	 * 
+	 * @type	boolean
+	 */
+	private boolean isLoaded;
+	
+	/**
 	 * Create a new grappler.
 	 * 
 	 * @param	RegulatedMotor	move
@@ -50,17 +57,33 @@ public class Grappler implements IGrappler {
 		this.grap				= grap;
 		this.rotateMoveDegrees	= rotateMoveDegrees;
 		this.rotateGrapDegrees	= (int) (rotateGrapDegrees * grapRatio);
+		this.isLoaded			= false;
 	}
 	
 	@Override
 	public void grap() {
+		if(this.isLoaded()) {
+			return;
+		}
+		
 		this.move.rotate(this.rotateMoveDegrees);
 		this.grap.rotate(this.rotateGrapDegrees);
 		this.move.rotate(-this.rotateMoveDegrees);
+		this.isLoaded = true;
 	}
 
 	@Override
 	public void release() {
+		if(!this.isLoaded()) {
+			return;
+		}
+		
 		this.grap.rotate(-this.rotateGrapDegrees);
+		this.isLoaded = false;
+	}
+	
+	@Override
+	public boolean isLoaded() {
+		return this.isLoaded;
 	}
 }

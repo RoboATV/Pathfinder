@@ -76,6 +76,11 @@ public class Carriage implements ICarriage {
 	}
 	
 	@Override
+	public boolean isMoving() {
+		return this.pilot.isMoving();
+	}
+	
+	@Override
 	public Move getMovement() {
 		return this.pilot.getMovement();
 	}

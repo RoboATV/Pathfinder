@@ -13,6 +13,7 @@ public class RobotConfiguration {
 	public final static String	PORT_TURN_ARM		= "D";
 	public final static String	PORT_DISTANCE		= "S4";
 	public final static String	PORT_COMPASS		= "S3";
+	public final static String	PORT_CAMERA			= "S1";
 	public final static Port	PORT_COLOR			= SensorPort.S2;
 	
 	public final static double	WHEEL_DIAMETER	= 41.5f;

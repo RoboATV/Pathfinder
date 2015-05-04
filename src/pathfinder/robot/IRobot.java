@@ -2,6 +2,7 @@ package pathfinder.robot;
 
 import java.rmi.RemoteException;
 
+import lejos.robotics.geometry.Rectangle2D;
 import lejos.robotics.navigation.Move;
 import pathfinder.components.ICarriage;
 import pathfinder.components.ITurnArm;
@@ -124,6 +125,16 @@ public interface IRobot {
 	public void carriage_stop();
 	
 	/**
+	 * Check if the carriage is moving.
+	 * 
+	 * @return	boolean
+	 *   if the carriage is moving.
+	 * 
+	 * @see	ICarriage#stop()
+	 */
+	public boolean carriage_isMoving();
+	
+	/**
 	 * Get the actual movement while the robot moves.
 	 * 
 	 * @return	Move
@@ -158,6 +169,16 @@ public interface IRobot {
 	public void grappler_release();
 	
 	/**
+	 * Returns if the grappler already has an object loaded.
+	 * 
+	 * @return	boolean
+	 *   if the grappler is loaded
+	 * 
+	 * @see	IGrappler#isLoaded()
+	 */
+	public boolean grappler_isLoaded();
+	
+	/**
 	 * Get the now used turn direction.
 	 * 
 	 * @return	Direction
@@ -186,6 +207,22 @@ public interface IRobot {
 	 * @throws RemoteException
 	 */
 	public float getDistance() throws RemoteException;
+	
+	/**
+	 * Checks if there is any victim detected by the camera sensor.
+	 * 
+	 * @return	booelan
+	 *   if there is any victim detected by the camera sensor.
+	 */
+	public boolean victimDetected();
+	
+	/**
+	 * Returns the location of a rectangle containing the victim in the camera picture.
+	 * 
+	 * @return	Rectangle2D
+	 *   the location of the victim in the camera picture. If there is no victim detected, return null.
+	 */
+	public Rectangle2D getVictimLocation();
 	
 //	public float getHeading() throws RemoteException;
 //	public float getLightIntensity();
