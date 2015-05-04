@@ -66,7 +66,7 @@ public interface IRobot {
 	public boolean turnArm_isCentered();
 	
 	/**
-	 * Rotate the robot a specified amount of degrees,
+	 * Rotate the robot a specified amount of degrees.
 	 * 
 	 * @param	int	degrees
 	 *   the degrees to rotate.
@@ -76,6 +76,16 @@ public interface IRobot {
 	 * @see	ICarriage#rotate()
 	 */
 	public void carriage_rotate(int degrees) throws TurnNotPossible;
+	
+	/**
+	 * Rotate the robot a specified amount of degrees. Do not check if the orientation would be correct afterwards!
+	 * 
+	 * @param	int	degrees
+	 *   the degrees to rotate.
+	 * 
+	 * @see	ICarriage#rotateUnchecked()
+	 */
+	public void carriage_rotateUnchecked(int degrees);
 	
 	/**
 	 * Turn 90 degrees to the left.
@@ -209,12 +219,20 @@ public interface IRobot {
 	public float getDistance() throws RemoteException;
 	
 	/**
+	 * Checks if there is any victim detected by the color sensor.
+	 * 
+	 * @return	boolean
+	 *   if there is any victim detected by the color sensor.
+	 */
+	public boolean victim_detectedColorSensor();
+	
+	/**
 	 * Checks if there is any victim detected by the camera sensor.
 	 * 
-	 * @return	booelan
+	 * @return	boolean
 	 *   if there is any victim detected by the camera sensor.
 	 */
-	public boolean victimDetected();
+	public boolean victim_detectedCamera();
 	
 	/**
 	 * Returns the location of a rectangle containing the victim in the camera picture.
@@ -222,9 +240,7 @@ public interface IRobot {
 	 * @return	Rectangle2D
 	 *   the location of the victim in the camera picture. If there is no victim detected, return null.
 	 */
-	public Rectangle2D getVictimLocation();
+	public Rectangle2D victim_getLocation();
 	
-//	public float getHeading() throws RemoteException;
-//	public float getLightIntensity();
-//	public float getLightColor();
+//	public float getHeading();
 }

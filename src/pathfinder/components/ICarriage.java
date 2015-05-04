@@ -19,7 +19,8 @@ public interface ICarriage {
 	public void travel(double distance, boolean immediateReturn);
 	
 	/**
-	 * Rotate the robot a specified amount of degrees,
+	 * Rotate the robot a specified amount of degrees. Throws a TurnNotPossible error if the reached orientation would be unknown.
+	 * Positive: turn right, negative: turn left.
 	 * 
 	 * @param	int	degrees
 	 *   the degrees to rotate.
@@ -27,6 +28,15 @@ public interface ICarriage {
 	 * @throws	TurnNotPossible
 	 */
 	public void rotate(int degrees) throws TurnNotPossible;
+	
+	/**
+	 * Rotate the robot a specified amount of degrees. Do not check if the orientation would be correct afterwards!
+	 * Positive: turn right, negative: turn left.
+	 * 
+	 * @param	int	degrees
+	 *   the degrees to rotate.
+	 */
+	public void rotateUnchecked(int degrees);
 	
 	/**
 	 * Turn 90 degrees to the left.

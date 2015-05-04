@@ -1,9 +1,10 @@
 package pathfinder.configuration;
 
-import pathfinder.orientation.Orientation;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
+import lejos.robotics.Color;
+import pathfinder.orientation.Orientation;
 
 public class RobotConfiguration {
 	public final static Port	PORT_LEFT_DRIVE		= MotorPort.C;
@@ -36,4 +37,6 @@ public class RobotConfiguration {
 	
 	public final static int	ROTATE_GRAPPLER_GRAP	= 180;
 	public final static int	ROTATE_GRAPPLER_MOVE	= 270;
+	
+	public final static int[] VICTIM_COLORS = { Color.RED, Color.BLUE };
 }
