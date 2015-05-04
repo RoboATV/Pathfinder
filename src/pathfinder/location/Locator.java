@@ -3,10 +3,10 @@ package pathfinder.location;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import lejos.robotics.navigation.Move;
 import pathfinder.map.Coordinate;
 import pathfinder.map.MapObject;
 import pathfinder.map.obstacle.LargeObstacle;
@@ -19,7 +19,7 @@ public class Locator {
 
 	
 	public List<Coordinate> robotTrack;
-	public Coordinate currentPos;
+	private Coordinate currentPos; //TODO: make private
 	
 	public Map<Coordinate, MapObject> map = new HashMap<Coordinate, MapObject>();
 	private IRobot robot;
@@ -34,6 +34,22 @@ public class Locator {
 		robotTrack = new ArrayList<Coordinate>();
 	}
 	
+	
+	public void enterCoordinateFromMove(Move move){
+		Coordinate relPos = new Coordinate(0, (int) move.getDistanceTraveled());
+		Coordinate absPos = calcNewPos(relPos);
+		
+		System.out.println("last position relative " + relPos);
+		System.out.println("last position absolute " + absPos);
+		
+		robotTrack.add(absPos);
+		currentPos = absPos;
+	}
+	
+	
+	public Coordinate getCurrentPosition(){
+		return this.currentPos;
+	}
 	
 	
 	private void relocateRobotAbsolute(Coordinate destination) throws TurnNotPossible{

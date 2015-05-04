@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.Queue;
 
 import lejos.robotics.navigation.Move;
+import pathfinder.orientation.NoOrientationToAngle;
 import pathfinder.orientation.Orientation;
 import pathfinder.orientation.TurnNotPossible;
 
@@ -147,7 +148,14 @@ public class TestRobot implements ITestRobot{
 
 	@Override
 	public void carriage_rotate(int degrees) throws TurnNotPossible {
-		// TODO Auto-generated method stub
+		int newAngle = this.orientation.getAngle() + degrees;
+		
+		try {
+			this.orientation = Orientation.getOrientation(newAngle);
+		} catch (NoOrientationToAngle e) {
+			throw new TurnNotPossible(degrees);
+		}
+		
 		
 	}
 
@@ -203,7 +211,7 @@ public class TestRobot implements ITestRobot{
 
 	@Override
 	public Orientation carriage_getOrientation() {
-		
+			
 		return this.orientation;
 	}
 

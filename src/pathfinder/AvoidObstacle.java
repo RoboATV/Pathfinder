@@ -42,7 +42,7 @@ public class AvoidObstacle implements Behavior{
 	@Override
 	public void action() {
 		if(!suppressed){
-			enterLastCoordinate(robot.carriage_getMovement());
+			locator.enterCoordinateFromMove(robot.carriage_getMovement());
 			this.robot.carriage_stop();	
 			try{
 				List<Double> obstacleEdges = this.measureObstacle();
@@ -67,16 +67,8 @@ public class AvoidObstacle implements Behavior{
 	}
 
 	
-	private void enterLastCoordinate(Move move){
-		Coordinate relPos = new Coordinate(0, (int) move.getDistanceTraveled());
-		Coordinate absPos = locator.calcNewPos(relPos);
+
 		
-		System.out.println("last position relative " + relPos);
-		System.out.println("last position absolute " + absPos);
-		
-		locator.robotTrack.add(absPos);
-		locator.currentPos = absPos;
-	}
 	
 	private int calculateSensorAngle() throws RemoteException{
 		float g = (Configuration.OBSTACLE_SIZE / 2) + Configuration.OBSTACLE_OFFSET;
@@ -132,8 +124,9 @@ public class AvoidObstacle implements Behavior{
 	
 	private void turnRobot() throws TurnNotPossible{
 		robot.carriage_rotate(robot.getTurnDirection().getTurnAngle());
-		Coordinate newPos = new Coordinate(0, Configuration.GRID_SIZE);
-		locator.relocateRelative(newPos);
+		
+		locator.travelAhead(Configuration.GRID_SIZE);
+		
 		robot.carriage_rotate(robot.getTurnDirection().getTurnAngle());
 		robot.invertTurnDirection();
 	}

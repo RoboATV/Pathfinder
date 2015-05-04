@@ -34,6 +34,10 @@ public enum Orientation implements IOrientation{
 	};
 
 	public static Orientation getOrientation(int angle) throws NoOrientationToAngle{
+		if(angle < 0){
+			angle = 360 + angle;
+		}
+		
 		for(Orientation orientation : Orientation.values()){
 			if(orientation.getAngle() == angle){
 				return orientation;

@@ -2,6 +2,7 @@ package pathfinder.location;
 
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -13,6 +14,7 @@ import org.junit.Test;
 
 import pathfinder.map.Coordinate;
 import pathfinder.orientation.Orientation;
+import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.ITestRobot;
 import pathfinder.robot.TestRobot;
 
@@ -136,6 +138,44 @@ public class LocatorTest {
 			assertEquals(testValue.expectedCoordinate.Y, calculatedCor.Y);
 		}	
 	}
+	
+	
+	@Test 
+	public void correctRelocationAhead() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
+		
+		robot.setOrientation(Orientation.NORTH);
+		Field currentPos = locator.getClass().getDeclaredField("currentPos");
+		currentPos.setAccessible(true);
+		currentPos.set(locator, new Coordinate(0, 0));
+		
+		
+		locator.travelAhead(30);
+		locator.travelAhead(20);
+		
+		assertEquals(0, locator.getCurrentPosition().X);
+		assertEquals(50, locator.getCurrentPosition().Y);
+		
+	}
+	
+	
+	@Test
+	public void correctRelocationWithRotation() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, TurnNotPossible{
+		robot.setOrientation(Orientation.NORTH);
+		Field currentPos = locator.getClass().getDeclaredField("currentPos");
+		currentPos.setAccessible(true);
+		currentPos.set(locator, new Coordinate(0, 0));
+		
+		
+		locator.travelAhead(50);
+		robot.carriage_rotate(-90);
+		locator.travelAhead(20);
+		
+		
+		assertEquals(-20, locator.getCurrentPosition().X);
+		assertEquals(50, locator.getCurrentPosition().Y);
+		
+	}
+	
 	
 	
 	@After
