@@ -17,6 +17,7 @@ import java.util.Queue;
 import org.junit.Before;
 import org.junit.Test;
 
+import pathfinder.behaviors.AvoidObstacle;
 import pathfinder.configuration.Configuration;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;

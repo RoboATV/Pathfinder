@@ -1,4 +1,4 @@
-package pathfinder;
+package pathfinder.behaviors;
 
 import java.rmi.RemoteException;
 import java.util.LinkedList;

@@ -6,6 +6,10 @@ import java.rmi.RemoteException;
 
 import lejos.robotics.subsumption.Arbitrator;
 import lejos.robotics.subsumption.Behavior;
+import pathfinder.behaviors.AvoidObstacle;
+import pathfinder.behaviors.Drive;
+import pathfinder.behaviors.PickUpVictim;
+import pathfinder.behaviors.Shutdown;
 import pathfinder.location.Locator;
 import pathfinder.orientation.InitialOrientation;
 import pathfinder.orientation.TurnNotPossible;
