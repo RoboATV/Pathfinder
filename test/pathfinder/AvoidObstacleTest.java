@@ -145,12 +145,19 @@ public class AvoidObstacleTest {
 		avoidObstacle.invoke(this.avoidObstacle, edges);
 		
 		
-		assertEquals(0, locator.getCurrentPosition().X);
-		assertEquals(60, locator.getCurrentPosition().Y);
+		assertEquals(new Coordinate(0, 60), locator.getCurrentPosition());		
 		
 		assertEquals(Orientation.NORTH, robot.carriage_getOrientation());
 		
-		System.out.println("track"+locator.robotTrack);
+		assertEquals(7, locator.robotTrack.size());
+		
+		assertEquals(new Coordinate(0, 0), locator.robotTrack.get(0));
+		assertEquals(new Coordinate(-45, 0), locator.robotTrack.get(1));
+		assertEquals(new Coordinate(-45, 30), locator.robotTrack.get(2));
+		assertEquals(new Coordinate(-45, 40), locator.robotTrack.get(3));
+		assertEquals(new Coordinate(-45, 50), locator.robotTrack.get(4));
+		assertEquals(new Coordinate(-45, 60), locator.robotTrack.get(5));
+		assertEquals(new Coordinate(0, 60), locator.robotTrack.get(6));
 	}
 	
 	
