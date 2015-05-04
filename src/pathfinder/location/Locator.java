@@ -222,6 +222,7 @@ public class Locator {
 			
 			Coordinate coordinate = new Coordinate(rndX, rndY);
 			 		
+			
 			return invokePosition(coordinate); 
 		}
 		

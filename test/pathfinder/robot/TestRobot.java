@@ -203,8 +203,8 @@ public class TestRobot implements ITestRobot{
 
 	@Override
 	public Orientation carriage_getOrientation() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.orientation;
 	}
 
 
