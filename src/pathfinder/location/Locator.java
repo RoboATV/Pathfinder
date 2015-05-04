@@ -64,6 +64,7 @@ public class Locator {
 	}	
 	
 	
+	@Deprecated
 	private void relocateRobotRelative(Coordinate destination) throws TurnNotPossible{
 		if(destination.X < 0){
 			robot.carriage_rotate(Direction.LEFT.getTurnAngle());
@@ -100,7 +101,7 @@ public class Locator {
 		
 	}
 	
-	
+	@Deprecated
 	public void relocateRelative(Coordinate destination) throws TurnNotPossible{
 		System.out.println("relocate to " + destination);
 		robotTrack.add(currentPos);
@@ -232,6 +233,12 @@ public class Locator {
 	}
 	
 	
+	public void travelAhead(int distance){
+		Coordinate relNewPos = new Coordinate(0, distance);
+		this.currentPos = calcNewPos(relNewPos);
+		
+		robot.carriage_travel(distance);
+	}
 	
 	
 }
