@@ -30,7 +30,7 @@ public class Locator {
 	public Locator(IRobot robot){
 		System.out.println("initializing locator");
 		this.robot = robot;		
-		robotTrack = new ArrayList<Coordinate>();
+		this.robotTrack = new ArrayList<Coordinate>();
 		setCurrentPosition(new Coordinate(0, 0));
 		
 	}
@@ -38,8 +38,8 @@ public class Locator {
 	
 	private void setCurrentPosition(Coordinate position){
 		this.currentPos = position;
-		robotTrack.add(position);
-		System.out.println(robotTrack);
+		this.robotTrack.add(new Coordinate(position.X, position.Y));
+		
 	}
 	
 	
@@ -238,9 +238,10 @@ public class Locator {
 	}
 	
 	
-	public void travelAhead(int distance){
-		Coordinate relNewPos = new Coordinate(0, distance);
-		setCurrentPosition(calcNewPos(relNewPos));
+	public void travelAhead(int distance){		
+		Coordinate newPosition = calcNewPos(new Coordinate(0, distance));
+		
+		setCurrentPosition(newPosition);
 		
 		robot.carriage_travel(distance);
 	}
