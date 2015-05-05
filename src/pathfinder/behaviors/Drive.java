@@ -30,7 +30,7 @@ public class Drive implements Behavior{
 	public void action() {
 		while(!suppressed){
 			try{
-				if(!robot.carriage_getMovement().isMoving()){
+				if(!robot.carriage_isMoving()){
 					locator.measureEnvironment();						
 				//this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
 

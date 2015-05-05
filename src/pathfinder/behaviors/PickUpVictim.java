@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import lejos.robotics.geometry.Rectangle2D;
 import lejos.robotics.subsumption.Behavior;
+import lejos.utility.Delay;
 import pathfinder.moves.IMove;
 import pathfinder.moves.MoveTravel;
 import pathfinder.moves.MoveTurnUnchecked;
@@ -23,6 +24,7 @@ public class PickUpVictim implements Behavior {
 	@Override
 	public void action() {
 		if(!this.suppressed) {
+			System.out.println("Start pick up");
 			this.moveToVictim();
 			this.grapVictim();
 			this.backToDetectionPoint();
@@ -54,8 +56,8 @@ public class PickUpVictim implements Behavior {
 		this.movePath.add(0, new MoveTurnUnchecked(robot, -this.centerVictimCamera()));
 		
 		// Travel to the victim.
-		this.movePath.add(0, new MoveTravel(robot, 15));
-		this.robot.carriage_travel(15);
+		this.movePath.add(0, new MoveTravel(robot, 1.3));
+		this.robot.carriage_travel(1.3);
 		
 		// Correct the centering of the victim.
 		this.movePath.add(0, new MoveTurnUnchecked(robot, -this.centerVictimLight()));
@@ -78,9 +80,9 @@ public class PickUpVictim implements Behavior {
 		Rectangle2D victimLocation = this.robot.victim_getLocation();
 		int turnFactor		= victimLocation.getCenterX() < 90 ? -1 : 1;
 		int turned			= 0;
-		int checkStepSize	= 3;
+		int checkStepSize	= 2;
 		
-		while((turnFactor < 0 && victimLocation.getCenterX() < 90) || (turnFactor > 0 && victimLocation.getCenterX() > 90)) {
+		while(null != victimLocation && (turnFactor < 0 && victimLocation.getCenterX() < 90) || (turnFactor > 0 && victimLocation.getCenterX() > 90)) {
 			this.robot.carriage_rotateUnchecked(turnFactor * checkStepSize);
 			turned += turnFactor * checkStepSize;
 			victimLocation = this.robot.victim_getLocation();
@@ -112,15 +114,21 @@ public class PickUpVictim implements Behavior {
 		return turned;
 	}
 	
-	private int moveMaximumCamera() {
+	private double moveMaximumCamera() {
 		Rectangle2D victimLocation = this.robot.victim_getLocation();
-		int distanceTraveled = 0;
+		double distanceTraveled = 0;
+		
+		this.robot.carriage_travel(200, true);
 		
 		while(victimLocation != null && victimLocation.getY() < 100) {
-			this.robot.carriage_travel(3);
-			distanceTraveled += 3;
+			Delay.msDelay(10);
+//			this.robot.carriage_travel(3);
+//			distanceTraveled += 3;
 			victimLocation = this.robot.victim_getLocation();
 		}
+		
+		distanceTraveled = (double) this.robot.carriage_getMovement().getDistanceTraveled();
+		this.robot.carriage_stop();
 		
 		return distanceTraveled;
 	}

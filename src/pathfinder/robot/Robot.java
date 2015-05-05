@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import lejos.hardware.device.NXTCam;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
+import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.HiTechnicCompass;
@@ -145,10 +146,10 @@ public class Robot implements IRobot{
 		this.distanceSensor	= new EV3UltrasonicSensor(distancePort);
 		this.distance		= this.distanceSensor.getDistanceMode();
 		
-		Port cameraPort		= remote.getPort(RobotConfiguration.PORT_CAMERA);
-		this.cameraSensor	= new NXTCam(cameraPort);
-		this.cameraSensor.sortBy(NXTCam.COLOR);
-		this.cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
+//		Port cameraPort		= remote.getPort(RobotConfiguration.PORT_CAMERA);
+		this.cameraSensor	= new NXTCam(SensorPort.S3);//cameraPort);
+//		this.cameraSensor.sortBy(NXTCam.COLOR);
+//		this.cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
 		this.cameraSensor.enableTracking(true);
 		
 		this.colorSensor	= new EV3ColorSensor(RobotConfiguration.PORT_COLOR);

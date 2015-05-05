@@ -69,6 +69,7 @@ public class Carriage implements ICarriage {
 	
 	@Override
 	public void rotateUnchecked(int degrees) {
+//		this.pilot.rotate(degrees);
 		int startHeading	= this.robot.getHeading();
 		degrees = degrees % 360;
 		int aimHeading		= startHeading + degrees;
@@ -77,15 +78,17 @@ public class Carriage implements ICarriage {
 			aimHeading += 360;
 		}
 		
+		System.out.println("Start heading: " + startHeading + "; Aim heading: " + aimHeading + "; Degrees: " + degrees);
+		
 		if(degrees < 0) {
-			this.pilot.rotateLeft();
-		} else {
 			this.pilot.rotateRight();
+		} else {
+			this.pilot.rotateLeft();
 		}
 		
-		
 		while(this.robot.getHeading() != aimHeading) {
-			Delay.msDelay(100);
+//			System.out.println("Heading: " + this.robot.getHeading());
+//			Delay.msDelay(100);
 		}
 		
 		this.stop();
@@ -118,7 +121,8 @@ public class Carriage implements ICarriage {
 	
 	@Override
 	public Move getMovement() {
-		return this.pilot.getMovement();
+		Move move = this.pilot.getMovement();
+		return new Move(move.getMoveType(), (float) (move.getDistanceTraveled() / this.ratio), move.getAngleTurned(), move.isMoving());
 	}
 	
 	@Override

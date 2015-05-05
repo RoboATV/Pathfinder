@@ -32,6 +32,7 @@ public class MoveTravel implements IMove {
 	
 	@Override
 	public void execute() {
+		System.out.println("Move travel " + this.distance);
 		this.robot.carriage_travel(this.distance);
 	}
 

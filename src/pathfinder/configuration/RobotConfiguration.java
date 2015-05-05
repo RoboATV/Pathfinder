@@ -21,12 +21,12 @@ public class RobotConfiguration {
 	public final static double	TRACK_WIDTH		= 260.0f;
 	
 	public final static double	SPEED_CARRIAGE_TRAVEL	= 120.0;
-	public final static double	SPEED_CARRIAGE_ROTATE	= 60.0;
-	public final static int		SPEED_GRAPPLER_MOVE		= 20;
-	public final static int		SPEED_GRAPPLER_GRAP		= 20;
+	public final static double	SPEED_CARRIAGE_ROTATE	= 20.0;
+	public final static int		SPEED_GRAPPLER_MOVE		= 120;
+	public final static int		SPEED_GRAPPLER_GRAP		= 240;
 	public final static int		SPEED_TURN_ARM_TURN		= 50;
 	
-	public final static double	RATIO_CARRIAGE	= 10.0;
+	public final static double	RATIO_CARRIAGE	= 100.0;
 	public final static double	RATIO_TURN_ARM	= 39/9;
 	public final static double	RATIO_GRAPPLER	= 3.0;
 	
@@ -35,7 +35,7 @@ public class RobotConfiguration {
 	
 	public final static Orientation	INITIAL_ORIENTATION	= Orientation.NORTH;
 	
-	public final static int	ROTATE_GRAPPLER_GRAP	= 180;
+	public final static int	ROTATE_GRAPPLER_GRAP	= 200;
 	public final static int	ROTATE_GRAPPLER_MOVE	= 270;
 	
 	public final static int[] VICTIM_COLORS = { Color.RED, Color.BLUE };
