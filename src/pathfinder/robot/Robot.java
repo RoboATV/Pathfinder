@@ -9,6 +9,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.HiTechnicCompass;
 import lejos.remote.ev3.RMIRegulatedMotor;
 import lejos.remote.ev3.RemoteEV3;
 import lejos.robotics.RegulatedMotor;
@@ -70,8 +71,19 @@ public class Robot implements IRobot{
 	 */
 	private NXTCam				cameraSensor;
 	
-//	private MindsensorsCompass	compassSensor;
-//	private SampleProvider		compass;
+	/**
+	 * The compass sensor.
+	 * 
+	 * @type	MindsensorsCompass
+	 */
+	private HiTechnicCompass	compassSensor;
+	
+	/**
+	 * The compass heading sample provider.
+	 * 
+	 * @type	SampleProvider
+	 */
+	private SampleProvider	compass;
 	
 	/**
 	 * The color sensor.
@@ -111,7 +123,8 @@ public class Robot implements IRobot{
 		DifferentialPilot pilot		= new DifferentialPilot(RobotConfiguration.WHEEL_DIAMETER, RobotConfiguration.TRACK_WIDTH, leftDrive, rightDrive, RobotConfiguration.REVERSE_DRIVE_PILOT);
 		pilot.setTravelSpeed(RobotConfiguration.SPEED_CARRIAGE_TRAVEL);
 		pilot.setRotateSpeed(RobotConfiguration.SPEED_CARRIAGE_ROTATE);
-		this.carriage = new Carriage(pilot, RobotConfiguration.RATIO_CARRIAGE, RobotConfiguration.INITIAL_ORIENTATION);
+		
+		this.carriage = new Carriage(this, pilot, RobotConfiguration.RATIO_CARRIAGE, RobotConfiguration.INITIAL_ORIENTATION);
 		
 		System.out.println("initializing turn arm");
 		RMIRegulatedMotor turnArmMotor = remote.createRegulatedMotor(RobotConfiguration.PORT_TURN_ARM, 'M');
@@ -138,12 +151,12 @@ public class Robot implements IRobot{
 		this.cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
 		this.cameraSensor.enableTracking(true);
 		
-//		Port compassPort	= remote.getPort(RobotConfiguration.PORT_COMPASS);
-//		this.compassSensor	= new MindsensorsCompass(compassPort);
-//		this.compass		= this.compassSensor.getCompassMode();
-		
 		this.colorSensor	= new EV3ColorSensor(RobotConfiguration.PORT_COLOR);
 		this.color			= this.colorSensor.getColorIDMode();
+		
+		Port compassPort	= remote.getPort(RobotConfiguration.PORT_COMPASS);
+		this.compassSensor	= new HiTechnicCompass(compassPort);
+		this.compass		= this.compassSensor.getCompassMode();
 	}
 	
 	/**
@@ -154,7 +167,7 @@ public class Robot implements IRobot{
 	public void shutdown() throws RemoteException{
 		this.distanceSensor.close();
 		this.cameraSensor.close();
-//		this.compassSensor.close();
+		this.compassSensor.close();
 		this.colorSensor.close();
 		this.turnArm.shutdown();
 	}
@@ -306,12 +319,12 @@ public class Robot implements IRobot{
 		
 		return false;
 	}
-
-//	@Override
-//	public float getHeading() {
-//		float[] sample = new float[this.compass.sampleSize()];
-//		this.compass.fetchSample(sample, 0);
-//		
-//		return sample[0];
-//	}
+	
+	@Override
+	public int getHeading() {
+		float[] sample = new float[this.compass.sampleSize()];
+		this.compass.fetchSample(sample, 0);
+		
+		return (int) sample[0];
+	}
 }

@@ -2,13 +2,22 @@ package pathfinder.components;
 
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Move;
+import lejos.utility.Delay;
 import pathfinder.orientation.NoOrientationToAngle;
 import pathfinder.orientation.Orientation;
 import pathfinder.orientation.TurnNotPossible;
+import pathfinder.robot.IRobot;
 
 public class Carriage implements ICarriage {
 	/**
-	 * The differntial pilot for easier turns, drives etc.
+	 * The robot.
+	 * 
+	 * @type	IRobot
+	 */
+	private	IRobot robot;
+	
+	/**
+	 * The differential pilot for easier turns, drives etc.
 	 * 
 	 * @type	DifferentialPilot
 	 */
@@ -32,11 +41,14 @@ public class Carriage implements ICarriage {
 	 * Create a new carriage.
 	 * 
 	 * @param	DifferentialPilot	pilot
-	 *   The differntial pilot for easier turns, drives etc.
+	 *   The differential pilot for easier turns, drives etc.
 	 * @param	double				ratio
 	 *   The ratio the distances get multiplied with.
+	 * @param	Orientation			initialOrientation
+	 *   The initial orientation of the robot.
 	 */
-	public Carriage(DifferentialPilot pilot, double ratio, Orientation initialOrientation) {
+	public Carriage(IRobot robot, DifferentialPilot pilot, double ratio, Orientation initialOrientation) {
+		this.robot			= robot;
 		this.pilot			= pilot;
 		this.ratio			= ratio;
 		this.orientation	= initialOrientation;
@@ -52,12 +64,31 @@ public class Carriage implements ICarriage {
 			throw new TurnNotPossible(degrees);
 		}
 		
-		this.pilot.rotate(degrees);
+		this.rotateUnchecked(degrees);
 	}
 	
 	@Override
 	public void rotateUnchecked(int degrees) {
-		this.pilot.rotate(degrees);
+		int startHeading	= this.robot.getHeading();
+		degrees = degrees % 360;
+		int aimHeading		= startHeading + degrees;
+		
+		if(aimHeading < 0) {
+			aimHeading += 360;
+		}
+		
+		if(degrees < 0) {
+			this.pilot.rotateLeft();
+		} else {
+			this.pilot.rotateRight();
+		}
+		
+		
+		while(this.robot.getHeading() != aimHeading) {
+			Delay.msDelay(100);
+		}
+		
+		this.stop();
 	}
 	
 	@Override
@@ -77,7 +108,7 @@ public class Carriage implements ICarriage {
 	
 	@Override
 	public void stop() {
-		this.pilot.stop();
+		this.pilot.quickStop();
 	}
 	
 	@Override

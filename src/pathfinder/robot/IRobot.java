@@ -242,5 +242,11 @@ public interface IRobot {
 	 */
 	public Rectangle2D victim_getLocation();
 	
-//	public float getHeading();
+	/**
+	 * Returns the heading of the compass sensor.
+	 * 
+	 * @return	int
+	 *   the heading of the compass.
+	 */
+	public int getHeading();
 }

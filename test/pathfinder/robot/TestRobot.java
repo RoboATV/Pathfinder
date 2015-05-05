@@ -241,6 +241,13 @@ public class TestRobot implements ITestRobot{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public int getHeading() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 	
