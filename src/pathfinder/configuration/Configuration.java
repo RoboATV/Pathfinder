@@ -7,7 +7,7 @@ public class Configuration {
 	public final static float INITIAL_WALLDISTANCE = 100;
 	
 	public final static int OBSTACLE_SIZE = 40;		
-	public final static int OBSTACLE_OFFSET = 5;
+	public final static int OBSTACLE_OFFSET = 10;
 	public final static int TOTAL_OBSTACLE_SIZE = OBSTACLE_OFFSET + OBSTACLE_SIZE;
 	
 	public final static int DISTANCE_OFFSET = 10;

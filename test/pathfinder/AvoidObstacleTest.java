@@ -47,7 +47,7 @@ public class AvoidObstacleTest {
 		distances.add(new Float(20));
 		robot.setDistances(distances);
 	    assertEquals(Configuration.OBSTACLE_SIZE, 40, 0);
-	    assertEquals(Configuration.OBSTACLE_OFFSET, 5, 0);
+	    assertEquals(Configuration.OBSTACLE_OFFSET, 10, 0);
 	    
 	    Method calculateSensorAngle = avoidObstacle.getClass().getDeclaredMethod("calculateSensorAngle");
 	    calculateSensorAngle.setAccessible(true);
@@ -55,7 +55,7 @@ public class AvoidObstacleTest {
 	    int angle = (int) calculateSensorAngle.invoke(avoidObstacle);
 	   
 	 
-	    assertEquals(angle, 51);
+	    assertEquals(angle, 56);
 		
 		
 	}
@@ -67,12 +67,12 @@ public class AvoidObstacleTest {
 		 distances.add(new Float(20));
 		 robot.setDistances(distances);
 		 assertEquals(Configuration.OBSTACLE_SIZE, 40, 0);
-		 assertEquals(Configuration.OBSTACLE_OFFSET, 5, 0);		 
+		 assertEquals(Configuration.OBSTACLE_OFFSET, 10, 0);		 
 		 
 		 Method calculateExpectation = avoidObstacle.getClass().getDeclaredMethod("calculateExpectation");
 		 calculateExpectation.setAccessible(true);
 		    
-		 double angle = (double) calculateExpectation.invoke(avoidObstacle);
+		 float angle =  (float) calculateExpectation.invoke(avoidObstacle);
 		   
 		 
 		 
@@ -87,11 +87,11 @@ public class AvoidObstacleTest {
 		 expDistances.add(new Float(20));
 		 robot.setDistances(expDistances);
 		 assertEquals(Configuration.OBSTACLE_SIZE, 40, 0);
-		 assertEquals(Configuration.OBSTACLE_OFFSET, 5, 0);	
+		 assertEquals(Configuration.OBSTACLE_OFFSET, 10, 0);	
 		 		 
-		 List<Double> distances = new ArrayList<Double>();
-		 distances.add(32.0);
-		 distances.add(31.0);
+		 List<Float> distances = new ArrayList<Float>();
+		 distances.add(35f);
+		 distances.add(36f);
 		 
 		 Class[] cArg = new Class[1];
 	     cArg[0] = List.class;   
@@ -103,7 +103,7 @@ public class AvoidObstacleTest {
 	     assertTrue(wall);
 	     
 	     
-	     distances.set(0, 37.0);
+	     distances.set(0, 40f);
 	   
 	     wall =  (Boolean) detectWall.invoke(avoidObstacle, distances);
 	     assertFalse(wall);
@@ -115,9 +115,9 @@ public class AvoidObstacleTest {
 		
 		robot.setOrientation(Orientation.NORTH);
 		
-		List<Double> edges = new LinkedList<Double>();
-		edges.add(30.0);
-		edges.add(Double.POSITIVE_INFINITY);
+		List<Float> edges = new LinkedList<Float>();
+		edges.add(30f);
+		edges.add(Float.POSITIVE_INFINITY);
 		
 		Queue<Float> expDistances = new LinkedList<Float>();
 		//obstacle distance
@@ -145,20 +145,21 @@ public class AvoidObstacleTest {
 		
 		avoidObstacle.invoke(this.avoidObstacle, edges);
 		
+		System.out.println(locator.robotTrack);
 		
-		assertEquals(new Coordinate(0, 60), locator.getCurrentPosition());		
+		assertEquals(new Coordinate(0, 6), locator.getCurrentPosition());		
 		
 		assertEquals(Orientation.NORTH, robot.carriage_getOrientation());
 		
 		assertEquals(7, locator.robotTrack.size());
 		
 		assertEquals(new Coordinate(0, 0), locator.robotTrack.get(0));
-		assertEquals(new Coordinate(-45, 0), locator.robotTrack.get(1));
-		assertEquals(new Coordinate(-45, 30), locator.robotTrack.get(2));
-		assertEquals(new Coordinate(-45, 40), locator.robotTrack.get(3));
-		assertEquals(new Coordinate(-45, 50), locator.robotTrack.get(4));
-		assertEquals(new Coordinate(-45, 60), locator.robotTrack.get(5));
-		assertEquals(new Coordinate(0, 60), locator.robotTrack.get(6));
+		assertEquals(new Coordinate(-5, 0), locator.robotTrack.get(1));
+		assertEquals(new Coordinate(-5, 3), locator.robotTrack.get(2));
+		assertEquals(new Coordinate(-5, 4), locator.robotTrack.get(3));
+		assertEquals(new Coordinate(-5, 5), locator.robotTrack.get(4));
+		assertEquals(new Coordinate(-5, 6), locator.robotTrack.get(5));
+		assertEquals(new Coordinate(0, 6), locator.robotTrack.get(6));
 	}
 	
 	

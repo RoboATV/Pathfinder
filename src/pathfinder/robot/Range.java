@@ -2,16 +2,16 @@ package pathfinder.robot;
 
 public class Range {
 
-	private double min;
-	private double max;
+	private float min;
+	private float max;
 
-	public Range(double min, double max){
+	public Range(float min, float max){
 		this.min = min;
 		this.max = max;
 	}
 	
 	
-	public boolean contains(double test){
+	public boolean contains(float test){
 		if(test >= min && test <= max){
 			return true;
 		}

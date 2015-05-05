@@ -9,6 +9,7 @@ import pathfinder.Main;
 import pathfinder.configuration.Configuration;
 import pathfinder.location.EndOfRoom;
 import pathfinder.location.Locator;
+import pathfinder.map.Coordinate;
 import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
@@ -45,7 +46,7 @@ public class AvoidObstacle implements Behavior{
 			locator.enterCoordinateFromMove(robot.carriage_getMovement());
 			this.robot.carriage_stop();	
 			try{
-				List<Double> obstacleEdges = this.measureObstacle();
+				List<Float> obstacleEdges = this.measureObstacle();
 				if(this.detectWall(obstacleEdges)){
 					try {
 						this.turnRobot();
@@ -86,36 +87,37 @@ public class AvoidObstacle implements Behavior{
 	}
 	
 	
-	private double calculateExpectation() throws RemoteException{
+	private float calculateExpectation() throws RemoteException{
 		double g = (Configuration.OBSTACLE_SIZE / 2) + Configuration.OBSTACLE_OFFSET;
 		double a = robot.getDistance();
 		
 		double h = Math.sqrt(Math.pow(a, 2) + Math.pow(g, 2));
 				
-		return h;
+		return (float) h;
 	}
 	
 	
-	private List<Double> measureObstacle() throws RemoteException{
-		List<Double> distances = new LinkedList<Double>();		
+	private List<Float> measureObstacle() throws RemoteException{
+		List<Float> distances = new LinkedList<Float>();		
 		int sensorAngle = calculateSensorAngle();		
 		
 		//measure right side
 		robot.turnArm_rotate(sensorAngle);				
-		distances.add((double) robot.getDistance());	
+		distances.add( robot.getDistance());	
 			
 		//measure left side
 		robot.turnArm_rotate(-2 * sensorAngle);		
-		distances.add((double) robot.getDistance());
+		distances.add( robot.getDistance());
 		
 		return distances;
 	}
 	
 	
-	private boolean detectWall(List<Double> distances) throws RemoteException{
-		double expectationValue = calculateExpectation();		
+	private boolean detectWall(List<Float> distances) throws RemoteException{
+		float expectationValue = calculateExpectation();		
 			
 		Range valueRange = new Range(expectationValue-2, expectationValue+2);
+		
 		
 		if(valueRange.contains(distances.get(0)) && valueRange.contains(distances.get(1))){
 			return true;
@@ -135,32 +137,39 @@ public class AvoidObstacle implements Behavior{
 				
 		robot.carriage_rotate(robot.getTurnDirection().getTurnAngle());
 		
-		locator.travelAhead(Configuration.GRID_SIZE);
+		locator.travelAhead(Configuration.GRID_SIZE/10);
 		
 		robot.carriage_rotate(robot.getTurnDirection().getTurnAngle());
 		robot.invertTurnDirection();
 	}
 	
 	
-	private void avoidObstacle(List<Double> obstacleEdges) throws TurnNotPossible, RemoteException{
+	private void avoidObstacle(List<Float> obstacleEdges) throws TurnNotPossible, RemoteException{
 		
 		Float obstacleDistance = robot.getDistance();
-		Direction turnDirection = getTurnDirection(obstacleEdges);			
+		Direction turnDirection = getTurnDirection(obstacleEdges);	
+		
+		Coordinate edge;
+		if(turnDirection == Direction.RIGHT){
+			edge = locator.calculateMapPosition(calculateSensorAngle(), obstacleEdges.get(1));
+		} else {
+			edge = locator.calculateMapPosition(calculateSensorAngle(), obstacleEdges.get(0));
+		}
 		
 		robot.carriage_rotate(turnDirection.getTurnAngle());
-		locator.travelAhead(Configuration.TOTAL_OBSTACLE_SIZE);
+		locator.travelAhead(Configuration.TOTAL_OBSTACLE_SIZE/10);
 			
 		robot.carriage_rotate(Direction.getOpposite(turnDirection).getTurnAngle());
-		travelVertical(Direction.getOpposite(turnDirection), obstacleDistance);	
-		
+	
+		travelVertical(Direction.getOpposite(turnDirection), obstacleDistance, edge);			
 		
 		robot.carriage_rotate(Direction.getOpposite(turnDirection).getTurnAngle());		
-		locator.travelAhead(Configuration.TOTAL_OBSTACLE_SIZE);		
+		locator.travelAhead(Configuration.TOTAL_OBSTACLE_SIZE/10);		
 		robot.carriage_rotate(turnDirection.getTurnAngle());
 		
 	}
 	
-	private Direction getTurnDirection(List<Double> distances){
+	private Direction getTurnDirection(List<Float> distances){
 		if(distances.get(0) > distances.get(1)){
 			return Direction.RIGHT;
 		}
@@ -169,8 +178,8 @@ public class AvoidObstacle implements Behavior{
 	}
 	
 	
-	private void travelVertical(Direction obstacleSide, float obstacleDistance) throws RemoteException{
-		locator.travelAhead((int) (Configuration.DISTANCE_OFFSET + obstacleDistance));
+	private void travelVertical(Direction obstacleSide, float obstacleDistance, Coordinate edge) throws RemoteException{
+		locator.travelAhead((int) (Configuration.DISTANCE_OFFSET + obstacleDistance)/10);
 		
 		robot.turnArm_rotate(obstacleSide.getTurnAngle());
 		
@@ -178,10 +187,15 @@ public class AvoidObstacle implements Behavior{
 		
 		Range distanceRange = new Range(distance-5, distance+5);
 		
-		while(distanceRange.contains(robot.getDistance())){
-			locator.travelAhead(10);
+		while(distanceRange.contains(distance)){
+			locator.enterObstacle(edge, distance, obstacleSide);
+			locator.travelAhead(1);
+			distance = robot.getDistance();
 		}
 		
-		locator.travelAhead(10);
+		locator.travelAhead(1);
 	}
+	
+	
+	
 }
