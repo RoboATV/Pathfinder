@@ -152,8 +152,8 @@ public class LocatorTest {
 		locator.travelAhead(30);
 		locator.travelAhead(20);
 		
-		assertEquals(0, locator.getCurrentPosition().X);
-		assertEquals(50, locator.getCurrentPosition().Y);
+		assertEquals(new Coordinate(0, 50), locator.getCurrentPosition());
+		
 		
 	}
 	

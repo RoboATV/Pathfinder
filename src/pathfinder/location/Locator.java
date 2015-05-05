@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import lejos.robotics.navigation.Move;
+import pathfinder.Main;
 import pathfinder.map.Coordinate;
 import pathfinder.map.MapObject;
 import pathfinder.map.obstacle.LargeObstacle;
@@ -19,7 +20,7 @@ public class Locator {
 
 	
 	public List<Coordinate> robotTrack;
-	private Coordinate currentPos; //TODO: make private
+	private Coordinate currentPos; 
 	
 	public Map<Coordinate, MapObject> map = new HashMap<Coordinate, MapObject>();
 	private IRobot robot;
@@ -244,6 +245,13 @@ public class Locator {
 		setCurrentPosition(newPosition);
 		
 		robot.carriage_travel(distance);
+	}
+	
+	
+	public void returnToStart(){
+		//TODO
+		
+		Main.shutdown();
 	}
 	
 	

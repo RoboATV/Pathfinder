@@ -7,6 +7,7 @@ import java.util.List;
 import lejos.robotics.navigation.Move;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.configuration.Configuration;
+import pathfinder.location.EndOfRoom;
 import pathfinder.location.Locator;
 import pathfinder.map.Coordinate;
 import pathfinder.orientation.TurnNotPossible;
@@ -51,6 +52,8 @@ public class AvoidObstacle implements Behavior{
 						this.turnRobot();
 					} catch (TurnNotPossible e) {
 						System.out.println(e.toString());
+					} catch (EndOfRoom e){
+						locator.returnToStart();
 					}
 				} else {
 					this.avoidObstacle(obstacleEdges);
@@ -122,7 +125,14 @@ public class AvoidObstacle implements Behavior{
 	}
 	
 	
-	private void turnRobot() throws TurnNotPossible{
+	private void turnRobot() throws TurnNotPossible, RemoteException, EndOfRoom{
+		//check if wall in turn direction
+		robot.turnArm_rotate(robot.getTurnDirection().getTurnAngle());
+		float distance = robot.getDistance();
+		if(distance <= Configuration.GRID_SIZE){
+			throw new EndOfRoom();
+		}
+				
 		robot.carriage_rotate(robot.getTurnDirection().getTurnAngle());
 		
 		locator.travelAhead(Configuration.GRID_SIZE);
