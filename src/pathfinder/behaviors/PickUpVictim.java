@@ -5,9 +5,9 @@ import java.util.Iterator;
 
 import lejos.robotics.geometry.Rectangle2D;
 import lejos.robotics.subsumption.Behavior;
-import pathfinder.rescueVictim.IMove;
-import pathfinder.rescueVictim.MoveTravel;
-import pathfinder.rescueVictim.MoveTurn;
+import pathfinder.moves.IMove;
+import pathfinder.moves.MoveTravel;
+import pathfinder.moves.MoveTurnUnchecked;
 import pathfinder.robot.Robot;
 
 public class PickUpVictim implements Behavior {
@@ -45,24 +45,24 @@ public class PickUpVictim implements Behavior {
 	
 	private void moveToVictim() {
 		// Turn the robot until the victim is centered.
-		this.movePath.add(new MoveTurn(robot, -this.centerVictimCamera()));
+		this.movePath.add(new MoveTurnUnchecked(robot, -this.centerVictimCamera()));
 		
 		// Move to the minimum distance recognized by camera.
 		this.movePath.add(0, new MoveTravel(robot, this.moveMaximumCamera()));
 		
 		// Correct the centering of the victim.
-		this.movePath.add(0, new MoveTurn(robot, -this.centerVictimCamera()));
+		this.movePath.add(0, new MoveTurnUnchecked(robot, -this.centerVictimCamera()));
 		
 		// Travel to the victim.
 		this.movePath.add(0, new MoveTravel(robot, 15));
 		this.robot.carriage_travel(15);
 		
 		// Correct the centering of the victim.
-		this.movePath.add(0, new MoveTurn(robot, -this.centerVictimLight()));
+		this.movePath.add(0, new MoveTurnUnchecked(robot, -this.centerVictimLight()));
 	}
 	
 	private void grapVictim() {
-		this.movePath.add(new MoveTurn(robot, 180));
+		this.movePath.add(new MoveTurnUnchecked(robot, 180));
 		this.robot.carriage_rotateUnchecked(180);
 		this.robot.grappler_grap();
 	}

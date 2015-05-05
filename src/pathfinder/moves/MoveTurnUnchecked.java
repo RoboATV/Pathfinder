@@ -1,8 +1,8 @@
-package pathfinder.rescueVictim;
+package pathfinder.moves;
 
 import pathfinder.robot.IRobot;
 
-public class MoveTurn implements IMove {
+public class MoveTurnUnchecked implements IMove {
 	/**
 	 * The angle to turn.
 	 * 
@@ -25,7 +25,7 @@ public class MoveTurn implements IMove {
 	 * @param	int		degrees
 	 *   the angle to turn.
 	 */
-	public MoveTurn(IRobot robot, int degrees) {
+	public MoveTurnUnchecked(IRobot robot, int degrees) {
 		this.degrees	= degrees;
 		this.robot		= robot;
 	}

@@ -1,4 +1,4 @@
-package pathfinder.rescueVictim;
+package pathfinder.moves;
 
 /**
  * Interface for a move of the robot.

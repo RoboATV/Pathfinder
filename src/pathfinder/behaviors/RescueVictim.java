@@ -1,6 +1,10 @@
 package pathfinder.behaviors;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import pathfinder.location.Locator;
+import pathfinder.moves.IMove;
 import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.IRobot;
 import lejos.robotics.subsumption.Behavior;
@@ -9,6 +13,8 @@ public class RescueVictim implements Behavior {
 	private IRobot	robot;
 	private boolean	suppressed = false;
 	private Locator	locator;
+	
+	private ArrayList<IMove> movePath = new ArrayList<IMove>();
 	
 	public RescueVictim(IRobot robot, Locator locator) {
 		this.robot = robot;
@@ -35,7 +41,7 @@ public class RescueVictim implements Behavior {
 	}
 	
 	private void travelToStart() {
-		// TODO: Travel to start point.
+		
 	}
 	
 	private void deliverVictim() {
@@ -49,7 +55,10 @@ public class RescueVictim implements Behavior {
 	}
 	
 	private void travelToLastLocation() {
-		// TODO: Travel back to last location where the victim was found.
+		for (Iterator<IMove> iterator = movePath.iterator(); iterator.hasNext();) {
+			IMove move = (IMove) iterator.next();
+			move.execute();
+		}
 	}
 
 }

@@ -1,4 +1,4 @@
-package pathfinder.rescueVictim;
+package pathfinder.moves;
 
 import pathfinder.robot.IRobot;
 
