@@ -4,12 +4,11 @@ import java.rmi.RemoteException;
 import java.util.LinkedList;
 import java.util.List;
 
-import lejos.robotics.navigation.Move;
 import lejos.robotics.subsumption.Behavior;
+import pathfinder.Main;
 import pathfinder.configuration.Configuration;
 import pathfinder.location.EndOfRoom;
 import pathfinder.location.Locator;
-import pathfinder.map.Coordinate;
 import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
@@ -54,6 +53,7 @@ public class AvoidObstacle implements Behavior{
 						System.out.println(e.toString());
 					} catch (EndOfRoom e){
 						locator.returnToStart();
+						Main.shutdown();
 					}
 				} else {
 					this.avoidObstacle(obstacleEdges);

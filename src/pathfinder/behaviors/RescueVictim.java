@@ -3,11 +3,10 @@ package pathfinder.behaviors;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import lejos.robotics.subsumption.Behavior;
 import pathfinder.location.Locator;
 import pathfinder.moves.IMove;
-import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.IRobot;
-import lejos.robotics.subsumption.Behavior;
 
 public class RescueVictim implements Behavior {
 	private IRobot	robot;
@@ -41,7 +40,7 @@ public class RescueVictim implements Behavior {
 	}
 	
 	private void travelToStart() {
-		
+		movePath = this.locator.returnToStart();
 	}
 	
 	private void deliverVictim() {

@@ -1,6 +1,7 @@
 package pathfinder.map.obstacle;
 
 public class LargeObstacle extends Obstacle {
+	public final static int NUMERICAL_VALUE = 3;
 
 	@Override
 	public boolean conquerable() {
@@ -9,7 +10,7 @@ public class LargeObstacle extends Obstacle {
 
 	@Override
 	public int numericalValue() {
-		return 3;
+		return LargeObstacle.NUMERICAL_VALUE;
 	}
 
 }

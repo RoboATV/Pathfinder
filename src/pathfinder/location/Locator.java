@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import lejos.robotics.navigation.Move;
-import pathfinder.Main;
 import pathfinder.map.Coordinate;
 import pathfinder.map.MapObject;
 import pathfinder.map.obstacle.LargeObstacle;
+import pathfinder.moves.IMove;
+import pathfinder.moves.MoveToCoordinate;
+import pathfinder.moves.MoveTurnToOrientation;
 import pathfinder.orientation.Orientation;
 import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Direction;
@@ -282,11 +284,91 @@ public class Locator {
 	}
 	
 	
-	public void returnToStart(){
-		//TODO
+	public ArrayList<IMove> returnToStart(){
+		ArrayList<IMove>	movePath = new ArrayList<IMove>();
 		
-		Main.shutdown();
+		movePath.add(new MoveTurnToOrientation(this.robot, this.robot.carriage_getOrientation()));
+		movePath.add(0, new MoveToCoordinate(this, this.currentPos));
+		
+		Coordinate startPoint	= new Coordinate(0, 0);
+		
+		MoveToCoordinate move;
+		
+		// If the robot travels from east to west to check the area, then we have to move first in y direction to avoid unknown areas.
+		if(this.robot.carriage_getOrientation() == Orientation.EAST || this.robot.carriage_getOrientation() == Orientation.WEST) {
+			move = new MoveToCoordinate(this, this.findFreePathY(this.currentPos));
+			move.execute();
+			movePath.add(0, move);
+		}
+		
+		while(!startPoint.equals(this.currentPos)) {
+			move = new MoveToCoordinate(this, this.findFreePathX(this.currentPos));
+			move.execute();
+			movePath.add(0, move);
+			
+			move = new MoveToCoordinate(this, this.findFreePathY(this.currentPos));
+			move.execute();
+			movePath.add(0, move);
+		}
+		
+		return movePath;
 	}
 	
+	private Coordinate findFreePathX(Coordinate start) {
+		if(start.X == 0) {
+			return start;
+		}
+		
+		int factor;
+		
+		if(start.X > 0) {
+			factor = 1;
+		} else {
+			factor = -1;
+		}
+		
+		Coordinate	toCheck = new Coordinate(start.X, start.Y);
+		MapObject	value;
+		
+		for(int i = start.X * factor; i >= 0; i--) {
+			toCheck.X = i * factor;
+			value = this.map.get(toCheck);
+			
+			if(value != null && value.numericalValue() == LargeObstacle.NUMERICAL_VALUE) {
+				toCheck.X = i + 2 * factor;
+				break;
+			}
+		}
+		
+		return toCheck;
+	}
 	
+	private Coordinate findFreePathY(Coordinate start) {
+		if(start.Y == 0) {
+			return start;
+		}
+		
+		int factor;
+		
+		if(start.Y > 0) {
+			factor = 1;
+		} else {
+			factor = -1;
+		}
+		
+		Coordinate	toCheck = new Coordinate(start.X, start.Y);
+		MapObject	value;
+		
+		for(int i = start.Y * factor; i >= 0; i--) {
+			toCheck.Y = i * factor;
+			value = this.map.get(toCheck);
+			
+			if(value != null && value.numericalValue() == LargeObstacle.NUMERICAL_VALUE) {
+				toCheck.Y = i + 2 * factor;
+				break;
+			}
+		}
+		
+		return toCheck;
+	}
 }
