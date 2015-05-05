@@ -80,11 +80,45 @@ public class Locator {
 				robot.carriage_rotate(90);
 			}			
 		} else if(this.robot.carriage_getOrientation() == Orientation.EAST){
-			
+			if(distanceX != 0){
+				robot.carriage_travel(distanceX);
+			}
+			if(distanceY > 0){
+				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
+				robot.carriage_travel(distanceY);
+				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
+			} else if(distanceY < 0){
+				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
+				robot.carriage_travel(Math.abs(distanceY));
+				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
+			}			
 		} else if(this.robot.carriage_getOrientation() == Orientation.SOUTH){
+			if(distanceY != 0){
+				robot.carriage_travel(-distanceY);
+			} 
+			if(distanceX > 0){
+				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
+				robot.carriage_travel(distanceX);
+				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
+			} else if(distanceX < 0){
+				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
+				robot.carriage_travel(Math.abs(distanceX));
+				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
+			}	
 			
 		} else if(this.robot.carriage_getOrientation() == Orientation.WEST){
-			
+			if(distanceX != 0){
+				robot.carriage_travel(Math.abs(distanceX));
+			}
+			if(distanceY > 0){
+				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
+				robot.carriage_travel(distanceY);
+				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
+			} else if(distanceY < 0){
+				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
+				robot.carriage_travel(Math.abs(distanceY));
+				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
+			}		
 		}
 		
 	}	
