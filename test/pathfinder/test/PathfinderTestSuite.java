@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 
 import pathfinder.AvoidObstacleTest;
 import pathfinder.location.LocatorTest;
+import pathfinder.moves.MoveTurnToOrientationTest;
 import pathfinder.orientation.InitialOrientationTest;
 import pathfinder.orientation.OrientationTest;
 
@@ -14,7 +15,8 @@ import pathfinder.orientation.OrientationTest;
 	LocatorTest.class,
 	OrientationTest.class,
 	InitialOrientationTest.class,
-	AvoidObstacleTest.class
+	AvoidObstacleTest.class,
+	MoveTurnToOrientationTest.class
 })
 
 
