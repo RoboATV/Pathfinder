@@ -379,29 +379,28 @@ public class Locator {
 	
 	public void enterObstacle(Coordinate edge, double distance, Direction obstacleSide){
 		
-//		if(robot.carriage_getOrientation() == Orientation.NORTH){
-//			int xStart = (int) (currentPos.X + (distance * obstacleSide.getNumerical()));
-//			for(int i = xStart; i != edge.X; i += obstacleSide.getNumerical()){
-//				System.out.println("i" +i);
-////				enterNewPosition(new Coordinate(i, currentPos.Y), new LargeObstacle());
-//			}
-//		}	
-//		} else if(robot.carriage_getOrientation() == Orientation.EAST){
-//			int startY = (int) (currentPos.Y - (distance * obstacleSide.getNumerical()));
-//			for(int i = startY; i != edge.Y; i += -obstacleSide.getNumerical()){
-//				enterNewPosition(new Coordinate(currentPos.X, i), new LargeObstacle());
-//			}
-//		} else if(robot.carriage_getOrientation() == Orientation.SOUTH){
-//			int xStart = (int) (currentPos.X - (distance * obstacleSide.getNumerical()));
-//			for(int i = xStart; i != edge.X; i += -obstacleSide.getNumerical()){
-//				enterNewPosition(new Coordinate(i, currentPos.Y), new LargeObstacle());
-//			}
-//		} else if(robot.carriage_getOrientation() == Orientation.WEST){
-//			int startY = (int) (currentPos.Y + (distance * obstacleSide.getNumerical()));
-//			for(int i = startY; i != edge.Y; i += obstacleSide.getNumerical()){
-//				enterNewPosition(new Coordinate(currentPos.X, i), new LargeObstacle());
-//			}
-//		}
+		if(robot.carriage_getOrientation() == Orientation.NORTH){
+			int xStart = (int) (currentPos.X + ((distance * obstacleSide.getNumerical())/10));
+			for(int i = xStart; i != edge.X; i += obstacleSide.getNumerical()){
+				System.out.println("i" +i);
+				enterNewPosition(new Coordinate(i, currentPos.Y), new LargeObstacle());
+			}
+		} else if(robot.carriage_getOrientation() == Orientation.EAST){
+			int startY = (int) (currentPos.Y - ((distance * obstacleSide.getNumerical())/10));
+			for(int i = startY; i != edge.Y; i += -obstacleSide.getNumerical()){
+				enterNewPosition(new Coordinate(currentPos.X, i), new LargeObstacle());
+			}
+		} else if(robot.carriage_getOrientation() == Orientation.SOUTH){
+			int xStart = (int) (currentPos.X - ((distance * obstacleSide.getNumerical())/10));
+			for(int i = xStart; i != edge.X; i += -obstacleSide.getNumerical()){
+				enterNewPosition(new Coordinate(i, currentPos.Y), new LargeObstacle());
+			}
+		} else if(robot.carriage_getOrientation() == Orientation.WEST){
+			int startY = (int) (currentPos.Y + ((distance * obstacleSide.getNumerical())/10));
+			for(int i = startY; i != edge.Y; i += obstacleSide.getNumerical()){
+				enterNewPosition(new Coordinate(currentPos.X, i), new LargeObstacle());
+			}
+		}
 		
 	}
 }
