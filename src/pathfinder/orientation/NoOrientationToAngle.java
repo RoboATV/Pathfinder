@@ -1,8 +1,7 @@
 package pathfinder.orientation;
 
+@SuppressWarnings("serial")
 public class NoOrientationToAngle extends Exception {
-
-	
 	private int angle;
 	
 	public NoOrientationToAngle(){
@@ -13,14 +12,7 @@ public class NoOrientationToAngle extends Exception {
 		this.angle = angle;
 	}
 	
-	
-	
 	public String toString(){
 		return "no orientation found for such angle " + angle;
 	}
-	
-	
-	
-	
-	
 }

@@ -24,7 +24,7 @@ public class AvoidObstacle implements Behavior{
 	private Locator locator;
 	
 	public AvoidObstacle(IRobot robot, Locator locator){
-		System.out.println("loading avoidobstacle");
+		System.out.println("  avoid obstacle");
 		this.robot = robot;
 		this.locator = locator;
 	}
@@ -42,7 +42,9 @@ public class AvoidObstacle implements Behavior{
 
 	@Override
 	public void action() {
+		suppressed = false;
 		if(!suppressed){
+			System.out.println("Avoid obstacle...");
 			locator.enterCoordinateFromMove(robot.carriage_getMovement());
 			this.robot.carriage_stop();	
 			try{
@@ -54,6 +56,8 @@ public class AvoidObstacle implements Behavior{
 						System.out.println(e.toString());
 					} catch (EndOfRoom e){
 						locator.returnToStart();
+						
+						robot.shutdown();
 						Main.shutdown();
 					}
 				} else {
@@ -69,10 +73,6 @@ public class AvoidObstacle implements Behavior{
 	public void suppress() {
 		this.suppressed = true;		
 	}
-
-	
-
-		
 	
 	private int calculateSensorAngle() throws RemoteException{
 		float g = (Configuration.OBSTACLE_SIZE / 2) + Configuration.OBSTACLE_OFFSET;
@@ -81,7 +81,6 @@ public class AvoidObstacle implements Behavior{
 		float divAG = g / a ;		
 		
 		int sensorAngle = (int) Math.toDegrees(Math.atan(divAG));
-		
 			
 		return sensorAngle;
 	}
@@ -104,33 +103,40 @@ public class AvoidObstacle implements Behavior{
 		//measure right side
 		robot.turnArm_rotate(sensorAngle);				
 		distances.add( robot.getDistance());	
-			
+		
+		robot.turnArm_rotateToCenter();
+		
 		//measure left side
-		robot.turnArm_rotate(-2 * sensorAngle);		
+		robot.turnArm_rotate(-sensorAngle);		
 		distances.add( robot.getDistance());
+		
+		robot.turnArm_rotateToCenter();
 		
 		return distances;
 	}
 	
 	
 	private boolean detectWall(List<Float> distances) throws RemoteException{
-		float expectationValue = calculateExpectation();		
+		float expectationValue = calculateExpectation();
+		int tolerance = 20;
 			
-		Range valueRange = new Range(expectationValue-2, expectationValue+2);
-		
+		Range valueRange = new Range(expectationValue-tolerance, expectationValue+tolerance);
 		
 		if(valueRange.contains(distances.get(0)) && valueRange.contains(distances.get(1))){
+			System.out.println("Wall detected");
 			return true;
 		}		
 		
 		return false;
 	}
-	
+		
 	
 	private void turnRobot() throws TurnNotPossible, RemoteException, EndOfRoom{
 		//check if wall in turn direction
+		System.out.println("Turn robot");
 		robot.turnArm_rotate(robot.getTurnDirection().getTurnAngle());
 		float distance = robot.getDistance();
+		robot.turnArm_rotateToCenter();
 		if(distance <= Configuration.GRID_SIZE){
 			throw new EndOfRoom();
 		}
@@ -145,7 +151,7 @@ public class AvoidObstacle implements Behavior{
 	
 	
 	private void avoidObstacle(List<Float> obstacleEdges) throws TurnNotPossible, RemoteException{
-		
+		System.out.println("Avoid obstacle");
 		Float obstacleDistance = robot.getDistance();
 		Direction turnDirection = getTurnDirection(obstacleEdges);	
 		
@@ -192,6 +198,7 @@ public class AvoidObstacle implements Behavior{
 			locator.travelAhead(1);
 			distance = robot.getDistance();
 		}
+		robot.turnArm_rotateToCenter();
 		
 		locator.travelAhead(1);
 	}

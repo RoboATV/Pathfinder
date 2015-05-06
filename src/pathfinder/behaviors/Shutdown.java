@@ -1,32 +1,28 @@
 package pathfinder.behaviors;
 
-import java.rmi.RemoteException;
-
 import lejos.hardware.Button;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.Main;
-import pathfinder.robot.Robot;
+import pathfinder.robot.IRobot;
 
 public class Shutdown implements Behavior{
 
 	private boolean suppressed;
-	private Robot robot;
+	private IRobot robot;
 
-	public Shutdown(Robot robot){
+	public Shutdown(IRobot robot){
+		System.out.println("  shutdown");
 		this.robot = robot;
 	}
 	
 	
 	@Override
-	public void action() {		
+	public void action() {
+		suppressed = false;
 		if(!suppressed){
-			try {
-				robot.shutdown();
-				Main.shutdown();
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-			
+			System.out.println("Shutdown...");
+			robot.shutdown();
+			Main.shutdown();
 		}
 		
 	}

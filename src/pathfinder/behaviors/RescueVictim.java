@@ -16,13 +16,16 @@ public class RescueVictim implements Behavior {
 	private ArrayList<IMove> movePath = new ArrayList<IMove>();
 	
 	public RescueVictim(IRobot robot, Locator locator) {
+		System.out.println("  rescue victim");
 		this.robot = robot;
 		this.locator = locator;
 	}
 	
 	@Override
 	public void action() {
+		suppressed = false;
 		if(!this.suppressed) {
+			System.out.println("Rescue victim...");
 			this.travelToStart();
 			this.deliverVictim();
 			this.travelToLastLocation();
@@ -59,5 +62,4 @@ public class RescueVictim implements Behavior {
 			move.execute();
 		}
 	}
-
 }

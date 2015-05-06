@@ -11,12 +11,10 @@ import pathfinder.orientation.NoOrientationToAngle;
 import pathfinder.orientation.Orientation;
 
 public class OrientationTest {
-
 	@Before
 	public void startup(){
 		
 	}
-	
 	
 	@Test
 	public void correctAngles(){		
@@ -27,7 +25,6 @@ public class OrientationTest {
 		assertEquals(Orientation.WEST.getAngle(), 270);		
 		
 	}
-	
 	
 	@Test()
 	public void correctAngleConversion(){
@@ -44,7 +41,6 @@ public class OrientationTest {
 		
 	}
 	
-	
 	@Test public void wrongAngleConversion(){
 		
 		try{
@@ -56,12 +52,8 @@ public class OrientationTest {
 		
 	}
 	
-	
-	
 	@After
 	public void shutdown(){
 		
 	}
-	
-	
 }

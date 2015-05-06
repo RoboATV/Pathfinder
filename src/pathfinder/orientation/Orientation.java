@@ -1,36 +1,32 @@
 package pathfinder.orientation;
 
 public enum Orientation implements IOrientation{
-
 	NORTH{
 		@Override
 		public int getAngle(){
 			return 0;
 		}
-	}, 
+	},
+	
 	EAST {
-
 		@Override
 		public int getAngle() {
 			return 90;
 		}
-		
-	}, 
+	},
+	
 	SOUTH{
-
 		@Override
 		public int getAngle() {
 			return 180;
 		}
-		
-	}, 
+	},
+	
 	WEST{
-
 		@Override
 		public int getAngle() {
 			return 270;
 		}
-		
 	};
 
 	public static Orientation getOrientation(int angle) throws NoOrientationToAngle{
@@ -47,7 +43,7 @@ public enum Orientation implements IOrientation{
 				return orientation;
 			}
 		}
+		
 		throw new NoOrientationToAngle(angle);
 	}
-	
 }

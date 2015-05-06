@@ -5,18 +5,16 @@ import java.rmi.RemoteException;
 import lejos.robotics.subsumption.Behavior;
 import pathfinder.configuration.Configuration;
 import pathfinder.location.Locator;
-import pathfinder.map.Coordinate;
-import pathfinder.robot.Robot;
+import pathfinder.robot.IRobot;
 
 public class Drive implements Behavior{
 	
-	private Robot robot;
+	private IRobot robot;
 	private boolean suppressed = false;
 	private Locator locator;
 	
-	
-	public Drive(Robot robot, Locator locator){
-		System.out.println("loading drive");
+	public Drive(IRobot robot, Locator locator){
+		System.out.println("  drive");
 		this.robot = robot;
 		this.locator = locator;
 	}
@@ -28,13 +26,15 @@ public class Drive implements Behavior{
 
 	@Override
 	public void action() {
+		suppressed = false;
 		while(!suppressed){
+			System.out.println("Drive...");
 			try{
 				if(!robot.carriage_isMoving()){
 					locator.measureEnvironment();						
 				//this.robot.printArray(this.robot.mapToArray(this.locator.map, this.locator.currentPos));
 
-					robot.carriage_travel(Configuration.TRAVEL_DISTANCE, true);		
+					locator.travelAhead(Configuration.TRAVEL_DISTANCE, true);		
 		
 				}
 
@@ -49,6 +49,4 @@ public class Drive implements Behavior{
 	public void suppress() {		
 		suppressed = true;
 	}
-	
-			
 }	

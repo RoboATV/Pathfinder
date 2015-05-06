@@ -34,6 +34,8 @@ public class MoveTurnToOrientation implements IMove {
 	
 	@Override
 	public void execute() {
+		System.out.println("Move turn to orientation: " + this.orientation);
+		
 		int	angleNow 		= this.robot.carriage_getOrientation().getAngle();
 		int angleToReach	= this.orientation.getAngle();
 		

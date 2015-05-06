@@ -13,7 +13,12 @@ public class Coordinate{
 	public Coordinate(){
 		
 	}
-
+	
+	public Coordinate(Coordinate oldCoordinate){
+		this.X = oldCoordinate.X;
+		this.Y = oldCoordinate.Y;
+	}
+	
 	public String toString(){
 		return "x: " + X + " y: " + Y;
 	}
@@ -25,7 +30,7 @@ public class Coordinate{
 		if(this.X == otherCoordinate.X && this.Y == otherCoordinate.Y){
 			return true;
 		}
+		
 		return false;
 	}
-	
 }

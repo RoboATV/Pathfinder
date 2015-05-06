@@ -1,7 +1,6 @@
 package pathfinder.robot;
 
 public enum Direction {
-
 	LEFT {
 		@Override
 		public int getNumerical() {
@@ -12,7 +11,9 @@ public enum Direction {
 		public int getTurnAngle() {
 			return -90;
 		}
-	},RIGHT {
+	},
+	
+	RIGHT {
 		@Override
 		public int getNumerical() {
 			return 1;
@@ -27,7 +28,8 @@ public enum Direction {
 	public static Direction getOpposite(Direction direction){
 		if(direction == Direction.LEFT){
 			return Direction.RIGHT;
-		} 
+		}
+		
 		return Direction.LEFT;
 	}
 	

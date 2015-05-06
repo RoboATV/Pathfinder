@@ -1,7 +1,6 @@
 package pathfinder.robot;
 
 public class Range {
-
 	private float min;
 	private float max;
 
@@ -10,13 +9,11 @@ public class Range {
 		this.max = max;
 	}
 	
-	
 	public boolean contains(float test){
 		if(test >= min && test <= max){
 			return true;
 		}
+		
 		return false;
 	}
-	
-	
 }

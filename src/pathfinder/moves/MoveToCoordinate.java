@@ -34,6 +34,7 @@ public class MoveToCoordinate implements IMove {
 	
 	@Override
 	public void execute() {
+		System.out.println("Move to coordinate: " + coordinate.toString());
 		try {
 			locator.relocateAbsolute(coordinate);
 		} catch (TurnNotPossible e) {

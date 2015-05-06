@@ -77,15 +77,20 @@ public class Carriage implements ICarriage {
 			aimHeading += 360;
 		}
 		
-		System.out.println("Start heading: " + startHeading + "; Aim heading: " + aimHeading + "; Degrees: " + degrees);
+		aimHeading = aimHeading % 360;
+		int offset = degrees / 10;
+		
+		System.out.println("Start heading: " + startHeading + "; Aim heading: " + aimHeading + "; Degrees: " + degrees + "; Offset: " + offset);
 		
 		if(degrees < 0) {
+			System.out.println("Rotate left");
 			this.pilot.rotateRight();
 		} else {
+			System.out.println("Rotate right");
 			this.pilot.rotateLeft();
 		}
 		
-		while(!this.isHeadingNear(aimHeading, this.robot.getHeading(), 2)) {
+		while(!this.isHeadingNear(aimHeading, this.robot.getHeading(), 2, offset)) {
 //			System.out.println("Heading: " + this.robot.getHeading());
 //			Delay.msDelay(100);
 		}
@@ -141,9 +146,10 @@ public class Carriage implements ICarriage {
 	 * @return	boolean
 	 *   if the heading is near the aim heading.
 	 */
-	public boolean isHeadingNear(int aim, int measured, int tolerance) {
-		for (int i = -tolerance; i < tolerance; i++) {
-			int toCheck = (measured + i) % 360;
+	public boolean isHeadingNear(int aim, int measured, int tolerance, int offset) {
+		System.out.println("Aim: " + aim + "; Measured: " + measured + "; Tolerance: " + tolerance + "; Offset: " + offset);
+		for (int i = -tolerance; i <= tolerance; i++) {
+			int toCheck = (measured + offset + i) % 360;
 			
 			if(toCheck < 0) {
 				toCheck += 360;

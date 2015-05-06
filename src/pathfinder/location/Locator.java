@@ -19,33 +19,29 @@ import pathfinder.robot.Direction;
 import pathfinder.robot.IRobot;
 
 public class Locator {
-
-	
 	public List<Coordinate> robotTrack;
 	private Coordinate currentPos; 
 	
 	public Map<Coordinate, MapObject> map = new HashMap<Coordinate, MapObject>();
 	private IRobot robot;
 	
-	
-	
-	
 	public Locator(IRobot robot){
-		System.out.println("initializing locator");
+		System.out.println("Initialize locator...");
+		
 		this.robot = robot;		
 		this.robotTrack = new ArrayList<Coordinate>();
 		setCurrentPosition(new Coordinate(0, 0));
 		
+		System.out.println("Locator initilized...");
 	}
 	
 	
 	private void setCurrentPosition(Coordinate position){
-		this.currentPos = position;
+		System.out.println("set current pos" + position);
+		this.currentPos = new Coordinate(position);
+		System.out.println("current pos" + this.currentPos);
 		this.robotTrack.add(new Coordinate(position.X, position.Y));
-		
 	}
-	
-	
 	
 	public void enterCoordinateFromMove(Move move){
 		Coordinate relPos = new Coordinate(0, (int) move.getDistanceTraveled());
@@ -53,7 +49,6 @@ public class Locator {
 		
 		System.out.println("last position relative " + relPos);
 		System.out.println("last position absolute " + absPos);
-		
 		
 		setCurrentPosition(absPos);
 	}
@@ -70,65 +65,63 @@ public class Locator {
 		
 		if(this.robot.carriage_getOrientation() == Orientation.NORTH){
 			if(distanceY != 0){
-				robot.carriage_travel(distanceY);
+				travelAhead(distanceY);
 			} 
 			if(distanceX > 0){
 				robot.carriage_rotate(90);
-				robot.carriage_travel(distanceX);
+				travelAhead(distanceX);
 				robot.carriage_rotate(-90);
 			} else if(distanceX < 0){
 				robot.carriage_rotate(-90);
-				robot.carriage_travel(distanceX);
+				travelAhead(distanceX);
 				robot.carriage_rotate(90);
 			}			
 		} else if(this.robot.carriage_getOrientation() == Orientation.EAST){
 			if(distanceX != 0){
-				robot.carriage_travel(distanceX);
+				travelAhead(distanceX);
 			}
 			if(distanceY > 0){
 				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
-				robot.carriage_travel(distanceY);
+				travelAhead(distanceY);
 				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
 			} else if(distanceY < 0){
 				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
-				robot.carriage_travel(Math.abs(distanceY));
+				travelAhead(Math.abs(distanceY));
 				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
 			}			
 		} else if(this.robot.carriage_getOrientation() == Orientation.SOUTH){
 			if(distanceY != 0){
-				robot.carriage_travel(-distanceY);
+				travelAhead(-distanceY);
 			} 
 			if(distanceX > 0){
 				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
-				robot.carriage_travel(distanceX);
+				travelAhead(distanceX);
 				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
 			} else if(distanceX < 0){
 				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
-				robot.carriage_travel(Math.abs(distanceX));
+				travelAhead(Math.abs(distanceX));
 				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
 			}	
-			
 		} else if(this.robot.carriage_getOrientation() == Orientation.WEST){
 			if(distanceX != 0){
-				robot.carriage_travel(Math.abs(distanceX));
+				travelAhead(Math.abs(distanceX));
 			}
 			if(distanceY > 0){
 				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
-				robot.carriage_travel(distanceY);
+				travelAhead(distanceY);
 				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
 			} else if(distanceY < 0){
 				robot.carriage_rotate(Direction.LEFT.getTurnAngle());
-				robot.carriage_travel(Math.abs(distanceY));
+				travelAhead(Math.abs(distanceY));
 				robot.carriage_rotate(Direction.RIGHT.getTurnAngle());
 			}		
 		}
-		
-	}	
-	
-	
+	}
 	
 	public Coordinate calcNewPos(Coordinate destination){
-		Coordinate newPos = currentPos;
+		Coordinate newPos = new Coordinate(currentPos);
+		
+		System.out.println("current position " + newPos);
 		
 		if(robot.carriage_getOrientation() == Orientation.NORTH){
 			newPos.X += destination.X;
@@ -142,11 +135,12 @@ public class Locator {
 			newPos.X -= destination.X;
 			newPos.Y -= destination.Y;
 			return newPos;
-		} 
+		}
+		
 		newPos.X -= destination.Y;
 		newPos.Y -= destination.X;
-		return newPos;
 		
+		return newPos;
 	}
 	
 	
@@ -184,7 +178,7 @@ public class Locator {
 			
 			if(!Float.isInfinite(sample)){
 				Coordinate position = this.calculateMapPosition(this.robot.turnArm_getTurnAngle(), sample);
-				System.out.println(position.toString());
+//				System.out.println(position.toString());
 				enterNewPosition(position, new LargeObstacle());
 			}
 			
@@ -286,6 +280,16 @@ public class Locator {
 		
 		robot.carriage_travel(distance);
 	}
+	
+	
+	public void travelAhead(int distance, boolean immediateReturn){		
+		Coordinate newPosition = calcNewPos(new Coordinate(0, distance));
+		
+		setCurrentPosition(newPosition);
+		
+		robot.carriage_travel(distance, immediateReturn);
+	}	
+	
 	
 	
 	public ArrayList<IMove> returnToStart(){

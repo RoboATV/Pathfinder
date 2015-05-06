@@ -115,10 +115,11 @@ public class Robot implements IRobot{
 	 * @throws	NotBoundException
 	 */
 	public Robot() throws RemoteException, MalformedURLException, NotBoundException{
-		System.out.println("loading remote EV3 brick");
+		System.out.println("Initialize new robot...");
+		System.out.println("  load remote EV3 brick");
 		RemoteEV3 remote = new RemoteEV3(Configuration.IP_EV3_2);
 		
-		System.out.println("initializing carriage");
+		System.out.println("  initialize carriage");
 		RegulatedMotor leftDrive	= new EV3LargeRegulatedMotor(RobotConfiguration.PORT_LEFT_DRIVE);		
 		RegulatedMotor rightDrive	= new EV3LargeRegulatedMotor(RobotConfiguration.PORT_RIGHT_DRIVE);
 		DifferentialPilot pilot		= new DifferentialPilot(RobotConfiguration.WHEEL_DIAMETER, RobotConfiguration.TRACK_WIDTH, leftDrive, rightDrive, RobotConfiguration.REVERSE_DRIVE_PILOT);
@@ -127,12 +128,12 @@ public class Robot implements IRobot{
 		
 		this.carriage = new Carriage(this, pilot, RobotConfiguration.RATIO_CARRIAGE, RobotConfiguration.INITIAL_ORIENTATION);
 		
-		System.out.println("initializing turn arm");
+		System.out.println("  initialize turn arm");
 		RMIRegulatedMotor turnArmMotor = remote.createRegulatedMotor(RobotConfiguration.PORT_TURN_ARM, 'M');
 		turnArmMotor.setSpeed(RobotConfiguration.SPEED_TURN_ARM_TURN);
 		this.turnArm = new TurnArm(RobotConfiguration.RATIO_TURN_ARM, RobotConfiguration.REVERSE_TURN_ARM, turnArmMotor);
 		
-		System.out.println("initializing grappler");
+		System.out.println("  initialize grappler");
 		RegulatedMotor	grapplerMove	= new EV3LargeRegulatedMotor(RobotConfiguration.PORT_GRAPPLER_MOVE);
 		RegulatedMotor	grapplerGrap	= new EV3LargeRegulatedMotor(RobotConfiguration.PORT_GRAPPLER_GRAP);
 		
@@ -141,36 +142,42 @@ public class Robot implements IRobot{
 		
 		this.grappler = new Grappler(grapplerMove, grapplerGrap, RobotConfiguration.ROTATE_GRAPPLER_MOVE, RobotConfiguration.ROTATE_GRAPPLER_GRAP, RobotConfiguration.RATIO_GRAPPLER);
 		
-		System.out.println("initializing sensors");
+		System.out.println("  initialize sensors");
+		System.out.println("    distance");
 		Port distancePort	= remote.getPort(RobotConfiguration.PORT_DISTANCE);
 		this.distanceSensor	= new EV3UltrasonicSensor(distancePort);
 		this.distance		= this.distanceSensor.getDistanceMode();
 		
+		System.out.println("    camera");
 //		Port cameraPort		= remote.getPort(RobotConfiguration.PORT_CAMERA);
 		this.cameraSensor	= new NXTCam(SensorPort.S3);//cameraPort);
 //		this.cameraSensor.sortBy(NXTCam.COLOR);
 //		this.cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
 		this.cameraSensor.enableTracking(true);
 		
+		System.out.println("    color");
 		this.colorSensor	= new EV3ColorSensor(RobotConfiguration.PORT_COLOR);
 		this.color			= this.colorSensor.getColorIDMode();
 		
+		System.out.println("    compass");
 		Port compassPort	= remote.getPort(RobotConfiguration.PORT_COMPASS);
 		this.compassSensor	= new HiTechnicCompass(compassPort);
 		this.compass		= this.compassSensor.getCompassMode();
+		
+		System.out.println("New robot initialized...");
 	}
 	
-	/**
-	 * Do a shutdown of the robot. Free all used ports etc.
-	 * 
-	 * @throws	RemoteException
-	 */
-	public void shutdown() throws RemoteException{
-		this.distanceSensor.close();
-		this.cameraSensor.close();
-		this.compassSensor.close();
-		this.colorSensor.close();
-		this.turnArm.shutdown();
+	@Override
+	public void shutdown() {
+		try {
+			this.distanceSensor.close();
+			this.cameraSensor.close();
+			this.compassSensor.close();
+			this.colorSensor.close();
+			this.turnArm.shutdown();
+		} catch(RemoteException e) {
+			System.out.println(e.toString());
+		}
 	}
 
 	@Override
@@ -270,6 +277,7 @@ public class Robot implements IRobot{
 	
 	@Override
 	public Direction getTurnDirection() {
+		System.out.println("Turn direction: " + this.turnDirection.name());
 		return this.turnDirection;
 	}
 	
@@ -280,6 +288,7 @@ public class Robot implements IRobot{
 	
 	@Override
 	public void invertTurnDirection() {
+		System.out.println("Invert turn direction");
 		Direction oldDirection = this.turnDirection;
 		this.turnDirection = Direction.getOpposite(oldDirection);
 	}

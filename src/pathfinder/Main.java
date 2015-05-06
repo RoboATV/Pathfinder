@@ -26,20 +26,19 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("starting main");
+		System.out.println("Start set up...");
 		
 		try {
-			Robot robot = new Robot();		
-			System.out.println("new robot initialized");
+			Robot robot = new Robot();
 			
-			Locator locator = new Locator(robot);
+//			Locator locator = new Locator(robot);
 //			InitialOrientation initialOrientation = new InitialOrientation(robot);
 			
-			System.out.println("loading behaviors");
-			Behavior drive			= new Drive(robot, locator);
-			Behavior avoidObstacle	= new AvoidObstacle(robot, locator);
+			System.out.println("Load behaviors...");
+//			Behavior drive			= new Drive(robot, locator);
+//			Behavior avoidObstacle	= new AvoidObstacle(robot, locator);
 			Behavior pickUpVictim	= new PickUpVictim(robot);
-			Behavior rescueVictim	= new RescueVictim(robot, locator);
+//			Behavior rescueVictim	= new RescueVictim(robot, locator);
 			Behavior shutdown		= new Shutdown(robot);
 			
 //			behaviors[0] = drive;
@@ -47,22 +46,25 @@ public class Main {
 			behaviors[0] = pickUpVictim;
 //			behaviors[3] = rescueVictim;
 			behaviors[1] = shutdown;
+			System.out.println("Behaviors loaded...");
 			
+//			System.out.println("Align robot...");
 //			try {
-//				System.out.println("align robot");
 //				robot.setTurnDirection(initialOrientation.alignRobot());
 //			} catch (TurnNotPossible | RemoteException e) {
 //				System.out.println(e.toString());
 //			}
+//			System.out.println("Robot aligned...");
 			
-			System.out.println("initializing arbitrator");
+			System.out.println("Initialize arbitrator...");
 			arbitrator.start();
+			System.out.println("Arbitrator initialized...");
 			
 //			locator.relocate(new Coordinate(0, 20));
 		} catch(RemoteException | MalformedURLException | NotBoundException e){
 			e.printStackTrace();
 		}
 		
+		System.out.println("Robot set up - let the games begin ;)");
 	}
-
 }

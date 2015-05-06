@@ -16,8 +16,6 @@ import pathfinder.robot.ITestRobot;
 import pathfinder.robot.TestRobot;
 
 public class InitialOrientationTest {
-
-	
 	private ITestRobot robot;
 	private InitialOrientation initialOrientation;
 
@@ -26,7 +24,6 @@ public class InitialOrientationTest {
 		this.robot = new TestRobot();
 		this.initialOrientation = new InitialOrientation(this.robot);
 	}
-	
 	
 	@Test
 	public void correctInitialOrientation() throws RemoteException {
@@ -41,14 +38,12 @@ public class InitialOrientationTest {
 		
 		robot.setDistances(distances);
 		
-		
 		//wall on right side
 		try {
 			assertEquals(initialOrientation.alignRobot(), Direction.LEFT);
 		} catch (TurnNotPossible e) {
 			fail(e.toString());
 		}
-		
 		
 		//wall on left side
 		try {
@@ -57,15 +52,11 @@ public class InitialOrientationTest {
 			fail(e.toString());
 		}
 		
-		
 		//no wall
 		try {
 			assertEquals(initialOrientation.alignRobot(), Direction.getOpposite(Configuration.INITIAL_DIRECTION));
 		} catch (TurnNotPossible e) {
 			fail(e.toString());
 		}
-		
 	}
-	
-	
 }

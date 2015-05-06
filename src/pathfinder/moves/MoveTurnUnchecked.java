@@ -32,7 +32,7 @@ public class MoveTurnUnchecked implements IMove {
 	
 	@Override
 	public void execute() {
-		System.out.println("Move turn unchecked " + this.degrees);
+		System.out.println("Move turn unchecked: " + this.degrees);
 		this.robot.carriage_rotateUnchecked(this.degrees);
 	}
 }

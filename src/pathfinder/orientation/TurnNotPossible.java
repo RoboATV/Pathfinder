@@ -1,7 +1,7 @@
 package pathfinder.orientation;
 
+@SuppressWarnings("serial")
 public class TurnNotPossible extends Exception{
-	
 	private int angle;
 
 	public TurnNotPossible(){
@@ -15,5 +15,4 @@ public class TurnNotPossible extends Exception{
 	public String toString(){
 		return "turn not possible for angle " + angle;
 	}
-	
 }

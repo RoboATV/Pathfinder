@@ -19,11 +19,8 @@ import pathfinder.robot.ITestRobot;
 import pathfinder.robot.TestRobot;
 
 public class LocatorTest {
-
-
 	private Locator locator;
 	private ITestRobot robot;
-
 
 	@Before
 	public void startup(){
@@ -31,7 +28,7 @@ public class LocatorTest {
 		this.locator = new Locator(robot);
 	}
 	
-	
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void correctMapCalculationsNorth() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		
@@ -58,7 +55,7 @@ public class LocatorTest {
 		}	
 	}
 	
-	
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void correctMapCalculationsSouth() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		
@@ -86,13 +83,13 @@ public class LocatorTest {
 	}
 	
 	
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void correctMapCalculationsEast() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		
 		this.robot.setOrientation(Orientation.EAST);
 		
 		List<MapCalculationTestValue> testValues = new LinkedList<MapCalculationTestValue>();
-//		
+		
 		testValues.add(new MapCalculationTestValue(1, -1, 45, 14));
 		testValues.add(new MapCalculationTestValue(1, -1, 45, 21));
 		testValues.add(new MapCalculationTestValue(1, 1, -45, 14));
@@ -113,9 +110,9 @@ public class LocatorTest {
 	}
 	
 	
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void correctMapCalculationsWest() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		
 		this.robot.setOrientation(Orientation.WEST);
 		
 		List<MapCalculationTestValue> testValues = new LinkedList<MapCalculationTestValue>();
@@ -139,24 +136,18 @@ public class LocatorTest {
 		}	
 	}
 	
-	
 	@Test 
 	public void correctRelocationAhead() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
-		
 		robot.setOrientation(Orientation.NORTH);
 		Field currentPos = locator.getClass().getDeclaredField("currentPos");
 		currentPos.setAccessible(true);
 		currentPos.set(locator, new Coordinate(0, 0));
 		
-		
 		locator.travelAhead(30);
 		locator.travelAhead(20);
 		
 		assertEquals(new Coordinate(0, 50), locator.getCurrentPosition());
-		
-		
 	}
-	
 	
 	@Test
 	public void correctRelocationWithRotation() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, TurnNotPossible{
@@ -165,17 +156,13 @@ public class LocatorTest {
 		currentPos.setAccessible(true);
 		currentPos.set(locator, new Coordinate(0, 0));
 		
-		
 		locator.travelAhead(50);
 		robot.carriage_rotate(-90);
 		locator.travelAhead(20);
 		
-		
 		assertEquals(-20, locator.getCurrentPosition().X);
 		assertEquals(50, locator.getCurrentPosition().Y);
-		
 	}
-	
 	
 	@Test
 	public void correctAbsoluteRelocationNorth() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, TurnNotPossible{
@@ -196,9 +183,7 @@ public class LocatorTest {
 			assertEquals(Orientation.NORTH, robot.carriage_getOrientation());
 			assertEquals(destination, locator.getCurrentPosition());
 		}		
-		
 	}
-	
 	
 	@Test
 	public void correctAbsoluteRelocationSouth() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, TurnNotPossible{
@@ -213,7 +198,6 @@ public class LocatorTest {
 		destinations.add(new Coordinate(5, -18));
 		destinations.add(new Coordinate(-5, -18));
 		
-		
 		for(Coordinate destination : destinations){
 			locator.relocateAbsolute(destination);
 			assertEquals(Orientation.SOUTH, robot.carriage_getOrientation());
@@ -221,7 +205,6 @@ public class LocatorTest {
 		}		
 		
 	}
-	
 	
 	@Test
 	public void correctAbsoluteRelocationWest() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, TurnNotPossible{
@@ -236,7 +219,6 @@ public class LocatorTest {
 		destinations.add(new Coordinate(5, -18));
 		destinations.add(new Coordinate(-5, -18));
 		
-		
 		for(Coordinate destination : destinations){
 			locator.relocateAbsolute(destination);
 			assertEquals(Orientation.WEST, robot.carriage_getOrientation());
@@ -244,8 +226,6 @@ public class LocatorTest {
 		}		
 		
 	}
-	
-	
 	
 	@Test
 	public void correctAbsoluteRelocationEast() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, TurnNotPossible{
@@ -260,7 +240,6 @@ public class LocatorTest {
 		destinations.add(new Coordinate(5, -18));
 		destinations.add(new Coordinate(-5, -18));
 		
-		
 		for(Coordinate destination : destinations){
 			locator.relocateAbsolute(destination);
 			assertEquals(Orientation.EAST, robot.carriage_getOrientation());
@@ -269,10 +248,8 @@ public class LocatorTest {
 		
 	}
 	
-	
 	@After
 	public void shutdown(){
 		
 	}
-	
 }

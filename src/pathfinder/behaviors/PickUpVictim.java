@@ -9,22 +9,24 @@ import lejos.utility.Delay;
 import pathfinder.moves.IMove;
 import pathfinder.moves.MoveTravel;
 import pathfinder.moves.MoveTurnUnchecked;
-import pathfinder.robot.Robot;
+import pathfinder.robot.IRobot;
 
 public class PickUpVictim implements Behavior {
-	private Robot	robot;
+	private IRobot	robot;
 	private boolean	suppressed = false;
 	
 	private ArrayList<IMove> movePath = new ArrayList<IMove>();
 	
-	public PickUpVictim(Robot robot){
+	public PickUpVictim(IRobot robot){
+		System.out.println("  pick up victim");
 		this.robot = robot;
 	}
 	
 	@Override
 	public void action() {
+		suppressed = false;
 		if(!this.suppressed) {
-			System.out.println("Start pick up");
+			System.out.println("Pick up victim...");
 			this.moveToVictim();
 			this.grapVictim();
 			this.backToDetectionPoint();
@@ -77,7 +79,12 @@ public class PickUpVictim implements Behavior {
 	}
 	
 	private int centerVictimCamera() {
-		Rectangle2D victimLocation = this.robot.victim_getLocation();
+		Rectangle2D victimLocation = null;
+		
+		while(victimLocation == null) {
+			victimLocation = this.robot.victim_getLocation();
+		}
+		
 		int turnFactor		= victimLocation.getCenterX() < 90 ? -1 : 1;
 		int turned			= 0;
 		int checkStepSize	= 5;
@@ -122,8 +129,6 @@ public class PickUpVictim implements Behavior {
 		
 		while(victimLocation != null && victimLocation.getY() < 100) {
 			Delay.msDelay(10);
-//			this.robot.carriage_travel(3);
-//			distanceTraveled += 3;
 			victimLocation = this.robot.victim_getLocation();
 		}
 		

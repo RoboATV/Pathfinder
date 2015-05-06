@@ -9,7 +9,6 @@ import pathfinder.moves.MoveTurnToOrientationTest;
 import pathfinder.orientation.InitialOrientationTest;
 import pathfinder.orientation.OrientationTest;
 
-
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	LocatorTest.class,
@@ -20,5 +19,6 @@ import pathfinder.orientation.OrientationTest;
 })
 
 
-public class PathfinderTestSuite {	
+public class PathfinderTestSuite {
+	
 }

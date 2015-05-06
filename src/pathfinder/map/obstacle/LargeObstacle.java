@@ -12,5 +12,4 @@ public class LargeObstacle extends Obstacle {
 	public int numericalValue() {
 		return LargeObstacle.NUMERICAL_VALUE;
 	}
-
 }

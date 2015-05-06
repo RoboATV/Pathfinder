@@ -1,7 +1,5 @@
 package pathfinder;
 
-
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -25,7 +23,6 @@ import pathfinder.orientation.Orientation;
 import pathfinder.robot.TestRobot;
 
 public class AvoidObstacleTest {
-
 	private Locator locator;
 	private TestRobot robot;
 	private AvoidObstacle avoidObstacle;
@@ -36,9 +33,6 @@ public class AvoidObstacleTest {
 		this.locator = new Locator(robot);
 		this.avoidObstacle = new AvoidObstacle(robot, locator);
 	}
-	
-	
-	
 	
 	@Test
 	public void correctAngleCalculation() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {		    
@@ -53,13 +47,9 @@ public class AvoidObstacleTest {
 	    calculateSensorAngle.setAccessible(true);
 	    
 	    int angle = (int) calculateSensorAngle.invoke(avoidObstacle);
-	   
-	 
+	    
 	    assertEquals(angle, 56);
-		
-		
 	}
-	
 	
 	@Test
 	public void correctExpectationCalculation() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
@@ -73,14 +63,11 @@ public class AvoidObstacleTest {
 		 calculateExpectation.setAccessible(true);
 		    
 		 float angle =  (float) calculateExpectation.invoke(avoidObstacle);
-		   
-		 
 		 
 		 assertEquals(32, angle, 5);
-		 
 	}
 	
-	
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void correctWallDetection() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		 Queue<Float> expDistances = new LinkedList<Float>();
@@ -102,17 +89,15 @@ public class AvoidObstacleTest {
 	     Boolean wall =  (Boolean) detectWall.invoke(avoidObstacle, distances);		 	     
 	     assertTrue(wall);
 	     
-	     
 	     distances.set(0, 40f);
 	   
 	     wall =  (Boolean) detectWall.invoke(avoidObstacle, distances);
 	     assertFalse(wall);
 	}
 	
-	
+	@SuppressWarnings("rawtypes")
 	@Test
 	public void correctObstacleAvoidanceLeft() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException{
-		
 		robot.setOrientation(Orientation.NORTH);
 		
 		List<Float> edges = new LinkedList<Float>();
@@ -131,7 +116,6 @@ public class AvoidObstacleTest {
 		
 		robot.setDistances(expDistances);
 		
-		
 		Class[] cArg = new Class[1];
 		cArg[0] = List.class;	
 		
@@ -140,8 +124,6 @@ public class AvoidObstacleTest {
 		Field currentPos = locator.getClass().getDeclaredField("currentPos");
 		currentPos.setAccessible(true);
 		currentPos.set(locator, new Coordinate(0, 0));
-		
-			
 		
 		avoidObstacle.invoke(this.avoidObstacle, edges);
 		
@@ -161,8 +143,4 @@ public class AvoidObstacleTest {
 		assertEquals(new Coordinate(-5, 6), locator.robotTrack.get(5));
 		assertEquals(new Coordinate(0, 6), locator.robotTrack.get(6));
 	}
-	
-	
-	
-	
 }

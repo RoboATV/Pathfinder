@@ -249,4 +249,9 @@ public interface IRobot {
 	 *   the heading of the compass.
 	 */
 	public int getHeading();
+	
+	/**
+	 * Do a shutdown of the robot. Free all used ports etc.
+	 */
+	public void shutdown();
 }
