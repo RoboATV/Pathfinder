@@ -2,7 +2,6 @@ package pathfinder.components;
 
 import lejos.robotics.navigation.DifferentialPilot;
 import lejos.robotics.navigation.Move;
-import lejos.utility.Delay;
 import pathfinder.orientation.NoOrientationToAngle;
 import pathfinder.orientation.Orientation;
 import pathfinder.orientation.TurnNotPossible;
@@ -86,7 +85,7 @@ public class Carriage implements ICarriage {
 			this.pilot.rotateLeft();
 		}
 		
-		while(this.robot.getHeading() != aimHeading) {
+		while(!this.isHeadingNear(aimHeading, this.robot.getHeading(), 2)) {
 //			System.out.println("Heading: " + this.robot.getHeading());
 //			Delay.msDelay(100);
 		}
@@ -128,5 +127,33 @@ public class Carriage implements ICarriage {
 	@Override
 	public Orientation getOrientation() {
 		return this.orientation;
+	}
+	
+	/**
+	 * Checks if the heading is near a aim heading to have a tolerance.
+	 * 
+	 * @param	int	aim
+	 *   The aim heading.
+	 * @param	int	measured
+	 *   The measured heading.
+	 * @param	int	tolerance
+	 *   The tolerance for the heading.
+	 * @return	boolean
+	 *   if the heading is near the aim heading.
+	 */
+	public boolean isHeadingNear(int aim, int measured, int tolerance) {
+		for (int i = -tolerance; i < tolerance; i++) {
+			int toCheck = (measured + i) % 360;
+			
+			if(toCheck < 0) {
+				toCheck += 360;
+			}
+			
+			if(aim == toCheck) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

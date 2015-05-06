@@ -80,7 +80,7 @@ public class PickUpVictim implements Behavior {
 		Rectangle2D victimLocation = this.robot.victim_getLocation();
 		int turnFactor		= victimLocation.getCenterX() < 90 ? -1 : 1;
 		int turned			= 0;
-		int checkStepSize	= 2;
+		int checkStepSize	= 5;
 		
 		while(null != victimLocation && (turnFactor < 0 && victimLocation.getCenterX() < 90) || (turnFactor > 0 && victimLocation.getCenterX() > 90)) {
 			this.robot.carriage_rotateUnchecked(turnFactor * checkStepSize);
