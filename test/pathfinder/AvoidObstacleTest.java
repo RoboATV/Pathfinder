@@ -89,7 +89,7 @@ public class AvoidObstacleTest {
 	     Boolean wall =  (Boolean) detectWall.invoke(avoidObstacle, distances);		 	     
 	     assertTrue(wall);
 	     
-	     distances.set(0, 40f);
+	     distances.set(0, 70f);
 	   
 	     wall =  (Boolean) detectWall.invoke(avoidObstacle, distances);
 	     assertFalse(wall);
