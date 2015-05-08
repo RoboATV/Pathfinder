@@ -27,7 +27,7 @@ public class Drive implements Behavior{
 	@Override
 	public void action() {
 		suppressed = false;
-		while(!suppressed){
+		if(!suppressed){
 			System.out.println("Drive...");
 			try{
 				if(!robot.carriage_isMoving()){
@@ -37,8 +37,6 @@ public class Drive implements Behavior{
 					locator.travelAhead(Configuration.TRAVEL_DISTANCE, true);		
 		
 				}
-
-				
 			} catch(RemoteException e){
 				e.printStackTrace();
 			}

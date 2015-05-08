@@ -78,7 +78,7 @@ public class Carriage implements ICarriage {
 		}
 		
 		aimHeading = aimHeading % 360;
-		int offset = degrees / 10;
+		int offset = 0; //degrees / 10;
 		
 		System.out.println("Start heading: " + startHeading + "; Aim heading: " + aimHeading + "; Degrees: " + degrees + "; Offset: " + offset);
 		
@@ -147,7 +147,7 @@ public class Carriage implements ICarriage {
 	 *   if the heading is near the aim heading.
 	 */
 	public boolean isHeadingNear(int aim, int measured, int tolerance, int offset) {
-		System.out.println("Aim: " + aim + "; Measured: " + measured + "; Tolerance: " + tolerance + "; Offset: " + offset);
+//		System.out.println("Aim: " + aim + "; Measured: " + measured + "; Tolerance: " + tolerance + "; Offset: " + offset);
 		for (int i = -tolerance; i <= tolerance; i++) {
 			int toCheck = (measured + offset + i) % 360;
 			

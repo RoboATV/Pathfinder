@@ -47,12 +47,6 @@ public class RescueVictim implements Behavior {
 	}
 	
 	private void deliverVictim() {
-		try {
-			this.robot.carriage_rotate(180);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
 		this.robot.grappler_release();
 	}
 	

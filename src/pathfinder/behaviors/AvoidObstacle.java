@@ -98,17 +98,19 @@ public class AvoidObstacle implements Behavior{
 	
 	private List<Float> measureObstacle() throws RemoteException{
 		List<Float> distances = new LinkedList<Float>();		
-		int sensorAngle = calculateSensorAngle();		
+		int sensorAngle = calculateSensorAngle();	
+		
+		sensorAngle += 10;
 		
 		//measure right side
 		robot.turnArm_rotate(sensorAngle);				
-		distances.add( robot.getDistance());	
+		distances.add(robot.getDistance());	
 		
 		robot.turnArm_rotateToCenter();
 		
 		//measure left side
 		robot.turnArm_rotate(-sensorAngle);		
-		distances.add( robot.getDistance());
+		distances.add(robot.getDistance());
 		
 		robot.turnArm_rotateToCenter();
 		
@@ -118,9 +120,12 @@ public class AvoidObstacle implements Behavior{
 	
 	private boolean detectWall(List<Float> distances) throws RemoteException{
 		float expectationValue = calculateExpectation();
-		int tolerance = 20;
-			
-		Range valueRange = new Range(expectationValue-tolerance, expectationValue+tolerance);
+		float tolerance = 20f;
+		
+		System.out.println("distances" + distances);
+		System.out.println("range upper" + expectationValue+tolerance);
+		
+		Range valueRange = new Range(0, expectationValue+tolerance);
 		
 		if(valueRange.contains(distances.get(0)) && valueRange.contains(distances.get(1))){
 			System.out.println("Wall detected");

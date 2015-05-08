@@ -152,7 +152,7 @@ public class Robot implements IRobot{
 //		Port cameraPort		= remote.getPort(RobotConfiguration.PORT_CAMERA);
 		this.cameraSensor	= new NXTCam(SensorPort.S3);//cameraPort);
 //		this.cameraSensor.sortBy(NXTCam.COLOR);
-//		this.cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
+		this.cameraSensor.setTrackingMode(NXTCam.OBJECT_TRACKING);
 		this.cameraSensor.enableTracking(true);
 		
 		System.out.println("    color");
@@ -303,6 +303,7 @@ public class Robot implements IRobot{
 	
 	@Override
 	public boolean victim_detectedCamera() {
+		System.out.println("no victims:" + this.cameraSensor.getNumberOfObjects());
 		return this.cameraSensor.getNumberOfObjects() > 0;
 	}
 	

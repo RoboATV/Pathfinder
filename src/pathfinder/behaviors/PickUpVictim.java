@@ -6,6 +6,7 @@ import java.util.Iterator;
 import lejos.robotics.geometry.Rectangle2D;
 import lejos.robotics.subsumption.Behavior;
 import lejos.utility.Delay;
+import pathfinder.location.Locator;
 import pathfinder.moves.IMove;
 import pathfinder.moves.MoveTravel;
 import pathfinder.moves.MoveTurnUnchecked;
@@ -13,13 +14,15 @@ import pathfinder.robot.IRobot;
 
 public class PickUpVictim implements Behavior {
 	private IRobot	robot;
+	private Locator locator;
 	private boolean	suppressed = false;
 	
 	private ArrayList<IMove> movePath = new ArrayList<IMove>();
 	
-	public PickUpVictim(IRobot robot){
+	public PickUpVictim(IRobot robot, Locator locator){
 		System.out.println("  pick up victim");
-		this.robot = robot;
+		this.robot		= robot;
+		this.locator	= locator;
 	}
 	
 	@Override
@@ -27,6 +30,7 @@ public class PickUpVictim implements Behavior {
 		suppressed = false;
 		if(!this.suppressed) {
 			System.out.println("Pick up victim...");
+			this.stopRobot();
 			this.moveToVictim();
 			this.grapVictim();
 			this.backToDetectionPoint();
@@ -35,7 +39,8 @@ public class PickUpVictim implements Behavior {
 
 	@Override
 	public boolean takeControl() {
-		if(!this.robot.carriage_isMoving() && this.robot.turnArm_isCentered() && !this.robot.grappler_isLoaded() && this.robot.victim_detectedCamera()) {
+		if(this.robot.turnArm_isCentered() && !this.robot.grappler_isLoaded() && this.robot.victim_detectedCamera()) {
+			System.out.println("take control pick up victim");
 			return true;
 		}
 		
@@ -45,6 +50,11 @@ public class PickUpVictim implements Behavior {
 	@Override
 	public void suppress() {
 		this.suppressed = true;
+	}
+	
+	private void stopRobot() {
+		locator.enterCoordinateFromMove(robot.carriage_getMovement());
+		this.robot.carriage_stop();
 	}
 	
 	private void moveToVictim() {
@@ -67,7 +77,7 @@ public class PickUpVictim implements Behavior {
 	
 	private void grapVictim() {
 		this.movePath.add(new MoveTurnUnchecked(robot, 180));
-		this.robot.carriage_rotateUnchecked(180);
+		this.robot.carriage_rotateUnchecked(-180);
 		this.robot.grappler_grap();
 	}
 	
@@ -79,9 +89,10 @@ public class PickUpVictim implements Behavior {
 	}
 	
 	private int centerVictimCamera() {
+		System.out.println("  center victim camera");
 		Rectangle2D victimLocation = null;
 		
-		while(victimLocation == null) {
+		while(null == victimLocation) {
 			victimLocation = this.robot.victim_getLocation();
 		}
 		
@@ -99,6 +110,7 @@ public class PickUpVictim implements Behavior {
 	}
 	
 	private int centerVictimLight() {
+		System.out.println("  center victim light");
 		int turned				= 0;
 		int maximumAngleToCheck	= 30;
 		int checkStepSize		= 10;
@@ -122,12 +134,13 @@ public class PickUpVictim implements Behavior {
 	}
 	
 	private double moveMaximumCamera() {
+		System.out.println("  move maximum camera");
 		Rectangle2D victimLocation = this.robot.victim_getLocation();
 		double distanceTraveled = 0;
 		
 		this.robot.carriage_travel(200, true);
 		
-		while(victimLocation != null && victimLocation.getY() < 100) {
+		while(null != victimLocation && victimLocation.getY() < 100) {
 			Delay.msDelay(10);
 			victimLocation = this.robot.victim_getLocation();
 		}

@@ -21,7 +21,7 @@ public class RobotConfiguration {
 	public final static double	TRACK_WIDTH		= 260.0f;
 	
 	public final static double	SPEED_CARRIAGE_TRAVEL	= 120.0;
-	public final static double	SPEED_CARRIAGE_ROTATE	= 30.0;
+	public final static double	SPEED_CARRIAGE_ROTATE	= 60.0;
 	public final static int		SPEED_GRAPPLER_MOVE		= 120;
 	public final static int		SPEED_GRAPPLER_GRAP		= 240;
 	public final static int		SPEED_TURN_ARM_TURN		= 50;

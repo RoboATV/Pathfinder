@@ -17,7 +17,7 @@ import pathfinder.orientation.TurnNotPossible;
 import pathfinder.robot.Robot;
 
 public class Main {
-	private static Behavior[] behaviors		= new Behavior[2];
+	private static Behavior[] behaviors		= new Behavior[3];
 	private static Arbitrator arbitrator	= new Arbitrator(behaviors);
 	
 	public static void shutdown(){
@@ -31,30 +31,30 @@ public class Main {
 		try {
 			Robot robot = new Robot();
 			
-//			Locator locator = new Locator(robot);
-//			InitialOrientation initialOrientation = new InitialOrientation(robot);
+			Locator locator = new Locator(robot);
+			InitialOrientation initialOrientation = new InitialOrientation(robot);
 			
 			System.out.println("Load behaviors...");
 //			Behavior drive			= new Drive(robot, locator);
 //			Behavior avoidObstacle	= new AvoidObstacle(robot, locator);
-			Behavior pickUpVictim	= new PickUpVictim(robot);
-//			Behavior rescueVictim	= new RescueVictim(robot, locator);
+			Behavior pickUpVictim	= new PickUpVictim(robot, locator);
+			Behavior rescueVictim	= new RescueVictim(robot, locator);
 			Behavior shutdown		= new Shutdown(robot);
 			
 //			behaviors[0] = drive;
 //			behaviors[1] = avoidObstacle;
 			behaviors[0] = pickUpVictim;
-//			behaviors[3] = rescueVictim;
-			behaviors[1] = shutdown;
+			behaviors[1] = rescueVictim;
+			behaviors[2] = shutdown;
 			System.out.println("Behaviors loaded...");
 			
-//			System.out.println("Align robot...");
-//			try {
-//				robot.setTurnDirection(initialOrientation.alignRobot());
-//			} catch (TurnNotPossible | RemoteException e) {
-//				System.out.println(e.toString());
-//			}
-//			System.out.println("Robot aligned...");
+			System.out.println("Align robot...");
+			try {
+				robot.setTurnDirection(initialOrientation.alignRobot());
+			} catch (TurnNotPossible | RemoteException e) {
+				System.out.println(e.toString());
+			}
+			System.out.println("Robot aligned...");
 			
 			System.out.println("Initialize arbitrator...");
 			arbitrator.start();
