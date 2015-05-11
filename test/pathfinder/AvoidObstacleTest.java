@@ -128,6 +128,7 @@ public class AvoidObstacleTest {
 		avoidObstacle.invoke(this.avoidObstacle, edges);
 		
 		System.out.println(locator.robotTrack);
+		System.out.println(locator.map);
 		
 		assertEquals(new Coordinate(0, 6), locator.getCurrentPosition());		
 		
